@@ -13,4 +13,11 @@ export class Inicio {
      this.router.navigate(['/comprar/planes-isapre']);
   }
 
+  PlanesvidaIr(){
+     this.router.navigate(['/comprar/planes-mascotas']);
+  }
+
+  PlanesPymeIr(){
+     this.router.navigate(['/comprar/seguro-empresa']);
+  }
 }
