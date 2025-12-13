@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inicio',
@@ -7,8 +8,9 @@ import { Component } from '@angular/core';
   styleUrl: './inicio.scss',
 })
 export class Inicio {
-    seleccionar(tipo: string) {
-    console.log('Tipo seleccionado:', tipo);
-    }
+  constructor(private router: Router) {}
+  PlanesIsapresIr(){
+     this.router.navigate(['/comprar/planes-isapre']);
+  }
 
 }
