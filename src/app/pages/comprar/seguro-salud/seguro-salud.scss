@@ -1,0 +1,57 @@
+.filters-bar {
+  background-color: #ffd85b;
+  padding: 20px 30px;
+  border-radius: 10px;
+  max-width: 1200px;
+  margin: 0 auto 20px;
+
+  .filters-wrapper {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between; // EMPUJA LOS CONTENEDORES A LOS EXTREMOS
+    width: 100%;
+  }
+}
+
+.inputs-container {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap; // Permite que los inputs se acomoden si no hay espacio
+}
+
+.action-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-primary-red {
+  background-color: #d81b60;
+  color: white;
+  padding: 15px 50px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  white-space: nowrap; // Evita que el texto se divida en dos líneas
+  transition: background 0.3s ease;
+
+  &:hover {
+    background-color: #ad1457;
+  }
+}
+
+// Media query para asegurar que en móviles se vea bien
+@media (max-width: 992px) {
+  .filters-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .inputs-container {
+    flex-direction: column;
+  }
+  .btn-primary-red {
+    width: 100%;
+  }
+}

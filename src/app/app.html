@@ -1,0 +1,109 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo" routerLink="/">
+      <span class="brand">Logo aqui</span>
+    </div>
+
+    <ul class="nav-links">
+      <li class="has-dropdown">
+        <a routerLink="/comprar/seguro-salud">Seguros de Salud <i class="arrow-down"></i></a>
+        <div class="megamenu">
+          <div class="megamenu-content">
+            <div class="megamenu-left">
+              <h3>Seguros de Salud</h3>
+              <p>Cotiza y Selecciona entre los Mejores Seguros el que más te Conviene</p>
+              <button class="btn-outline">Comparar Seguros de Salud</button>
+            </div>
+            <ul class="megamenu-right">
+              <li><a routerLink="/comprar/seguro-salud">→ Todos los Seguros</a></li>
+              <li><a href="#">→ Seguros para Fonasa</a></li>
+              <li><a href="#">→ Seguros Primarios</a></li>
+              <li><a href="#">→ Complementarios</a></li>
+              <li><a href="#">→ Catastróficos</a></li>
+              <li><a href="#">→ Internacionales</a></li>
+              <li><a href="#">→ Escolares/Universitarios</a></li>
+              <li><a href="#">→ Dentales</a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      
+    <li class="has-dropdown">
+      <a routerLink="/comprar/seguro-empresa">Seguro Empresa <i class="arrow-down"></i></a>
+      <div class="megamenu">
+          <div class="megamenu-content">
+            <div class="megamenu-left">
+              <h3>Seguros de Empresa</h3>
+              <p>Cotizar Seguros para Empresas, y Elige el Mejor Plan para tus Empleados</p>
+              <button class="btn-outline">Comparar Seguros de Empresa</button>
+            </div>
+            <ul class="megamenu-right">
+              <li><a href="#">→ Seguros Complementarios</a></li>
+              <li><a href="#">→ Vida Guardias</a></li>
+              <li><a href="#">→ Mascotas para tu empresa</a></li>
+              <li><a href="#">→ Seguros Comunidad Educativa</a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+    <li class="has-dropdown">
+      <a routerLink="/comprar/planes-isapre">Planes de Isapre <i class="arrow-down"></i></a>
+      <div class="megamenu">
+          <div class="megamenu-content">
+            <div class="megamenu-left">
+              <h3>Planes de Isapre</h3>
+              <p>Compara Todos los Planes Isapres de Chile, y Elige el que más te Conviene.</p>
+              <button class="btn-outline">Comparar Planes de Isapre</button>
+            </div>
+            <ul class="megamenu-right">
+              <li><a href="#">→ Comprar Planes</a></li>
+              <li><a href="#">→ Tu mejor Plan (beta)</a></li>
+              <li><a href="#">→ Busca tu plan</a></li>
+            </ul>
+          </div>
+        </div>
+    </li>
+    <li class="has-dropdown">
+      <a routerLink="/comprar/planes-isapre">Seguros de Vida <i class="arrow-down"></i></a>
+      <div class="megamenu">
+          <div class="megamenu-content">
+            <div class="megamenu-left">
+              <h3>Seguros de Vida</h3>
+              <p>Cotiza los Mejores Seguro de Vida en Chile, y Beneficia a tu Familia</p>
+              <button class="btn-outline">Comparar Seguros de Vida</button>
+            </div>
+            <ul class="megamenu-right">
+              <li><a href="#">→ Temporal</a></li>
+              <li><a href="#">→ Temporal con Devolución</a></li>
+              <li><a href="#">→ Vida + Ahorro</a></li>
+            </ul>
+          </div>
+        </div>
+    </li>
+
+    <li class="has-dropdown">
+      <a routerLink="/comprar/planes-mascotas">Planes Mascota <i class="arrow-down"></i></a>
+      <div class="megamenu">
+          <div class="megamenu-content">
+            <div class="megamenu-left">
+              <h3>Planes Mascotas</h3>
+              <p>Compara y Cotizar Todos los Planes para tus Mascotas.</p>
+              <button class="btn-outline">Comparar Planes de Isapre</button>
+            </div>
+            <ul class="megamenu-right">
+              <li><a href="#">→ Mascotas para tu Familia</a></li>
+              <li><a href="#">→ Mascotas para tu Empresa</a></li>
+            </ul>
+          </div>
+        </div>
+    </li>
+    <li><a href="#">Contacto</a></li>
+  </ul>
+
+    <div class="nav-actions">
+      <button class="btn-portal">Portal clientes</button>
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>

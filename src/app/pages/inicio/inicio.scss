@@ -1,0 +1,60 @@
+.hero-section {
+  text-align: center;
+  padding: 4rem 1rem;
+  background-color: #f8fbff;
+
+  h1 {
+    font-size: 2.5rem;
+    color: #1a2b4b;
+    max-width: 800px;
+    margin: 0 auto 1rem;
+    font-weight: 800;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: #555;
+    strong { color: #00aae4; }
+  }
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  border-radius: 15px;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  }
+
+  .icon {
+    font-size: 2rem;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem;
+    border-radius: 10px;
+    margin-right: 1rem;
+  }
+
+  h3 { margin: 0; font-size: 1.1rem; }
+  p { margin: 0; font-size: 0.9rem; opacity: 0.9; }
+
+  // Colores específicos
+  &.card-salud { background: linear-gradient(135deg, #00b4db, #0083b0); }
+  &.card-empresa { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+  &.card-isapre { background: linear-gradient(135deg, #ff0844, #ffb199); }
+  &.card-mascota { background: linear-gradient(135deg, #66a6ff, #89f7fe); }
+}
