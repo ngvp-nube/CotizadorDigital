@@ -20,12 +20,20 @@
 
 .cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(2, 1fr); /* ✅ 2 arriba / 2 abajo */
   gap: 1.5rem;
   padding: 2rem;
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
 }
+
+/* 📱 Móvil: 1 por fila */
+@media (max-width: 600px) {
+  .cards-container {
+    grid-template-columns: 1fr;
+  }
+}
+
 
 .card {
   display: flex;
