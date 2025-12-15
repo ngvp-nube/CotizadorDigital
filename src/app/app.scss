@@ -1,6 +1,11 @@
 .navbar {
   height: 80px;
-  background: rgba(255,255,255,0.85);
+  background: linear-gradient(
+  to left,
+  #f4f2ff,   /* blanco con leve lavanda */
+  #cfc7ff    /* morado suave, confiable */
+  );
+
   backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
@@ -9,20 +14,26 @@
   top: 0;
   z-index: 1000;
 
-  .nav-container {
-    width: 100%;
-    max-width: 1300px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 24px;
-  }
+ .nav-container {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;   /* 🔥 clave */
+  padding: 0 24px;
 }
 
-.brand {
-  font-size: 1.2rem;
-  font-weight: 800;
-  color: var(--primary);
+}
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 160px;   /* ideal con navbar de 80px */
+  width: auto;
+  object-fit: contain;
 }
 
 
@@ -164,3 +175,11 @@
     }
   }
 }
+
+//Logo 
+
+
+
+
+
+

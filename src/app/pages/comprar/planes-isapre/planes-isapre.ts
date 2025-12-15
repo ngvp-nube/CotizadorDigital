@@ -1,23 +1,22 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ModalIsapreComponent } from '../../modals/modal-isapre'; 
-import { IsaprePlan } from '../../modals/modal-isapre';
+import { ModalIsapreComponent,IsaprePlan} from '../../modals/modal-isapre'; // 👉 IMPORTAMOS EL MODAL Y EL TIPO CORRECTO
 
+/* =========================
+   INTERFACES AUXILIARES
+========================= */
 
-// --- NUEVA INTERFAZ PARA EL CÓNYUGE ---
 interface Conyuge {
   sexo: string;
   edad: number | null;
   ingreso: number | null;
 }
-// ----------------------------------------
 
 interface CargaFamiliar {
   sexo: string;
   edad: number | null;
 }
-
 
 interface PuntajeCategoria {
   categoria: string;
@@ -32,6 +31,9 @@ interface DetallePuntaje {
   categorias: PuntajeCategoria[];
 }
 
+/* =========================
+   COMPONENTE
+========================= */
 
 @Component({
   selector: 'app-planes-isapre',
@@ -41,6 +43,11 @@ interface DetallePuntaje {
   styleUrl: './planes-isapre.scss'
 })
 export class PlanesIsapre {
+
+  /* =========================
+     FILTROS
+  ========================= */
+
   filtros = {
     region: '',
     ingreso: null,
@@ -48,24 +55,23 @@ export class PlanesIsapre {
     sexo: 'Hombre'
   };
 
+  /* =========================
+     ASEGURADOS
+  ========================= */
+
   mostrarModal = false;
   tieneConyuge = false;
   cargas: CargaFamiliar[] = [];
-  resultados: IsaprePlan[] = [];
-  
-  // --- VARIABLES AÑADIDAS ---
+
   conyuge: Conyuge = {
     sexo: 'Mujer',
     edad: null,
     ingreso: null
   };
-  ordenarPor: string = 'price'; 
-  mostrarPuntaje: boolean = true; 
-  vista: 'grid' | 'list' = 'grid'; // Inicializamos la vista en 'grid'
 
-  // --------------------------
-
-  toggleModal() { this.mostrarModal = !this.mostrarModal; }
+  toggleModal() {
+    this.mostrarModal = !this.mostrarModal;
+  }
 
   incrementarCargas() {
     this.cargas.push({ sexo: 'Hombre', edad: 0 });
@@ -75,50 +81,97 @@ export class PlanesIsapre {
     if (this.cargas.length > 0) this.cargas.pop();
   }
 
-  cambiarVista(nuevaVista: 'grid' | 'list') {
-    this.vista = nuevaVista;
-  }
+  /* =========================
+     RESULTADOS
+  ========================= */
 
-  buscarPlanes() {
-    this.mostrarModal = false;
-    const totalAsegurados = 1 + (this.tieneConyuge ? 1 : 0) + this.cargas.length;
+  resultados: IsaprePlan[] = [];
+  mostrarPuntaje = true;
+  ordenarPor: string = 'price';
+  vista: 'grid' | 'list' = 'grid';
 
-    this.resultados = new Array(824).fill({ 
-      isapre: 'Banmédica',
-      nombrePlan: 'Plan Salud Total',
-      valor: 8500 * totalAsegurados
-    });
-  }
-   planSeleccionado: IsaprePlan | null = null;
+  /* =========================
+     PAGINACIÓN
+  ========================= */
+
+  itemsPorPagina = 15;
+  paginaActual = 1;
+  totalPaginas = 0;
+  resultadosPaginados: IsaprePlan[] = [];
+  paginas: number[] = [];
+
+  /* =========================
+     MODAL
+  ========================= */
+
+  planSeleccionado: IsaprePlan | null = null;
   mostrarDetalleModal = false;
 
-  tabInicialModal: 'vistaGeneral' | 'solicitar' | 'puntaje' | 'precio' = 'vistaGeneral';
+  tabInicialModal: 'vistaGeneral' | 'solicitar' | 'puntaje' | 'precio' =
+    'vistaGeneral';
 
   constructor() {
     this.buscarPlanes();
   }
 
   /* =========================
-     MOCK PUNTAJE
+     BUSCAR PLANES (MOCK)
   ========================= */
-  private getMockDetallePuntaje(): DetallePuntaje {
-    return {
-      puntajeHospitalario: 9.2,
-      puntajeAmbulatorio: 8.8,
-      puntajePromedio: 9.0,
-      categorias: [
-        { categoria: 'Atención Hospitalaria', ponderacion: 0.35, puntaje: 9.2 },
-        { categoria: 'Atención Ambulatoria', ponderacion: 0.35, puntaje: 8.8 },
-        { categoria: 'Medicamentos', ponderacion: 0.15, puntaje: 7.5 },
-        { categoria: 'Odontología', ponderacion: 0.10, puntaje: 6.5 },
-        { categoria: 'Otros', ponderacion: 0.05, puntaje: 9.5 }
-      ]
-    };
+
+  buscarPlanes() {
+    this.mostrarModal = false;
+
+    const totalAsegurados =
+      1 + (this.tieneConyuge ? 1 : 0) + this.cargas.length;
+
+    // 🔥 MOCK REALISTA
+    this.resultados = new Array(824).fill(null).map((_, i) => ({
+      isapre: 'Banmédica',
+      nombrePlan: `Plan Salud Total ${i + 1}`,
+      valor: 8500 * totalAsegurados,
+      puntaje: 7.8,
+      prestadores: 'Libre Elección',
+      hospitalaria: '90%',
+      urgencia: '70%',
+      topeAnual: '7.000 UF',
+      tipoCobertura: 'Preferentes'
+    }));
+
+    // 🔁 Reset paginación
+    this.paginaActual = 1;
+    this.totalPaginas = Math.ceil(
+      this.resultados.length / this.itemsPorPagina
+    );
+
+    this.paginas = Array.from(
+      { length: this.totalPaginas },
+      (_, i) => i + 1
+    );
+
+    this.actualizarPagina();
+  }
+
+  actualizarPagina() {
+    const inicio = (this.paginaActual - 1) * this.itemsPorPagina;
+    const fin = inicio + this.itemsPorPagina;
+
+    this.resultadosPaginados = this.resultados.slice(inicio, fin);
+  }
+
+  cambiarPagina(pagina: number) {
+    if (pagina < 1 || pagina > this.totalPaginas) return;
+    this.paginaActual = pagina;
+    this.actualizarPagina();
+  }
+
+  cambiarVista(vista: 'grid' | 'list') {
+    this.vista = vista;
   }
 
   /* =========================
      MODAL CONTROL
   ========================= */
+
   abrirDetalle(plan: IsaprePlan) {
     this.planSeleccionado = plan;
     this.tabInicialModal = 'vistaGeneral';
