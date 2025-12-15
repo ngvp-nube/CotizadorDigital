@@ -14,7 +14,7 @@ export class Inicio {
   }
 
   PlanesvidaIr(){
-     this.router.navigate(['/comprar/planes-mascotas']);
+     this.router.navigate(['/comprar/seguros-vida']);
   }
 
   PlanesPymeIr(){

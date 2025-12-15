@@ -17,8 +17,8 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/comprar/seguro-empresa/seguro-empresa').then(m => m.SeguroEmpresa) 
       },
       { 
-        path: 'planes-mascotas', 
-        loadComponent: () => import('./pages/comprar/planes-mascotas/planes-mascotas').then(m => m.PlanesMascotas) 
+        path: 'seguros-vida', 
+        loadComponent: () => import('./pages/comprar/seguros-vida/seguros-vida').then(m => m.SegurosVida) 
       },
       { 
         path: 'planes-isapre', 

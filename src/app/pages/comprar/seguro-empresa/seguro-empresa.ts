@@ -76,7 +76,7 @@ export class SeguroEmpresa {
       valor: 8500 * totalAsegurados
     });
   }
-  PlanesvidaIr() {
+  PlanesPymeIr() {
     
   }
 }
