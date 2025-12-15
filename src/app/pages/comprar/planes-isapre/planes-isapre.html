@@ -117,7 +117,7 @@
 
       <div class="rating-toggle">
         <label>
-            <input type="checkbox" [(ngModel)]="mostrarPuntaje">
+            <input type="checkbox">
             <span class="puntaje-badge">✅ ¿Qué es el Puntaje?</span>
         </label>
       </div>
@@ -187,56 +187,68 @@
   </aside>
 
   <!-- RESULTADOS -->
-  <main class="results">
-
-    <div class="results-header">
-      <span class="badge">830</span> Resultados
-      <button class="help">¿Qué es el Puntaje?</button>
-
-      <select>
-        <option>Ordenar por</option>
-      </select>
-    </div>
-
+  <main class="results" >
     <!-- CARD -->
-    <div class="card">
-      <div class="card-left">
-        <span class="tag">Preferente</span>
+        <div class="card" *ngFor="let plan of resultados">
+          <div class="card-left">
+            <span class="tag">Preferente</span>
 
-        <div class="company">
-          <img src="https://via.placeholder.com/40" alt="">
-          <strong>Colmena</strong>
+            <div class="company">
+              <img src="https://via.placeholder.com/40" alt="">
+              <strong>{{ plan.isapre }}</strong>
+            </div>
+
+            <h5>{{ plan.nombrePlan }}</h5>
+
+            <div class="features">
+              <span>🏥 Hospitalaria 90%</span>
+              <span>🚑 Urgencia 70%</span>
+              <span>🩺 Ambulatoria 70%</span>
+              <span>📄 Tope anual 7.000 UF</span>
+            </div>
+          </div>
+
+          <div class="card-center">
+            <label>
+              <input type="checkbox"> Comparar
+            </label>
+
+            <div class="score" *ngIf="mostrarPuntaje">
+              Puntaje
+              <span class="score-value">7.8</span>
+              <small>de 7.8</small>
+            </div>
+          </div>
+
+          <div class="card-right">
+            <span class="price-label">Desde</span>
+            <span class="price">
+              ${{ plan.valor | number:'1.0-0' }}
+            </span>
+            <small>/mes</small>
+
+            <!-- 🔥 ESTE BOTÓN YA FUNCIONA -->
+            <button
+              class="btn-solicitar"
+              (click)="abrirSolicitud(plan)"
+            >
+              Solicitar
+            </button>
+
+            <button
+              class="btn-secondary"
+              (click)="abrirDetalle(plan)"
+            >
+              Ver detalle
+            </button>
+          </div>
         </div>
-
-        <h5>MAX CENTRO PF1259076</h5>
-
-        <div class="features">
-          <span>🏥 Hospitalaria 90%</span>
-          <span>🚑 Urgencia 70%</span>
-          <span>🩺 Ambulatoria 70%</span>
-          <span>📄 Tope anual 7.000 UF</span>
-        </div>
-      </div>
-
-      <div class="card-center">
-        <label>
-          <input type="checkbox"> Comparar
-        </label>
-        <div class="score">
-          Puntaje
-          <span class="score-value">7.8</span>
-          <small>de 7.8</small>
-        </div>
-      </div>
-
-      <div class="card-right">
-        <span class="price-label">Desde</span>
-        <span class="price">$147.531</span>
-        <small>/mes</small>
-        <button class="btn-primary">Solicitar</button>
-        <button class="btn-secondary">Ver detalle</button>
-      </div>
-    </div>
-
   </main>
+
 </div>
+<app-modal-isapre 
+    [plan]="planSeleccionado" 
+    [isVisible]="mostrarDetalleModal" 
+    [tabInicial]="tabInicialModal"
+    (close)="cerrarDetalle()">
+</app-modal-isapre>

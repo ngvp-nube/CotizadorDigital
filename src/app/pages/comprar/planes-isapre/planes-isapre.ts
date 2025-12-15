@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ModalIsapreComponent } from '../../modals/modal-isapre'; 
+import { IsaprePlan } from '../../modals/modal-isapre';
+
 
 // --- NUEVA INTERFAZ PARA EL CÓNYUGE ---
 interface Conyuge {
@@ -15,16 +18,25 @@ interface CargaFamiliar {
   edad: number | null;
 }
 
-interface IsaprePlan {
-  isapre: string;
-  nombrePlan: string;
-  valor: number;
+
+interface PuntajeCategoria {
+  categoria: string;
+  ponderacion: number;
+  puntaje: number;
 }
+
+interface DetallePuntaje {
+  puntajeHospitalario: number;
+  puntajeAmbulatorio: number;
+  puntajePromedio: number;
+  categorias: PuntajeCategoria[];
+}
+
 
 @Component({
   selector: 'app-planes-isapre',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ModalIsapreComponent],
   templateUrl: './planes-isapre.html',
   styleUrl: './planes-isapre.scss'
 })
@@ -76,5 +88,52 @@ export class PlanesIsapre {
       nombrePlan: 'Plan Salud Total',
       valor: 8500 * totalAsegurados
     });
+  }
+   planSeleccionado: IsaprePlan | null = null;
+  mostrarDetalleModal = false;
+
+  tabInicialModal: 'vistaGeneral' | 'solicitar' | 'puntaje' | 'precio' = 'vistaGeneral';
+
+  constructor() {
+    this.buscarPlanes();
+  }
+
+  /* =========================
+     MOCK PUNTAJE
+  ========================= */
+  private getMockDetallePuntaje(): DetallePuntaje {
+    return {
+      puntajeHospitalario: 9.2,
+      puntajeAmbulatorio: 8.8,
+      puntajePromedio: 9.0,
+      categorias: [
+        { categoria: 'Atención Hospitalaria', ponderacion: 0.35, puntaje: 9.2 },
+        { categoria: 'Atención Ambulatoria', ponderacion: 0.35, puntaje: 8.8 },
+        { categoria: 'Medicamentos', ponderacion: 0.15, puntaje: 7.5 },
+        { categoria: 'Odontología', ponderacion: 0.10, puntaje: 6.5 },
+        { categoria: 'Otros', ponderacion: 0.05, puntaje: 9.5 }
+      ]
+    };
+  }
+
+  /* =========================
+     MODAL CONTROL
+  ========================= */
+  abrirDetalle(plan: IsaprePlan) {
+    this.planSeleccionado = plan;
+    this.tabInicialModal = 'vistaGeneral';
+    this.mostrarDetalleModal = true;
+  }
+
+  abrirSolicitud(plan: IsaprePlan) {
+    this.planSeleccionado = plan;
+    this.tabInicialModal = 'solicitar';
+    this.mostrarDetalleModal = true;
+  }
+
+  cerrarDetalle() {
+    this.mostrarDetalleModal = false;
+    this.planSeleccionado = null;
+    this.tabInicialModal = 'vistaGeneral';
   }
 }

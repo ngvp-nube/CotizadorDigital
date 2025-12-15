@@ -303,7 +303,7 @@
 
     .results-grid {
         display: grid;
-        grid-template-columns: 2fr 1.5fr 1fr 1fr auto; 
+        grid-template-columns: 1.5fr auto  auto  auto auto; 
         gap: 20px;
         align-items: center; 
     }
@@ -311,7 +311,7 @@
     .results-count h2 {
         font-size: 1.2rem;
         font-weight: bold;
-        color: #333;
+        color: rgb(109, 212, 253);
     }
 
     .rating-toggle {
@@ -561,7 +561,7 @@
   font-weight: bold;
 }
 
-.btn-primary {
+.btn-solicitar {
   width: 100%;
   margin-top: 8px;
   background: #ff004f;
@@ -579,4 +579,5 @@
   border: none;
   padding: 8px;
   border-radius: 6px;
+  cursor: pointer;
 }
