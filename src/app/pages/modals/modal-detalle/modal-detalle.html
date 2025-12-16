@@ -51,29 +51,296 @@
     <div class="modal-content-body">
 
       <!-- 🔹 VISTA GENERAL -->
-      <div *ngIf="tabActiva==='vistaGeneral'">
-        <!-- 👉 PEGA AQUÍ TODO tu contenido de Vista General TAL CUAL -->
+      <div *ngIf="tabActiva==='vistaGeneral'" class="vista-general-tab-container">
+        <h3 class="tab-section-title">Características de este plan</h3>
+
+        <p class="plan-subtitle">
+          Este plan es <b>Preferente</b> y está pensado para quienes idealmente
+          se atienden en los siguientes lugares de preferencia:
+        </p>
+
+        <div class="vista-grid">
+          <!-- ====================== -->
+          <!-- COLUMNA IZQUIERDA     -->
+          <!-- ====================== -->
+          <div class="columna-izq">
+            <!-- COBERTURA PREFERENTE -->
+            <h4 class="section-title">Cobertura Preferente</h4>
+
+            <div class="tabla-preferente">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Prestador</th>
+                    <th>Hospitalaria</th>
+                    <th>Ambulatoria</th>
+                    <th>Urgencia</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let item of prestadoresPreferentes">
+                    <td>
+                      <i class="fas fa-check-circle check"></i> {{
+                      item.prestador }}
+                    </td>
+                    <td>{{ item.hospitalario }}</td>
+                    <td>{{ item.ambulatorio }}</td>
+                    <td>{{ item.urgencia }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- COBERTURA LIBRE ELECCIÓN -->
+            <h4 class="section-title">Cobertura Libre Elección</h4>
+            <p class="le-subtitle">
+              Para el resto de los prestadores la cobertura es:
+            </p>
+
+            <div class="libre-eleccion-box">
+              <div class="le-row">
+                <div class="le-left">
+                  <p class="le-title">Cobertura Hospitalaria</p>
+                  <small>(Operaciones, enfermedades, etc.)</small>
+                </div>
+                <div class="le-right">
+                  <span class="le-porcentaje">90%</span>
+                </div>
+              </div>
+
+              <div class="le-divider"></div>
+
+              <div class="le-row">
+                <div class="le-left">
+                  <p class="le-title">Cobertura Ambulatoria</p>
+                  <small>(Consultas médicas, exámenes, etc.)</small>
+                </div>
+                <div class="le-right">
+                  <span class="le-porcentaje">80%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- RESTRICCIONES + TOPES -->
+            <div class="restricciones-topes">
+              <div class="restricciones-col">
+                <p class="restricciones-title">Tendrás menos cobertura en:</p>
+                <ul>
+                  <li>Cirugía bariátrica</li>
+                  <li>Cirugía refractiva</li>
+                  <li>Otras prestaciones restringidas</li>
+                </ul>
+              </div>
+
+              <div class="topes-col">
+                <div class="tope-card">
+                  <i class="fas fa-home icon"></i>
+                  <div>
+                    <p>
+                      Este plan cubre hasta <b>7.000 UF</b> ($277.531.940 al año
+                      por persona).
+                    </p>
+                    <small
+                      >Excedido este monto se bonifica el
+                      <b>mínimo legal</b></small
+                    >
+                  </div>
+                </div>
+
+                <div class="tope-card">
+                  <i class="fas fa-baby icon"></i>
+                  <p>Este plan es <b>con cobertura de parto</b></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ====================== -->
+          <!-- COLUMNA DERECHA       -->
+          <!-- ====================== -->
+          <div class="columna-der">
+            <h4 class="section-title">Beneficios de {{ plan?.isapre }}</h4>
+
+            <div class="beneficios-grid">
+              <div class="benef-card">
+                <i class="fas fa-virus"></i> Beneficios COVID-19
+              </div>
+              <div class="benef-card">
+                <i class="fas fa-tooth"></i> Dental y Óptica
+              </div>
+              <div class="benef-card">
+                <i class="fas fa-syringe"></i> Medicina Preventiva
+              </div>
+              <div class="benef-card">
+                <i class="fas fa-map-marker-alt"></i> Red Médica Prioritaria
+              </div>
+              <div class="benef-card">
+                <i class="fas fa-child"></i> Control Niño Sano
+              </div>
+              <div class="benef-card">
+                <i class="fas fa-headset"></i> Asesoría Legal
+              </div>
+              <div class="benef-card">
+                <i class="fas fa-briefcase-medical"></i> Salud Ocupacional
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- 🔹 CONTRATO (SIN FORMULARIO) -->
-      <div *ngIf="tabActiva==='contrato'">
-        <!-- 👉 SOLO la parte izquierda del contrato -->
+      <div *ngIf="tabActiva==='contrato'" class="contrato-tab-container">
+        <div class="contrato-grid">
+          <!-- ========================= -->
+          <!--   IZQUIERDA: CONTRATO    -->
+          <!-- ========================= -->
+          <div class="contrato-left">
+            <h3 class="tab-section-title">Términos y Condiciones del Plan</h3>
+
+            <div class="contrato-box">
+              <img
+                *ngIf="plan?.imagenContrato"
+                [src]="plan?.imagenContrato"
+                alt="Contrato del plan"
+                class="contrato-img"
+              />
+
+              <p *ngIf="!plan?.imagenContrato" class="contrato-placeholder">
+                Aquí se mostrará el documento de contrato cuando esté
+                disponible.
+              </p>
+            </div>
+
+            <blockquote class="nota-legal">
+              "El presente Plan de Salud se rige por la Ley N°18.933 y sus
+              reglamentos. Se recomienda leer detenidamente las cláusulas de
+              exclusión y periodos de carencia."
+            </blockquote>
+          </div>
+
+          <!-- ========================= -->
+          <!--   DERECHA: FORMULARIO     -->
+          <!-- ========================= -->
+          <div class="contrato-right">
+            <h3 class="tab-section-title">Solicitar</h3>
+            <p class="solicitar-subtitle">
+              Contrata y/o recibe asesoría mediante un ejecutivo especializado
+            </p>
+
+            <form class="form-solicitud-grid">
+              <div class="form-group">
+                <label>Nombre*</label>
+                <input type="text" placeholder="Ingresa tu nombre" required />
+              </div>
+
+              <div class="form-group">
+                <label>Rut*</label>
+                <input type="text" placeholder="Rut" required />
+              </div>
+
+              <div class="form-group">
+                <label>Correo Electrónico*</label>
+                <input type="email" placeholder="Correo Electrónico" required />
+              </div>
+
+              <div class="form-group">
+                <label>Teléfono*</label>
+                <input type="tel" placeholder="Teléfono" required />
+              </div>
+
+              <div class="form-group-full">
+                <span class="radio-group-label"
+                  >¿Es {{ plan?.isapre }} tu Isapre Actual?</span
+                >
+
+                <div class="radio-options-inline">
+                  <div class="radio-option">
+                    <input type="radio" name="isapre" value="si" />
+                    <label>Sí</label>
+                  </div>
+
+                  <div class="radio-option">
+                    <input type="radio" name="isapre" value="no" />
+                    <label>No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn-solicitar-ejecutivo">
+                  <i class="fas fa-user-tie"></i> Solicitar con ejecutivo
+                </button>
+                <small class="sitio-seguro">
+                <i class="fas fa-lock"></i> Sitio seguro
+                </small>
+              </div>
+
+            </form>
+          </div>
+        </div>
       </div>
 
       <!-- 🔹 PUNTAJE -->
-      <div *ngIf="tabActiva==='puntaje'">
-        <h3>Puntaje del Plan</h3>
+      <div *ngIf="tabActiva === 'puntaje'" class="puntaje-tab-container">
+        <h3 class="tab-section-title">Puntaje de este Plan</h3>
+        <p class="description">Desglose del puntaje del plan.</p>
       </div>
 
-      <!-- 🔹 PRECIO -->
-      <div *ngIf="tabActiva==='precio'">
-        <!-- 👉 gráfico de precios -->
+      <!-- 🔹 Precio -->
+      <div *ngIf="tabActiva === 'precio'" class="precio-tab-container">
+        <h3 class="tab-section-title">Precio por persona</h3>
+
+        <div class="precio-graph-wrapper">
+          <div class="y-labels">
+            <span>4.5 UF</span>
+            <span>4.0 UF</span>
+            <span>3.5 UF</span>
+            <span>3.0 UF</span>
+            <span>2.5 UF</span>
+            <span>2.0 UF</span>
+            <span>1.5 UF</span>
+            <span>1.0 UF</span>
+            <span>0.5 UF</span>
+            <span>0 UF</span>
+          </div>
+
+          <div class="bars-area">
+            <div class="bar bar-ges" [style.height]="gesAltura">
+              <span class="bar-text">{{ gesValor }} UF</span>
+            </div>
+
+            <div class="bar bar-plan" [style.height]="planAltura">
+              <span class="bar-text">{{ planValor }} UF</span>
+            </div>
+
+            <div class="bottom-label">
+              <p>Masculino<br />29 años</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- FOOTER -->
       <div class="modal-footer-fijo">
-        <button class="btn-solicitar-footer" (click)="solicitar.emit()">SOLICITAR PLAN</button>
-        <button class="btn-cerrar-footer" (click)="cerrarModal()">Cerrar</button>
+        <div class="footer-left">
+          <span class="footer-plan-nombre">{{ plan?.nombrePlan }}</span>
+          <span class="footer-plan-precio">
+            ${{ plan?.valor | number:'1.0-0' }}<small>/mes</small>
+          </span>
+        </div>
+
+        <div class="footer-center">
+          <button class="btn-solicitar-footer" (click)="irASolicitar()">
+            SOLICITAR PLAN
+          </button>
+        </div>
+
+        <div class="footer-right">
+          <button class="btn-cerrar-footer" (click)="close.emit()">
+            Cerrar
+          </button>
+        </div>
       </div>
 
     </div>

@@ -222,7 +222,7 @@
 
       <div class="card-right">
         <span class="price-label">Desde</span>
-        <span class="price">$147.531</span>
+        <span class="price">${{ plan.valor | number:'1.0-0' }}</span>
         <small>/mes</small>
         <button class="btn-primary" (click)="abrirSolicitud(plan)">Solicitar</button>
         <button class="btn-secondary" (click)="abrirDetalle(plan)">Ver detalle</button>

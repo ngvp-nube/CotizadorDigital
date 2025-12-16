@@ -1,10 +1,9 @@
 /* ============================================================
    VARIABLES
    ============================================================ */
-$qp-primary: #1a73e8;
+$qp-primary: #1a73e8;          // Azul principal (Google-like, usado por QuePlan)
 $qp-primary-dark: #125bc2;
-$qp-primary-light: #82b6ff;
-
+$qp-accent: #ff7c32;           // Naranjo QuePlan
 $qp-gray-100: #f7f9fc;
 $qp-gray-200: #eceff3;
 $qp-gray-300: #d7dce2;
@@ -12,7 +11,7 @@ $qp-gray-500: #8c99a9;
 $qp-gray-600: #6f7a87;
 $qp-gray-700: #4c6581;
 $qp-gray-800: #2c3a4a;
-
+$qp-primary-light: #82b6ff;
 $qp-shadow: rgba(0, 0, 0, 0.08);
 
 /* ============================================================
@@ -203,7 +202,19 @@ $qp-shadow: rgba(0, 0, 0, 0.08);
 /* ============================================================
    VISTA GENERAL
    ============================================================ */
+/* ============================================================
+   TAB: VISTA GENERAL (Contenido Detallado)
+   ============================================================ */
+
 .vista-general-tab-container {
+
+  .tab-section-title {
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+    font-weight: 700;
+    color: #222;
+  }
+
   .plan-subtitle {
     font-size: 0.9rem;
     color: #666;
@@ -215,77 +226,627 @@ $qp-shadow: rgba(0, 0, 0, 0.08);
     gap: 40px;
   }
 
+  /* =======================
+     COLUMNA IZQUIERDA
+     ======================= */
   .columna-izq {
     flex: 2;
   }
 
-  .columna-der {
-    flex: 1;
+  .section-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 15px 0 px 0;
+    padding-bottom: 5px;
+  }
+
+
+  /* TABLA PREFERENTE */
+  .tabla-preferente table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+
+    thead th {
+      background: #f7f7f7;
+      padding: 12px;
+      font-weight: 600;
+      border-bottom: 2px solid #ddd;
+    }
+
+    tbody td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+      color: #333;
+      text-align: center;
+
+      .check {
+        color: #00b34a;
+        margin-right: 6px;
+      }
+    }
+
+    tbody tr:nth-child(even) {
+      background: #fafafa;
+    }
+    thead th:first-child,
+    tbody td:first-child {
+    text-align: left;
+    }
+    thead th:not(:first-child),
+    tbody td:not(:first-child) {
+    text-align: center;
+    }
+  }
+
+  /* COBERTURA LIBRE ELECCION */
+ /* CONTENEDOR PRINCIPAL */
+.libre-eleccion-box {
+    margin-top: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* FILAS INTERNAS */
+.le-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* COLUMNA IZQUIERDA (TÍTULO + SUBTÍTULO) */
+.le-left {
+    display: flex;
+    flex-direction: column;
+
+    .le-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin: 0;
+        margin-left: 30px;
+    }
+
+    small {
+        color: #666;
+        font-size: 0.85rem;
+        margin-top: 2px;
+        margin-left: 30px;
+    }
+}
+
+/* COLUMNA DERECHA (PORCENTAJE) */
+.le-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    .le-porcentaje {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #1a7f38;
+        margin-right: 30px;
+    }
+}
+
+/* DIVISOR ENTRE ROWS */
+.le-divider {
+    width: 100%;
+    height: 1px;
+    background: #eee;
+    margin: 5px 0;
+}
+
+
+/* RESTRICCIONES + TOPES (2 columnas lado a lado) */
+.restricciones-topes {
+  margin-top: 30px;
+  display: flex;
+  gap: 25px;
+}
+
+/* COLUMNA IZQUIERDA */
+.restricciones-col {
+  flex: 1;
+}
+
+.restricciones-col .restricciones-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.restricciones-col ul {
+  margin: 0 0 20px 20px;
+  color: #444;
+  font-size: 0.9rem;
+}
+
+/* COLUMNA DERECHA (Topes) */
+.topes-col {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* TARJETAS DE TOPES */
+.tope-card {
+  display: flex;
+  gap: 12px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+
+  .icon {
+    font-size: 1.4rem;
+    color: #1a73e8;
+    margin-top: 4px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+
+  small {
+    display: block;
+    margin-top: 3px;
+    color: #666;
   }
 }
 
+/* RESPONSIVE: en móvil se apila */
+@media (max-width: 800px) {
+  .restricciones-topes {
+    flex-direction: column;
+  }
+}
+
+
+  /* =======================
+     COLUMNA DERECHA
+     ======================= */
+  .columna-der {
+    flex: 1;
+  }
+
+  .beneficios-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+
+    .benef-card {
+      border: 1px solid #ddd;
+      padding: 12px;
+      border-radius: 8px;
+      background: white;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+
+      i {
+        font-size: 1.1rem;
+        color: #1a73e8;
+      }
+
+      &:hover {
+        border-color: #1a73e8;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      }
+    }
+  }
+
+}
+
 /* ============================================================
-   CONTRATO (SOLO VISOR)
+   TAB: CONTRATO (VISOR DEL CONTRATO)
    ============================================================ */
 .contrato-grid {
   display: flex;
   gap: 35px;
+  margin-top: 10px;
+}
+/* Radios en línea */
+.radio-options-inline {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 0; /* elimina espacio inferior */
+  }
 }
 
+
+/* IZQUIERDA */
 .contrato-left {
   flex: 2;
+}
+
+/* DERECHA (FORMULARIO) */
+.contrato-right {
+  flex: 1;
+  padding-left: 25px;
+  border-left: 1px solid #e5e5e5;
+}
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-solicitar-ejecutivo {
+  width: 100%;
+  background: #b3e5fc;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.sitio-seguro {
+  font-size: 0.85rem;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  i {
+    color: #28a745;
+  }
+}
+
+/* TITULO PEQUEÑO EN LA DERECHA */
+.contrato-right .solicitar-subtitle {
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* ============================================================
+   TAB: SOLICITAR (FORMULARIO)
+   ============================================================ */
+.form-solicitud-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-top: 15px;
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+
+        label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: $qp-gray-800;
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid $qp-gray-300;
+            &:focus {
+                border-color: $qp-primary;
+                outline: none;
+            }
+        }
+    }
+
+    .form-group-full {
+        grid-column: span 2;
+        background: $qp-gray-100;
+        padding: 12px 15px;
+        border-radius: 8px;
+        border: 1px solid $qp-gray-200;
+
+        .radio-group-label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+    }
+
+    .form-actions {
+        grid-column: span 2;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top: 10px;
+
+        .btn-solicitar-ejecutivo {
+            background: $qp-primary;
+            border: none;
+            padding: 12px 20px;
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            i {
+                font-size: 1rem;
+            }
+        }
+
+        .sitio-seguro {
+            font-size: 0.85rem;
+            color: $qp-gray-600;
+        }
+    }
 }
 
 /* ============================================================
    PUNTAJE
    ============================================================ */
 .puntaje-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
 
-  th,
-  td {
-    padding: 10px;
-    border-bottom: 1px solid $qp-gray-300;
-  }
+    thead {
+        background: $qp-primary;
+        color: white;
 
-  th {
-    background: $qp-primary;
-    color: #fff;
-  }
+        th {
+            padding: 10px;
+            text-align: left;
+            font-weight: 500;
+        }
+    }
+
+    tbody {
+        tr {
+            border-bottom: 1px solid $qp-gray-300;
+
+            &:hover {
+                background: #f0f6ff;
+            }
+
+            td {
+                padding: 10px;
+                color: $qp-gray-800;
+            }
+
+            .puntaje-final {
+                font-weight: bold;
+                color: $qp-primary;
+            }
+        }
+    }
 }
 
 /* ============================================================
    PRECIO
    ============================================================ */
 .precio-tab-container {
-  padding-top: 20px;
+    padding-top: 20px;
 
-  .precio-graph-wrapper {
+    .tab-section-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: $qp-gray-800;
+        margin-bottom: 15px;
+    }
+
+    /* ---- TÍTULOS ---- */
+    .chart-title {
+        font-size: 1.1rem;
+        color: $qp-gray-800;
+        font-weight: 600;
+        margin: 30px 0 15px 0;
+        padding-bottom: 8px;
+        border-bottom: 1px solid $qp-gray-200;
+    }
+
+    /* ============================================================
+       GRÁFICO PRINCIPAL (Réplica exacta modal QuePlan)
+       ============================================================ */
+    .precio-graph-wrapper {
+        display: flex;
+        width: 100%;
+        max-width: 900px;
+        margin: 25px auto 50px auto;
+        min-height: 340px;
+        position: relative;
+    }
+
+    /* --- Etiquetas Eje Y (Izquierda) --- */
+    .y-labels {
+        width: 75px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        color: $qp-gray-600;
+        padding-right: 10px;
+        text-align: right;
+
+        span {
+            display: block;
+            line-height: 1;
+        }
+    }
+
+    /* --- Área principal del gráfico --- */
+    .bars-area {
+        flex: 1;
+        position: relative;
+
+        border-left: 1px solid $qp-gray-300;
+        border-bottom: 1px solid $qp-gray-300;
+
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+
+        padding-bottom: 20px;
+    }
+
+    /* --- Barras GES y Valor Plan --- */
+
+    .bar {
+        width: 180px;
+        margin: 0 10px;
+        border-radius: 4px 4px 0 0;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+
+        .bar-text {
+            position: absolute;
+            bottom: 100%;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: $qp-gray-800;
+            margin-bottom: 6px;
+            white-space: nowrap;
+        }
+    }
+
+    .bar-ges {
+        background-color: #7EC8F3; /* celeste GES exacto QuePlan */
+    }
+
+    .bar-plan {
+        background-color: #6A8EDB; /* azul plan QuePlan */
+    }
+
+    /* --- Etiqueta inferior (Masculino 29 años) --- */
+    .bottom-label {
+        position: absolute;
+        bottom: -35px;
+        text-align: center;
+        font-size: 0.85rem;
+        color: $qp-gray-600;
+        line-height: 1.2;
+    }
+
+    /* --- LEYENDA DERECHA --- */
+    .legend {
+        width: 130px;
+        margin-left: 20px;
+        font-size: 0.9rem;
+        color: $qp-gray-700;
+
+        div {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        .legend-box {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            margin-right: 6px;
+
+            &.ges {
+                background-color: #7EC8F3;
+            }
+            &.plan {
+                background-color: #6A8EDB;
+            }
+        }
+    }
+
+    /* ============================================================
+        NOTA INFORMATIVA
+       ============================================================ */
+    .nota-cotizador {
+        background-color: $qp-gray-100;
+        padding: 15px;
+        border-radius: 6px;
+        border-left: 4px solid $qp-primary;
+        margin-top: 40px;
+
+        p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: $qp-gray-700;
+
+            i {
+                color: $qp-primary;
+                margin-right: 6px;
+            }
+        }
+    }
+
+    /* ============================================================
+       PLACEHOLDER GRÁFICO EDAD
+       ============================================================ */
+    .chart-edad-mock {
+        height: 300px;
+        background-color: #fff;
+        border: 1px dashed $qp-gray-300;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $qp-gray-300;
+        margin-bottom: 30px;
+
+        &::after {
+            content: "Gráfico de Edad y Sexo";
+            font-weight: 500;
+            font-size: 1rem;
+        }
+    }
+}
+
+/* --- BARRA DE ACCIÓN FINAL (ESTÁTICA, NO FIJA) --- */
+.plan-action-footer {
+    position: block; 
+    bottom: 0; 
+    z-index: 10;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05); 
+    width: 100%;
+    padding: 15px 30px; 
+    background-color: white;
+    border-top: 1px solid $qp-gray-200;
     display: flex;
-    max-width: 900px;
-    margin: 30px auto;
-  }
-
-  .bar {
-    width: 180px;
-    margin: 0 10px;
-    border-radius: 4px 4px 0 0;
-  }
-
-  .bar-ges {
-    background: #7ec8f3;
-  }
-
-  .bar-plan {
-    background: #6a8edb;
-  }
+    justify-content: space-between;
+    align-items: center;
+     /* Añadir margen superior para separarlo del contenido de Restricciones */
+    margin-top: 30px; 
+    
+    /* El resto de estilos (.plan-details, .btn-solicitar-footer, etc.) se mantiene igual */
+    .btn-solicitar-footer{
+        text-align: right;
+    }
 }
 
 /* ============================================================
-   FOOTER FIJO
-   ============================================================ */
+    FOOTER FIJO INFERIOR DEL MODAL
+============================================================ */
 .modal-footer-fijo {
   margin-top: 40px;
   border-top: 1px solid #eee;
@@ -293,38 +854,46 @@ $qp-shadow: rgba(0, 0, 0, 0.08);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #fff;
+  background: white;
+  position: block;
 }
 
 .footer-left {
   display: flex;
-  gap: 15px;
+  font-size: 1rem;
 
   .footer-plan-nombre {
     font-weight: 700;
     color: #333;
-  }
+    text-align: center;
+  } 
 
   .footer-plan-precio {
     font-size: 1.4rem;
     font-weight: 700;
+    margin-left: 15px;
+    color: #000;
+
+    small {
+      font-size: 0.8rem;
+    }
   }
 }
 
 .footer-center .btn-solicitar-footer {
-  background: #ff004d;
-  color: #fff;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 4px;
-  font-weight: 600;
-  cursor: pointer;
+    background: #ff004d;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
 }
 
 .footer-right .btn-cerrar-footer {
-  background: none;
-  border: none;
-  color: #666;
-  font-size: 1rem;
-  cursor: pointer;
+    background: transparent;
+    border: none;
+    color: #666;
+    font-size: 1rem;
+    cursor: pointer;
 }
