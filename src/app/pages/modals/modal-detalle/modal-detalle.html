@@ -1,0 +1,82 @@
+<div class="modal-overlay" *ngIf="isVisible" (click)="close.emit()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+
+    <!-- HEADER -->
+    <div class="modal-header-wrapper">
+      <div class="modal-header">
+
+        <!-- INFO PLAN -->
+        <div class="plan-info-header">
+          <img
+            [src]="'assets/logos/vidatres.png' + (plan?.isapre || '').toLowerCase().replace(' ', '') + '.png'"
+            class="isapre-logo-modal"
+          />
+
+          <div class="text-info">
+            <span class="rating">★★★★☆</span>
+            <span class="plan-recommendation">Plan recomendado</span>
+            <h2 class="plan-title">{{ plan?.nombrePlan }}</h2>
+
+            <p *ngIf="plan?.puntaje">
+              Puntuación:
+              <span class="score-badge">{{ plan?.puntaje | number:'1.1-1' }}</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- PRECIO + SOLICITAR -->
+        <div class="plan-price-action">
+          <span class="price-amount">
+            ${{ plan?.valor | number:'1.0-0' }} <span>/mes</span>
+          </span>
+
+          <button class="btn-solicitar-modal" (click)="solicitar.emit()">
+            SOLICITAR PLAN
+          </button>
+        </div>
+
+        <button class="btn-close" (click)="close.emit()">×</button>
+      </div>
+
+      <!-- TABS -->
+      <div class="modal-tabs">
+        <button (click)="tabActiva='vistaGeneral'" [class.active]="tabActiva==='vistaGeneral'">Vista General</button>
+        <button (click)="tabActiva='contrato'" [class.active]="tabActiva==='contrato'">Contrato</button>
+        <button (click)="tabActiva='puntaje'" [class.active]="tabActiva==='puntaje'">Puntaje</button>
+        <button (click)="tabActiva='precio'" [class.active]="tabActiva==='precio'">Precio</button>
+      </div>
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="modal-content-body">
+
+      <!-- 🔹 VISTA GENERAL -->
+      <div *ngIf="tabActiva==='vistaGeneral'">
+        <!-- 👉 PEGA AQUÍ TODO tu contenido de Vista General TAL CUAL -->
+      </div>
+
+      <!-- 🔹 CONTRATO (SIN FORMULARIO) -->
+      <div *ngIf="tabActiva==='contrato'">
+        <!-- 👉 SOLO la parte izquierda del contrato -->
+      </div>
+
+      <!-- 🔹 PUNTAJE -->
+      <div *ngIf="tabActiva==='puntaje'">
+        <h3>Puntaje del Plan</h3>
+      </div>
+
+      <!-- 🔹 PRECIO -->
+      <div *ngIf="tabActiva==='precio'">
+        <!-- 👉 gráfico de precios -->
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer-fijo">
+        <button class="btn-solicitar-footer" (click)="solicitar.emit()">SOLICITAR PLAN</button>
+        <button class="btn-cerrar-footer" (click)="close.emit()">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,179 @@
+/* ============================================================
+   VARIABLES
+   ============================================================ */
+$qp-primary: #1a73e8;
+$qp-primary-dark: #125bc2;
+
+$qp-gray-100: #f7f9fc;
+$qp-gray-200: #eceff3;
+$qp-gray-300: #d7dce2;
+$qp-gray-600: #6f7a87;
+$qp-gray-800: #2c3a4a;
+
+$qp-shadow: rgba(0, 0, 0, 0.08);
+
+/* ============================================================
+   OVERLAY
+   ============================================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 9999;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ============================================================
+   CONTENEDOR
+   ============================================================ */
+.modal-container {
+  background: #fff;
+  width: 95%;
+  max-width: 520px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px $qp-shadow;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid $qp-gray-200;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: $qp-gray-800;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: $qp-gray-600;
+  cursor: pointer;
+}
+
+/* ============================================================
+   CONTENIDO
+   ============================================================ */
+.modal-content-body {
+  padding: 24px;
+}
+
+.solicitar-subtitle {
+  font-size: 0.9rem;
+  color: $qp-gray-600;
+  margin-bottom: 20px;
+}
+
+/* ============================================================
+   FORMULARIO
+   ============================================================ */
+.form-solicitud-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: $qp-gray-800;
+  }
+
+  input {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid $qp-gray-300;
+
+    &:focus {
+      outline: none;
+      border-color: $qp-primary;
+    }
+  }
+}
+
+.form-group-full {
+  grid-column: span 2;
+  background: $qp-gray-100;
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: 1px solid $qp-gray-200;
+
+  .radio-group-label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .radio-options {
+    display: flex;
+    gap: 20px;
+  }
+
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+  }
+}
+
+/* ============================================================
+   ACCIONES
+   ============================================================ */
+.form-actions {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn-solicitar-ejecutivo {
+  width: 100%;
+  background: $qp-primary;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background: $qp-primary-dark;
+  }
+}
+
+.sitio-seguro {
+  font-size: 0.85rem;
+  color: $qp-gray-600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  i {
+    color: #28a745;
+  }
+}
