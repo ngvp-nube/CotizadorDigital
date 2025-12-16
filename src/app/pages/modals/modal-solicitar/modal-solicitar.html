@@ -1,46 +1,110 @@
 <div class="modal-overlay" *ngIf="isVisible" (click)="close.emit()">
   <div class="modal-container" (click)="$event.stopPropagation()">
 
-    <!-- HEADER -->
-    <div class="modal-header">
-      <h2 class="modal-title">
-        Solicitar {{ plan?.nombrePlan }}
-      </h2>
+    <!-- ========================================================= -->
+    <!--                 HEADER MODAL SOLICITAR                    -->
+    <!-- ========================================================= -->
+    <div class="modal-header-solicitar">
 
-      <button class="btn-close" (click)="close.emit()">×</button>
+      <!-- LOGO ISAPRE -->
+      <div class="logo-col">
+        <img
+          [src]="'assets/logos/' + (plan?.isapre || '').toLowerCase() + '.png'"
+          alt="{{ plan?.isapre }}"
+        />
+      </div>
+
+      <!-- INFO DEL PLAN -->
+      <div class="info-col">
+        <span class="rating">★★★★★</span>
+
+        <span class="recommendation">
+          Plan recomendado
+        </span>
+
+        <h2 class="plan-title">
+          {{ plan?.nombrePlan }}
+        </h2>
+
+        <p class="plan-score" *ngIf="plan?.puntaje">
+          Puntuación del plan
+          <span class="score-badge">
+            {{ plan?.puntaje | number:'1.1-1' }}
+          </span>
+        </p>
+      </div>
+
+      <!-- PRECIO + CTA -->
+      <div class="action-col">
+        <div class="price">
+          ${{ plan?.valor | number:'1.0-0' }}
+          <small>/mes</small>
+        </div>
+
+        <button class="btn-primary" type="button">
+          SOLICITAR PLAN
+        </button>
+
+        <button class="btn-secondary" (click)="verDetalle()" [disabled]="!plan">
+          Ver detalles
+        </button>
+      </div>
+
+      <!-- CERRAR -->
+      <button class="btn-close" (click)="cerrarModal()">×</button>
     </div>
 
-    <!-- CONTENIDO -->
+    <!-- ========================================================= -->
+    <!--                   CONTENIDO DEL MODAL                    -->
+    <!-- ========================================================= -->
     <div class="modal-content-body">
 
       <p class="solicitar-subtitle">
         Contrata y/o recibe asesoría mediante un ejecutivo especializado
       </p>
 
-      <form class="form-solicitud-grid">
+      <form class="form-solicitud-grid" 
+            [formGroup]="formSolicitud"
+            (ngSubmit)="enviar()">
 
         <!-- NOMBRE -->
         <div class="form-group">
           <label>Nombre*</label>
-          <input type="text" placeholder="Ingresa tu nombre" required />
+          <input
+            type="text"
+            placeholder="Ingresa tu nombre"
+            required
+          />
         </div>
 
         <!-- RUT -->
         <div class="form-group">
           <label>Rut*</label>
-          <input type="text" placeholder="Rut" required />
+          <input
+            type="text"
+            placeholder="Rut"
+            required
+          />
         </div>
 
         <!-- EMAIL -->
         <div class="form-group">
           <label>Correo Electrónico*</label>
-          <input type="email" placeholder="Correo Electrónico" required />
+          <input
+            type="email"
+            placeholder="Correo Electrónico"
+            required
+          />
         </div>
 
         <!-- TELÉFONO -->
         <div class="form-group">
           <label>Teléfono*</label>
-          <input type="tel" placeholder="Teléfono" required />
+          <input
+            type="tel"
+            placeholder="Teléfono"
+            required
+          />
         </div>
 
         <!-- ISAPRE ACTUAL -->
@@ -64,7 +128,7 @@
 
         <!-- ACCIONES -->
         <div class="form-actions">
-          <button type="submit" class="btn-solicitar-ejecutivo">
+          <button type="submit" class="btn-solicitar-ejecutivo" [disabled]="isSubmitting">
             <i class="fas fa-user-tie"></i>
             Solicitar con ejecutivo
           </button>
@@ -79,4 +143,3 @@
     </div>
   </div>
 </div>
-

@@ -189,27 +189,17 @@
 
   <!-- RESULTADOS -->
   <main class="results">
-
-    <div class="results-header">
-      <span class="badge">830</span> Resultados
-      <button class="help">¿Qué es el Puntaje?</button>
-
-      <select>
-        <option>Ordenar por</option>
-      </select>
-    </div>
-
     <!-- CARD -->
-    <div class="card">
+    <div class="card" *ngFor="let plan of resultados">
       <div class="card-left">
         <span class="tag">Preferente</span>
 
         <div class="company">
           <img src="https://via.placeholder.com/40" alt="">
-          <strong>Colmena</strong>
+          <strong>{{ plan.isapre }}</strong>
         </div>
 
-        <h5>MAX CENTRO PF1259076</h5>
+        <h5>{{ plan.nombrePlan }}</h5>
 
         <div class="features">
           <span>🏥 Hospitalaria 90%</span>
@@ -223,7 +213,7 @@
         <label>
           <input type="checkbox"> Comparar
         </label>
-        <div class="score">
+        <div class="score" *ngIf="mostrarPuntaje">
           Puntaje
           <span class="score-value">7.8</span>
           <small>de 7.8</small>
@@ -234,8 +224,8 @@
         <span class="price-label">Desde</span>
         <span class="price">$147.531</span>
         <small>/mes</small>
-        <button class="btn-primary">Solicitar</button>
-        <button class="btn-secondary">Ver detalle</button>
+        <button class="btn-primary" (click)="abrirSolicitud(plan)">Solicitar</button>
+        <button class="btn-secondary" (click)="abrirDetalle(plan)">Ver detalle</button>
       </div>
     </div>
 
@@ -291,7 +281,7 @@
 
     <!-- COLUMNA 4 -->
     <div class="footer-col">
-      <h4>MÁS DE QUEPLAN.CL</h4>
+      <h4>MÁS DE COTIZADORDIGITAL.CL</h4>
       <ul>
         <li>Partners y Alianzas</li>
         <li>Acerca de Cotizadordigital.cl</li>
@@ -314,3 +304,22 @@
 
   </div>
 </footer>
+
+<!-- MODAL DETALLE -->
+<app-modal-detalle
+  [plan]="planSeleccionado"
+  [isVisible]="mostrarDetalleModal"
+  (close)="cerrarDetalle()"
+  (solicitar)="desdeDetalleASolicitar()"
+>
+</app-modal-detalle>
+
+<!-- MODAL SOLICITAR -->
+<app-modal-solicitar
+  [plan]="planSeleccionado"
+  [isVisible]="mostrarSolicitarModal"
+  (close)="cerrarSolicitar()"
+  (submitForm)="procesarSolicitud($event)"
+  (verDetallePlan)="abrirDetalleDesdeSolicitar()"
+>
+</app-modal-solicitar>

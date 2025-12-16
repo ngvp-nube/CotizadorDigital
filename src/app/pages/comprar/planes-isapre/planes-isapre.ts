@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ModalIsapreComponent,IsaprePlan} from '../../modals/modal-isapre'; // 👉 IMPORTAMOS EL MODAL Y EL TIPO CORRECTO
+
+import { ModalDetalleComponent, Planes } from '../../modals/modal-detalle/modal-detalle';
+import { ModalSolicitarComponent } from '../../modals/modal-solicitar/modal-solicitar';
 
 /* =========================
    INTERFACES AUXILIARES
@@ -18,19 +20,6 @@ interface CargaFamiliar {
   edad: number | null;
 }
 
-interface PuntajeCategoria {
-  categoria: string;
-  ponderacion: number;
-  puntaje: number;
-}
-
-interface DetallePuntaje {
-  puntajeHospitalario: number;
-  puntajeAmbulatorio: number;
-  puntajePromedio: number;
-  categorias: PuntajeCategoria[];
-}
-
 /* =========================
    COMPONENTE
 ========================= */
@@ -38,9 +27,14 @@ interface DetallePuntaje {
 @Component({
   selector: 'app-planes-isapre',
   standalone: true,
-  imports: [CommonModule, FormsModule, ModalIsapreComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ModalDetalleComponent,
+    ModalSolicitarComponent
+  ],
   templateUrl: './planes-isapre.html',
-  styleUrl: './planes-isapre.scss'
+  styleUrls: ['./planes-isapre.scss']
 })
 export class PlanesIsapre {
 
@@ -50,7 +44,7 @@ export class PlanesIsapre {
 
   filtros = {
     region: '',
-    ingreso: null,
+    ingreso: null as number | null,
     edad: 29,
     sexo: 'Hombre'
   };
@@ -69,46 +63,40 @@ export class PlanesIsapre {
     ingreso: null
   };
 
-  toggleModal() {
+  toggleModal(): void {
     this.mostrarModal = !this.mostrarModal;
   }
 
-  incrementarCargas() {
+  incrementarCargas(): void {
     this.cargas.push({ sexo: 'Hombre', edad: 0 });
   }
 
-  decrementarCargas() {
-    if (this.cargas.length > 0) this.cargas.pop();
+  decrementarCargas(): void {
+    if (this.cargas.length > 0) {
+      this.cargas.pop();
+    }
   }
 
   /* =========================
      RESULTADOS
   ========================= */
 
-  resultados: IsaprePlan[] = [];
+  resultados: Planes[] = [];
   mostrarPuntaje = true;
-  ordenarPor: string = 'price';
+  ordenarPor = 'price';
   vista: 'grid' | 'list' = 'grid';
 
-  /* =========================
-     PAGINACIÓN
-  ========================= */
-
-  itemsPorPagina = 15;
-  paginaActual = 1;
-  totalPaginas = 0;
-  resultadosPaginados: IsaprePlan[] = [];
-  paginas: number[] = [];
+  cambiarVista(vista: 'grid' | 'list'): void {
+    this.vista = vista;
+  }
 
   /* =========================
-     MODAL
+     MODALES
   ========================= */
 
-  planSeleccionado: IsaprePlan | null = null;
+  planSeleccionado: Planes | null = null;
   mostrarDetalleModal = false;
-
-  tabInicialModal: 'vistaGeneral' | 'solicitar' | 'puntaje' | 'precio' =
-    'vistaGeneral';
+  mostrarSolicitarModal = false;
 
   constructor() {
     this.buscarPlanes();
@@ -118,75 +106,68 @@ export class PlanesIsapre {
      BUSCAR PLANES (MOCK)
   ========================= */
 
-  buscarPlanes() {
+  buscarPlanes(): void {
     this.mostrarModal = false;
 
     const totalAsegurados =
       1 + (this.tieneConyuge ? 1 : 0) + this.cargas.length;
 
-    // 🔥 MOCK REALISTA
-    this.resultados = new Array(824).fill(null).map((_, i) => ({
+    this.resultados = new Array(2).fill(null).map((_, i): Planes => ({
       isapre: 'Banmédica',
       nombrePlan: `Plan Salud Total ${i + 1}`,
       valor: 8500 * totalAsegurados,
       puntaje: 7.8,
-      prestadores: 'Libre Elección',
+      prestadores: 'Red Preferente Banmédica',
       hospitalaria: '90%',
       urgencia: '70%',
       topeAnual: '7.000 UF',
       tipoCobertura: 'Preferentes'
     }));
-
-    // 🔁 Reset paginación
-    this.paginaActual = 1;
-    this.totalPaginas = Math.ceil(
-      this.resultados.length / this.itemsPorPagina
-    );
-
-    this.paginas = Array.from(
-      { length: this.totalPaginas },
-      (_, i) => i + 1
-    );
-
-    this.actualizarPagina();
-  }
-
-  actualizarPagina() {
-    const inicio = (this.paginaActual - 1) * this.itemsPorPagina;
-    const fin = inicio + this.itemsPorPagina;
-
-    this.resultadosPaginados = this.resultados.slice(inicio, fin);
-  }
-
-  cambiarPagina(pagina: number) {
-    if (pagina < 1 || pagina > this.totalPaginas) return;
-    this.paginaActual = pagina;
-    this.actualizarPagina();
-  }
-
-  cambiarVista(vista: 'grid' | 'list') {
-    this.vista = vista;
   }
 
   /* =========================
-     MODAL CONTROL
+     CONTROL MODALES
   ========================= */
 
-  abrirDetalle(plan: IsaprePlan) {
+  abrirDetalle(plan: Planes): void {
     this.planSeleccionado = plan;
-    this.tabInicialModal = 'vistaGeneral';
     this.mostrarDetalleModal = true;
   }
 
-  abrirSolicitud(plan: IsaprePlan) {
+  abrirSolicitud(plan: Planes): void {
     this.planSeleccionado = plan;
-    this.tabInicialModal = 'solicitar';
-    this.mostrarDetalleModal = true;
+    this.mostrarSolicitarModal = true;
   }
 
-  cerrarDetalle() {
+  cerrarDetalle(): void {
     this.mostrarDetalleModal = false;
     this.planSeleccionado = null;
-    this.tabInicialModal = 'vistaGeneral';
+  }
+
+  cerrarSolicitar(): void {
+    this.mostrarSolicitarModal = false;
+    this.planSeleccionado = null;
+  }
+
+  desdeDetalleASolicitar(): void {
+    this.mostrarDetalleModal = false;
+
+    setTimeout(() => {
+      this.mostrarSolicitarModal = true;
+    }, 200);
+  }
+
+  procesarSolicitud(payload: any): void {
+    console.log('Solicitud Isapre enviada:', payload);
+    // 🔥 luego conectas backend real
+  }
+
+    abrirDetalleDesdeSolicitar(): void {
+  // oculto solicitar SIN borrar el plan
+  this.mostrarSolicitarModal = false;
+
+  setTimeout(() => {
+    this.mostrarDetalleModal = true;
+  }, 150);
   }
 }

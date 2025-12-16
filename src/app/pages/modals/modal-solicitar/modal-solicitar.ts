@@ -1,25 +1,26 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { IsaprePlan } from '../modal-isapre';
+import { Planes } from '../modal-detalle/modal-detalle';
 
 @Component({
-  selector: 'app-modal-solicitar-isapre',
+  selector: 'app-modal-solicitar',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './modal-solicitar.html',
   styleUrls: ['./modal-solicitar.scss']
 })
-export class ModalSolicitarIsapreComponent implements OnInit {
+export class ModalSolicitarComponent implements OnInit {
 
   /* =========================
      INPUTS / OUTPUTS
      ========================= */
   @Input() isVisible = false;
-  @Input() plan: IsaprePlan | null = null;
+  @Input() plan: Planes | null = null;
 
   @Output() close = new EventEmitter<void>();
   @Output() submitForm = new EventEmitter<any>();
+  @Output() verDetallePlan = new EventEmitter<void>();
 
   /* =========================
      FORMULARIO
@@ -78,5 +79,9 @@ export class ModalSolicitarIsapreComponent implements OnInit {
   campoInvalido(campo: string): boolean {
     const control = this.formSolicitud.get(campo);
     return !!(control && control.invalid && control.touched);
+  }
+
+  verDetalle(): void {
+  this.verDetallePlan.emit(); // avisa al padre que debe abrir detalle
   }
 }

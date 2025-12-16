@@ -18,7 +18,7 @@ export interface DetallePuntaje {
   categorias: PuntajeCategoria[];
 }
 
-export interface IsaprePlan {
+export interface Planes {
   isapre: string;
   nombrePlan: string;
   valor: number;
@@ -33,18 +33,18 @@ export interface IsaprePlan {
 }
 
 @Component({
-  selector: 'app-modal-detalle-isapre',
+  selector: 'app-modal-detalle',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './modal-detalle.html',
   styleUrls: ['./modal-detalle.scss']
 })
-export class ModalDetalleIsapreComponent implements OnInit, OnChanges {
+export class ModalDetalleComponent implements OnInit, OnChanges {
 
   /* ============================================================
      INPUTS / OUTPUTS
      ============================================================ */
-  @Input() plan: IsaprePlan | null = null;
+  @Input() plan: Planes | null = null;
   @Input() isVisible = false;
 
   @Output() close = new EventEmitter<void>();
@@ -125,7 +125,7 @@ export class ModalDetalleIsapreComponent implements OnInit, OnChanges {
   /* ============================================================
      MOCK (SOLO DEV)
      ============================================================ */
-  private getMockPlan(): IsaprePlan {
+  private getMockPlan(): Planes {
     return {
       isapre: 'Banmédica',
       nombrePlan: 'Plan Salud Premium 5.500',
