@@ -295,13 +295,114 @@ $qp-shadow: rgba(0, 0, 0, 0.08);
 /* ============================================================
    RESPONSIVE
    ============================================================ */
-@media (max-width: 640px) {
+@media (max-width: 900px) {
+
+  .modal-container {
+    max-width: 90%;
+  }
+
   .modal-header-solicitar {
-    grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 16px;
+    padding: 18px 20px;
+  }
+
+  .logo-col img {
+    width: 70px;
+    margin-right: 20px;
+  }
+
+  .info-col .plan-title {
+    font-size: 1.25rem;
   }
 
   .action-col {
-    align-items: flex-start;
+    margin-right: 0;
+  }
+
+  @media (max-width: 640px) {
+
+  /* HEADER */
+  .modal-header-solicitar {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 16px;
+  }
+
+  .logo-col {
+    text-align: center;
+  }
+
+  .logo-col img {
+    margin: 0 auto;
+  }
+
+  .info-col {
+    align-items: center;
+    text-align: center;
+  }
+
+  .info-col .plan-title {
+    font-size: 1.1rem;
+  }
+
+  .action-col {
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .action-col .price {
+    font-size: 1.4rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+
+  /* FORMULARIO */
+  .form-solicitud-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group-full,
+  .form-actions {
+    grid-column: span 1;
+  }
+
+  .radio-options {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* CONTENIDO */
+  .modal-content-body {
+    padding: 16px;
+  }
+
+  .btn-close {
+    top: 12px;
+    right: 12px;
   }
 }
+@media (max-width: 420px) {
+
+  .modal-container {
+    border-radius: 10px;
+  }
+
+  .info-col .plan-title {
+    font-size: 1rem;
+  }
+
+  .action-col .price {
+    font-size: 1.25rem;
+  }
+
+  .form-group input {
+    padding: 9px;
+  }
+}
+
+}
+
+

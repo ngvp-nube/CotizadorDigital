@@ -1,11 +1,7 @@
 .navbar {
   height: 80px;
-  background: linear-gradient(
-  to left,
-  #f4f2ff,   /* blanco con leve lavanda */
-  #cfc7ff    /* morado suave, confiable */
-  );
-
+  width: 100%;
+  background: linear-gradient(to left, #f4f2ff, #cfc7ff);
   backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
@@ -13,35 +9,36 @@
   position: sticky;
   top: 0;
   z-index: 1000;
+}
 
- .nav-container {
+.nav-container {
   width: 100%;
   max-width: 1300px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
-  align-items: center;   /* 🔥 clave */
+  align-items: center;
   padding: 0 24px;
 }
 
-}
 .logo {
   display: flex;
   align-items: center;
 }
 
 .logo img {
-  height: 160px;   /* ideal con navbar de 80px */
+  height: 60px;
   width: auto;
+  display: block;
   object-fit: contain;
 }
-
 
 .nav-links {
   display: flex;
   list-style: none;
   gap: 28px;
   margin: 0;
+  padding: 0;
 
   li {
     position: relative;
@@ -63,7 +60,6 @@
   }
 }
 
-
 .arrow-down {
   display: inline-block;
   width: 7px;
@@ -72,9 +68,7 @@
   border-bottom: 2px solid var(--text-muted);
   transform: rotate(45deg);
   margin-left: 6px;
-  margin-bottom: 2px;
 }
-
 
 .btn-portal {
   background: linear-gradient(135deg, #2563eb, #38bdf8);
@@ -84,15 +78,14 @@
   border-radius: 999px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(37,99,235,0.25);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
   transition: all 0.3s ease;
 
   &:hover {
     transform: translateY(-1px);
-    box-shadow: 0 12px 28px rgba(37,99,235,0.35);
+    box-shadow: 0 12px 28px rgba(37, 99, 235, 0.35);
   }
 }
-
 
 .megamenu {
   position: absolute;
@@ -102,7 +95,7 @@
   width: 520px;
   background: #ffffff;
   border-radius: 18px;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.12);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
   padding: 32px;
   opacity: 0;
   visibility: hidden;
@@ -120,7 +113,6 @@
   visibility: visible;
   transform: translateX(-50%) translateY(0);
 }
-
 
 .megamenu-left {
   flex: 1;
@@ -155,7 +147,6 @@
   }
 }
 
-
 .megamenu-right {
   flex: 1;
   list-style: none;
@@ -167,7 +158,6 @@
     a {
       color: var(--text-dark);
       font-size: 0.9rem;
-      transition: color 0.2s ease;
 
       &:hover {
         color: var(--primary);
@@ -176,10 +166,96 @@
   }
 }
 
-//Logo 
+/* Hamburguesa */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
 
+  span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: #1f2937;
+    margin: 5px 0;
+    transition: all 0.3s ease;
+  }
+}
 
+/* Overlay */
+.menu-overlay {
+  display: none;
+}
 
+/* Responsive */
+@media (max-width: 1024px) {
+  .menu-toggle {
+    display: block;
+  }
 
+  .nav-links {
+    position: fixed;
+    top: 80px;
+    right: 0;
+    width: 100%;
+    max-width: 360px;
+    height: calc(100vh - 80px);
+    background: #ffffff;
+    flex-direction: column;
+    padding: 24px;
+    gap: 16px;
+    transform: translateX(100%);
+    transition: transform 0.35s ease;
+    box-shadow: -20px 0 40px rgba(0, 0, 0, 0.12);
+    z-index: 1200;
+  }
 
+  .navbar.menu-open .nav-links {
+    transform: translateX(0);
+  }
 
+  .menu-overlay {
+    display: block;
+    position: fixed;
+    inset: 80px 0 0 0;
+    background: rgba(0, 0, 0, 0.25);
+    z-index: 1100;
+  }
+
+  .nav-actions {
+    display: none;
+  }
+
+  /* desactivar hover en mobile */
+  .has-dropdown:hover .megamenu {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  /* accordion mobile */
+  .megamenu {
+    position: static;
+    transform: none;
+    width: 100%;
+    box-shadow: none;
+    padding: 12px 0;
+    border-radius: 0;
+
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .has-dropdown.open .megamenu {
+    opacity: 1;
+    max-height: 1200px;
+    visibility: visible;
+  }
+
+  .megamenu-content {
+    flex-direction: column;
+    gap: 16px;
+  }
+}

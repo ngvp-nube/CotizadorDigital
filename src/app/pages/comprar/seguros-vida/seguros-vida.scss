@@ -1,3 +1,11 @@
+/* ===============================
+   BREAKPOINTS
+=============================== */
+$desktop: 1200px;
+$tablet: 992px;
+$mobile: 768px;
+$small: 480px;
+
 /* ======================================= */
 /* 1. ESTRUCTURA Y ALINEACIÓN PRINCIPAL    */
 /* ======================================= */
@@ -668,5 +676,139 @@
 @media (max-width: 600px) {
   .footer-container {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: $tablet) {
+
+  /* CONTENEDOR */
+  .container-aligned {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* SEARCH GRID → 2 COLUMNAS */
+  .search-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .btn-search {
+    grid-column: span 2;
+  }
+
+  /* RESULTADOS */
+  .results-bar .results-grid {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 14px;
+  }
+
+  .results-count {
+    grid-column: span 2;
+  }
+
+  /* LAYOUT GENERAL */
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    order: 2;
+  }
+
+  .results {
+    order: 1;
+  }
+
+  /* CARD */
+  .card {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .card-right {
+    grid-column: span 2;
+    text-align: left;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: $mobile) {
+
+  /* HEADER */
+  .header-view {
+    padding-top: 20px;
+
+    h1 {
+      font-size: 1.6rem;
+    }
+
+    p {
+      font-size: 0.95rem;
+    }
+  }
+
+  /* SEARCH GRID → 1 COLUMNA */
+  .search-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-search {
+    grid-column: span 1;
+    padding: 14px;
+  }
+
+  /* POPOVER FULL WIDTH */
+  .popover-modal {
+    width: 100%;
+    left: 0;
+    right: 0;
+  }
+
+  /* RESULT BAR */
+  .results-bar .results-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* CARD */
+  .card {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .card-center,
+  .card-right {
+    text-align: left;
+  }
+
+  .price {
+    font-size: 20px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+}
+
+@media (max-width: $small) {
+
+  .header-view h1 {
+    font-size: 1.4rem;
+  }
+
+  .search-bar {
+    padding: 14px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .features {
+    font-size: 12px;
+  }
+
+  .price {
+    font-size: 18px;
   }
 }
