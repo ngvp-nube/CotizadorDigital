@@ -112,7 +112,7 @@ export class PlanesIsapre {
     const totalAsegurados =
       1 + (this.tieneConyuge ? 1 : 0) + this.cargas.length;
 
-    this.resultados = new Array(2).fill(null).map((_, i): Planes => ({
+    this.resultados = new Array(20).fill(null).map((_, i): Planes => ({
       isapre: 'Banmédica',
       nombrePlan: `Plan Salud Total ${i + 1}`,
       valor: 8500 * totalAsegurados,

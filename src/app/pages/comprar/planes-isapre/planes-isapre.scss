@@ -6,10 +6,6 @@ $tablet: 992px;
 $mobile: 768px;
 $small: 480px;
 
-
-
-
-
 /* ======================================= */
 /* 1. ESTRUCTURA Y ALINEACIÓN PRINCIPAL    */
 /* ======================================= */
@@ -684,73 +680,71 @@ $small: 480px;
 
 @media (max-width: $tablet) {
 
-  /* CONTENEDOR GENERAL */
-  .container-aligned {
-    padding-left: 16px;
-    padding-right: 16px;
+  /* CAMBIO CLAVE */
+  .results {
+    height: auto;          // ❌ elimina altura fija
+    overflow: visible;     // ❌ elimina scroll interno
   }
 
-  /* HEADER */
-  .header-view {
-    padding-top: 20px;
-
-    h1 {
-      font-size: 2rem;
-    }
-
-    p {
-      font-size: 1rem;
-    }
+  .sidebar {
+    position: relative;    // ❌ elimina sticky
+    height: auto;
   }
 
-  /* SEARCH GRID → SE ADAPTA */
-  .search-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+  .container {
+    flex-direction: column;
+  }
+}
+
+
+@media (max-width: $mobile) {
+
+  .results-layout {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  height: calc(100vh - 320px); // ajusta según header + search
+  overflow: hidden;
+  background: #f5f7fa;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100%;
+}
+
+.results-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+  .container {
+    display: block;
+    height: auto;
+    overflow: visible;
   }
 
-  .btn-search {
-    grid-column: span 2;
+  .sidebar {
+    position: static;
+    height: auto;
+    overflow: visible;
+    width: 100%;
   }
 
-  /* RESULTS BAR */
-  .results-bar .results-grid {
-    grid-template-columns: 1fr 1fr;
-    row-gap: 12px;
+  .results {
+    height: auto;
+    overflow: visible;
   }
 
-  .results-count {
-    grid-column: span 2;
-  }
-
-  /* SIDEBAR PASA ABAJO */
   .container {
     flex-direction: column;
   }
 
-  .sidebar {
-    width: 100%;
-    order: 2;
-  }
-
-  .results {
-    order: 1;
-  }
-
-  /* CARDS */
   .card {
-    grid-template-columns: 1fr 1fr;
+    width: 100%;
   }
-
-  .card-right {
-    grid-column: span 2;
-    text-align: left;
-    margin-top: 10px;
-  }
-}
-
-@media (max-width: $mobile) {
-
   /* HEADER */
   .header-view h1 {
     font-size: 1.6rem;
@@ -797,6 +791,12 @@ $small: 480px;
 
 @media (max-width: $small) {
 
+  .results {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
   .header-view h1 {
     font-size: 1.4rem;
   }
@@ -818,3 +818,57 @@ $small: 480px;
   }
 }
 
+
+
+//Scroll de cards 
+
+.results-layout {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  height: calc(100vh - 320px); // ajusta según header + search
+  overflow: hidden;
+  background: #f5f7fa;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100%;
+}
+
+.results-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* ====== LAYOUT CON SCROLL INTERNO ====== */
+
+/* DESKTOP */
+.container {
+  display: flex;
+  height: calc(100vh - 320px);
+  overflow: hidden;
+}
+
+.results {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.page-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.results::-webkit-scrollbar {
+  width: 8px;
+}
+
+.results::-webkit-scrollbar-thumb {
+  background: #cfd8dc;
+  border-radius: 6px;
+}
