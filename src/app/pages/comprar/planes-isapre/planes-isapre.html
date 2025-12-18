@@ -88,10 +88,6 @@
             <div class="carga-card-item" *ngFor="let c of cargas; let i = index">
               <p>Carga {{ i + 1 }}</p>
               <div class="carga-row">
-                <div class="sex-pick">
-                  <label><input type="radio" [name]="'s'+i" [(ngModel)]="c.sexo" value="Hombre"> Hombre </label>
-                  <label><input type="radio" [name]="'s'+i" [(ngModel)]="c.sexo" value="Mujer"> Mujer </label>
-                </div>
                 <div class="age-pick">
                   <label>Edad</label>
                   <input type="number" [(ngModel)]="c.edad">
