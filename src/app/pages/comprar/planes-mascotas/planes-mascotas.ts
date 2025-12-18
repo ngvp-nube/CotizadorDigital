@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Planes } from '../../modals/modal-detalle/modal-detalle';
 // --- NUEVA INTERFAZ PARA EL CÓNYUGE ---
 interface Conyuge {
   sexo: string;
@@ -28,56 +29,137 @@ interface IsaprePlan {
   styleUrl: './planes-mascotas.scss',
 })
 export class PlanesMascotas {
-   filtros = {
-    region: '',
-    ingreso: null,
-    edad: 29,
-    sexo: 'Hombre'
-  };
-
-  mostrarModal = false;
-  tieneConyuge = false;
-  cargas: CargaFamiliar[] = [];
-  resultados: IsaprePlan[] = [];
   
-  // --- VARIABLES AÑADIDAS ---
-  conyuge: Conyuge = {
-    sexo: 'Mujer',
-    edad: null,
-    ingreso: null
-  };
-  ordenarPor: string = 'price'; 
-  mostrarPuntaje: boolean = true; 
-  vista: 'grid' | 'list' = 'grid'; // Inicializamos la vista en 'grid'
-
-  // --------------------------
-
-  toggleModal() { this.mostrarModal = !this.mostrarModal; }
-
-  incrementarCargas() {
-    this.cargas.push({ sexo: 'Hombre', edad: 0 });
-  }
-
-  decrementarCargas() {
-    if (this.cargas.length > 0) this.cargas.pop();
-  }
-
-  cambiarVista(nuevaVista: 'grid' | 'list') {
-    this.vista = nuevaVista;
-  }
-
-  buscarPlanes() {
-    this.mostrarModal = false;
-    const totalAsegurados = 1 + (this.tieneConyuge ? 1 : 0) + this.cargas.length;
-
-    this.resultados = new Array(824).fill({ 
-      isapre: 'Banmédica',
-      nombrePlan: 'Plan Salud Total',
-      valor: 8500 * totalAsegurados
-    });
-  }
-  PlanesvidaIr() {
-    
-  }
-
+    /* =========================
+       FILTROS
+    ========================= */
+  
+    filtros = {
+      region: '',
+      ingreso: null as number | null,
+      edad: 29,
+      sexo: 'Hombre'
+    };
+  
+    /* =========================
+       ASEGURADOS
+    ========================= */
+  
+    mostrarModal = false;
+    tieneConyuge = false;
+    cargas: CargaFamiliar[] = [];
+  
+    conyuge: Conyuge = {
+      sexo: 'Mujer',
+      edad: null,
+      ingreso: null
+    };
+  
+    toggleModal(): void {
+      this.mostrarModal = !this.mostrarModal;
+    }
+  
+    incrementarCargas(): void {
+      this.cargas.push({ sexo: 'Hombre', edad: 0 });
+    }
+  
+    decrementarCargas(): void {
+      if (this.cargas.length > 0) {
+        this.cargas.pop();
+      }
+    }
+  
+    /* =========================
+       RESULTADOS
+    ========================= */
+  
+    resultados: Planes[] = [];
+    mostrarPuntaje = true;
+    ordenarPor = 'price';
+    vista: 'grid' | 'list' = 'grid';
+  
+    cambiarVista(vista: 'grid' | 'list'): void {
+      this.vista = vista;
+    }
+  
+    /* =========================
+       MODALES
+    ========================= */
+  
+    planSeleccionado: Planes | null = null;
+    mostrarDetalleModal = false;
+    mostrarSolicitarModal = false;
+  
+    constructor() {
+      this.buscarPlanes();
+    }
+  
+    /* =========================
+       BUSCAR PLANES (MOCK)
+    ========================= */
+  
+    buscarPlanes(): void {
+      this.mostrarModal = false;
+  
+      const totalAsegurados =
+        1 + (this.tieneConyuge ? 1 : 0) + this.cargas.length;
+  
+      this.resultados = new Array(20).fill(null).map((_, i): Planes => ({
+        isapre: 'Banmédica',
+        nombrePlan: `Plan Salud Total ${i + 1}`,
+        valor: 8500 * totalAsegurados,
+        puntaje: 7.8,
+        prestadores: 'Red Preferente Banmédica',
+        hospitalaria: '90%',
+        urgencia: '70%',
+        topeAnual: '7.000 UF',
+        tipoCobertura: 'Preferentes'
+      }));
+    }
+  
+    /* =========================
+       CONTROL MODALES
+    ========================= */
+  
+    abrirDetalle(plan: Planes): void {
+      this.planSeleccionado = plan;
+      this.mostrarDetalleModal = true;
+    }
+  
+    abrirSolicitud(plan: Planes): void {
+      this.planSeleccionado = plan;
+      this.mostrarSolicitarModal = true;
+    }
+  
+    cerrarDetalle(): void {
+      this.mostrarDetalleModal = false;
+      this.planSeleccionado = null;
+    }
+  
+    cerrarSolicitar(): void {
+      this.mostrarSolicitarModal = false;
+      this.planSeleccionado = null;
+    }
+  
+    desdeDetalleASolicitar(): void {
+      this.mostrarDetalleModal = false;
+  
+      setTimeout(() => {
+        this.mostrarSolicitarModal = true;
+      }, 200);
+    }
+  
+    procesarSolicitud(payload: any): void {
+      console.log('Solicitud Isapre enviada:', payload);
+      // 🔥 luego conectas backend real
+    }
+  
+      abrirDetalleDesdeSolicitar(): void {
+    // oculto solicitar SIN borrar el plan
+    this.mostrarSolicitarModal = false;
+  
+    setTimeout(() => {
+      this.mostrarDetalleModal = true;
+    }, 150);
+    }
 }

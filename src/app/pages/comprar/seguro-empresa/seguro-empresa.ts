@@ -36,8 +36,7 @@ interface CargaFamiliar {
   styleUrls: ['./seguro-empresa.scss']
 })
 export class SeguroEmpresa{
-
-  /* =========================
+/* =========================
      FILTROS
   ========================= */
 
@@ -81,9 +80,8 @@ export class SeguroEmpresa{
   ========================= */
 
   resultados: Planes[] = [];
-
-  ordenarPor = 'price';
   mostrarPuntaje = true;
+  ordenarPor = 'price';
   vista: 'grid' | 'list' = 'grid';
 
   cambiarVista(vista: 'grid' | 'list'): void {
@@ -91,7 +89,7 @@ export class SeguroEmpresa{
   }
 
   /* =========================
-     MODALES (REUTILIZADOS)
+     MODALES
   ========================= */
 
   planSeleccionado: Planes | null = null;
@@ -112,19 +110,22 @@ export class SeguroEmpresa{
     const totalAsegurados =
       1 + (this.tieneConyuge ? 1 : 0) + this.cargas.length;
 
-    this.resultados = new Array(2).fill(null).map((_, i): Planes => ({
-      isapre: 'Aseguradora Pyme',
-      nombrePlan: `Plan Pyme Empresa ${i + 1}`,
+    this.resultados = new Array(20).fill(null).map((_, i): Planes => ({
+      isapre: 'Banmédica',
+      nombrePlan: `Plan Salud Total ${i + 1}`,
       valor: 8500 * totalAsegurados,
-      puntaje: 7.5,
-      prestadores: 'Red Preferente Pyme',
+      puntaje: 7.8,
+      prestadores: 'Red Preferente Banmédica',
       hospitalaria: '90%',
-      urgencia: '80%',
-      topeAnual: '3.000 UF',
+      urgencia: '70%',
+      topeAnual: '7.000 UF',
       tipoCobertura: 'Preferentes'
     }));
   }
 
+  /* =========================
+     CONTROL MODALES
+  ========================= */
 
   abrirDetalle(plan: Planes): void {
     this.planSeleccionado = plan;
@@ -147,17 +148,18 @@ export class SeguroEmpresa{
   }
 
   desdeDetalleASolicitar(): void {
-  this.mostrarDetalleModal = false;
+    this.mostrarDetalleModal = false;
 
-  setTimeout(() => {
-    this.mostrarSolicitarModal = true;
-  }, 200);
+    setTimeout(() => {
+      this.mostrarSolicitarModal = true;
+    }, 200);
   }
 
   procesarSolicitud(payload: any): void {
-    console.log('Solicitud Pyme enviada:', payload);
-    // 🔥 luego conectas backend
+    console.log('Solicitud Isapre enviada:', payload);
+    // 🔥 luego conectas backend real
   }
+
     abrirDetalleDesdeSolicitar(): void {
   // oculto solicitar SIN borrar el plan
   this.mostrarSolicitarModal = false;
