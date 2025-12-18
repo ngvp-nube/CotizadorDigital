@@ -188,10 +188,11 @@
     </aside>
 
   <!-- RESULTADOS -->
-    <main class="results" >
+    <main class="results" id="cards-start">
       <!-- CARD -->
       <div class="results-scroll">
-          <div class="card" *ngFor="let plan of resultados">
+          <div class="card" *ngFor="let plan of resultadosPaginados">
+
             <div class="card-left">
               <span class="tag">Preferente</span>
 
@@ -246,6 +247,45 @@
             </div>
           </div>
         </div>
+
+        <!-- PAGINACIÓN -->
+        <div class="pagination" *ngIf="totalPaginas > 1">
+
+          <button (click)="paginaAnterior()" [disabled]="paginaActual === 1">
+            ‹ Anterior
+          </button>
+
+          <button
+            *ngIf="mostrarPrimeraPagina"
+            (click)="irAPagina(1)"
+            [class.active]="paginaActual === 1">
+            1
+          </button>
+
+          <span class="dots" *ngIf="mostrarDotsInicio">…</span>
+
+          <button
+            *ngFor="let page of paginasVisibles"
+            (click)="irAPagina(page)"
+            [class.active]="paginaActual === page">
+            {{ page }}
+          </button>
+
+          <span class="dots" *ngIf="mostrarDotsFinal">…</span>
+
+          <button
+            *ngIf="mostrarUltimaPagina"
+            (click)="irAPagina(totalPaginas)"
+            [class.active]="paginaActual === totalPaginas">
+            {{ totalPaginas }}
+          </button>
+
+          <button (click)="paginaSiguiente()" [disabled]="paginaActual === totalPaginas">
+            Siguiente ›
+          </button>
+
+        </div>
+
     </main>
   </div>
 </div>

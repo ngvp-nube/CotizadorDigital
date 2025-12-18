@@ -27,7 +27,7 @@
 }
 
 .logo img {
-  height: 60px;
+  height: 150px;
   width: auto;
   display: block;
   object-fit: contain;
@@ -225,38 +225,6 @@
 
   .nav-actions {
     display: none;
-  }
-
-  /* desactivar hover en mobile */
-  .has-dropdown:hover .megamenu {
-    opacity: 0;
-    visibility: hidden;
-  }
-
-  /* accordion mobile */
-  .megamenu {
-    position: static;
-    transform: none;
-    width: 100%;
-    box-shadow: none;
-    padding: 12px 0;
-    border-radius: 0;
-
-    opacity: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
-
-  .has-dropdown.open .megamenu {
-    opacity: 1;
-    max-height: 1200px;
-    visibility: visible;
-  }
-
-  .megamenu-content {
-    flex-direction: column;
-    gap: 16px;
   }
 }
 

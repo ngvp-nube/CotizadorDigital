@@ -82,6 +82,8 @@ export class SegurosVida {
     ========================= */
   
     resultados: Planes[] = [];
+    resultadosPaginados: Planes[] = [];
+    
     mostrarPuntaje = true;
     ordenarPor = 'price';
     vista: 'grid' | 'list' = 'grid';
@@ -89,6 +91,81 @@ export class SegurosVida {
     cambiarVista(vista: 'grid' | 'list'): void {
       this.vista = vista;
     }
+
+     /* =========================
+     PAGINACIÓN
+  ========================= */
+
+  paginaActual = 1;
+  itemsPorPagina = 15;
+  totalPaginas = 0;
+  paginas: number[] = [];
+
+  // 🔥 ESTAS FALTABAN
+  mostrarPrimeraPagina = false;
+  mostrarUltimaPagina = false;
+  mostrarDotsInicio = false;
+  mostrarDotsFinal = false;
+
+actualizarPaginacion(): void {
+  this.totalPaginas = Math.ceil(this.resultados.length / this.itemsPorPagina);
+
+  const maxPaginasVisibles = 5;
+
+  // Rango central SIN incluir 1 ni última
+  let inicio = Math.max(this.paginaActual - 2, 2);
+  let fin = Math.min(inicio + maxPaginasVisibles - 1, this.totalPaginas - 1);
+
+  // Ajuste cuando estamos cerca del final
+  if (this.paginaActual >= this.totalPaginas - 2) {
+    fin = this.totalPaginas - 1;
+    inicio = Math.max(fin - maxPaginasVisibles + 1, 2);
+  }
+
+  // Ajuste cuando estamos cerca del inicio
+  if (this.paginaActual <= 3) {
+    inicio = 2;
+    fin = Math.min(maxPaginasVisibles + 1, this.totalPaginas - 1);
+  }
+
+  // Construir páginas centrales
+  this.paginasVisibles = [];
+  for (let i = inicio; i <= fin; i++) {
+    this.paginasVisibles.push(i);
+  }
+
+  // Flags visuales
+  this.mostrarPrimeraPagina = this.totalPaginas > 1;
+  this.mostrarUltimaPagina = this.totalPaginas > 1;
+
+  this.mostrarDotsInicio = inicio > 2;
+  this.mostrarDotsFinal = fin < this.totalPaginas - 1;
+
+  // Slice de resultados
+  const startIndex = (this.paginaActual - 1) * this.itemsPorPagina;
+  const endIndex = startIndex + this.itemsPorPagina;
+  this.resultadosPaginados = this.resultados.slice(startIndex, endIndex);
+}
+
+  irAPagina(pagina: number): void {
+    if (pagina < 1 || pagina > this.totalPaginas) return;
+
+    this.paginaActual = pagina;
+    this.actualizarPaginacion();
+
+    // UX: volver arriba
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  paginaAnterior(): void {
+    this.irAPagina(this.paginaActual - 1);
+  }
+
+  paginaSiguiente(): void {
+    this.irAPagina(this.paginaActual + 1);
+  }
+
+  paginasVisibles: number[] = [];
   
     /* =========================
        MODALES
@@ -123,6 +200,10 @@ export class SegurosVida {
         topeAnual: '7.000 UF',
         tipoCobertura: 'Preferentes'
       }));
+
+          // 🔥 RESET + PAGINACIÓN
+      this.paginaActual = 1;
+      this.actualizarPaginacion();
     }
   
     /* =========================
