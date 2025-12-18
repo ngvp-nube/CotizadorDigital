@@ -37,133 +37,137 @@ interface CargaFamiliar {
 })
 export class SegurosVida {
 
-  /* =========================
-     FILTROS
-  ========================= */
-
-  filtros = {
-    region: '',
-    ingreso: null as number | null,
-    edad: 29,
-    sexo: 'Hombre'
-  };
-
-  /* =========================
-     ASEGURADOS
-  ========================= */
-
-  mostrarModal = false;
-  tieneConyuge = false;
-  cargas: CargaFamiliar[] = [];
-
-  conyuge: Conyuge = {
-    sexo: 'Mujer',
-    edad: null,
-    ingreso: null
-  };
-
-  toggleModal(): void {
-    this.mostrarModal = !this.mostrarModal;
-  }
-
-  incrementarCargas(): void {
-    this.cargas.push({ sexo: 'Hombre', edad: 0 });
-  }
-
-  decrementarCargas(): void {
-    if (this.cargas.length > 0) {
-      this.cargas.pop();
-    }
-  }
-
-  /* =========================
-     RESULTADOS
-  ========================= */
-
-  resultados: Planes[] = [];
-
-  ordenarPor: string = 'price';
-  mostrarPuntaje = true;
-  vista: 'grid' | 'list' = 'grid';
-
-  cambiarVista(vista: 'grid' | 'list'): void {
-    this.vista = vista;
-  }
-
-  /* =========================
-     MODALES (REUTILIZADOS)
-  ========================= */
-
-  planSeleccionado: Planes | null = null;
-  mostrarDetalleModal = false;
-  mostrarSolicitarModal = false;
-
-  constructor() {
-    this.buscarPlanes();
-  }
-
+  
     /* =========================
-     BUSCAR PLANES (MOCK)
-  ========================= */
-
-  buscarPlanes(): void {
-    this.mostrarModal = false;
-
-    const totalAsegurados =
-      1 + (this.tieneConyuge ? 1 : 0) + this.cargas.length;
-
-    this.resultados = new Array(2).fill(null).map((_, i): Planes => ({
-      isapre: 'MetLife',
-      nombrePlan: `Seguro Vida Protección ${i + 1}`,
-      valor: 6500 * totalAsegurados,
-      puntaje: 8.2,
-      prestadores: 'Cobertura Nacional',
-      hospitalaria: 'UF 3.000',
-      urgencia: 'UF 3.000',
-      topeAnual: 'UF 5.000',
-      tipoCobertura: 'Libre Elección'
-    }));
-  }
-
-  abrirDetalle(plan: Planes): void {
-    this.planSeleccionado = plan;
-    this.mostrarDetalleModal = true;
-  }
-
-  abrirSolicitud(plan: Planes): void {
-    this.planSeleccionado = plan;
-    this.mostrarSolicitarModal = true;
-  }
-
-  cerrarDetalle(): void {
-    this.mostrarDetalleModal = false;
-    this.planSeleccionado = null;
-  }
-
-  cerrarSolicitar(): void {
-    this.mostrarSolicitarModal = false;
-    this.planSeleccionado = null;
-  }
-
-  desdeDetalleASolicitar(): void {
-    this.mostrarDetalleModal = false;
-
-    setTimeout(() => {
+       FILTROS
+    ========================= */
+  
+    filtros = {
+      region: '',
+      ingreso: null as number | null,
+      edad: 29,
+      sexo: 'Hombre'
+    };
+  
+    /* =========================
+       ASEGURADOS
+    ========================= */
+  
+    mostrarModal = false;
+    tieneConyuge = false;
+    cargas: CargaFamiliar[] = [];
+  
+    conyuge: Conyuge = {
+      sexo: 'Mujer',
+      edad: null,
+      ingreso: null
+    };
+  
+    toggleModal(): void {
+      this.mostrarModal = !this.mostrarModal;
+    }
+  
+    incrementarCargas(): void {
+      this.cargas.push({ sexo: 'Hombre', edad: 0 });
+    }
+  
+    decrementarCargas(): void {
+      if (this.cargas.length > 0) {
+        this.cargas.pop();
+      }
+    }
+  
+    /* =========================
+       RESULTADOS
+    ========================= */
+  
+    resultados: Planes[] = [];
+    mostrarPuntaje = true;
+    ordenarPor = 'price';
+    vista: 'grid' | 'list' = 'grid';
+  
+    cambiarVista(vista: 'grid' | 'list'): void {
+      this.vista = vista;
+    }
+  
+    /* =========================
+       MODALES
+    ========================= */
+  
+    planSeleccionado: Planes | null = null;
+    mostrarDetalleModal = false;
+    mostrarSolicitarModal = false;
+  
+    constructor() {
+      this.buscarPlanes();
+    }
+  
+    /* =========================
+       BUSCAR PLANES (MOCK)
+    ========================= */
+  
+    buscarPlanes(): void {
+      this.mostrarModal = false;
+  
+      const totalAsegurados =
+        1 + (this.tieneConyuge ? 1 : 0) + this.cargas.length;
+  
+      this.resultados = new Array(20).fill(null).map((_, i): Planes => ({
+        isapre: 'Banmédica',
+        nombrePlan: `Plan Salud Total ${i + 1}`,
+        valor: 8500 * totalAsegurados,
+        puntaje: 7.8,
+        prestadores: 'Red Preferente Banmédica',
+        hospitalaria: '90%',
+        urgencia: '70%',
+        topeAnual: '7.000 UF',
+        tipoCobertura: 'Preferentes'
+      }));
+    }
+  
+    /* =========================
+       CONTROL MODALES
+    ========================= */
+  
+    abrirDetalle(plan: Planes): void {
+      this.planSeleccionado = plan;
+      this.mostrarDetalleModal = true;
+    }
+  
+    abrirSolicitud(plan: Planes): void {
+      this.planSeleccionado = plan;
       this.mostrarSolicitarModal = true;
-    }, 200);
-  }
-
-  procesarSolicitud(payload: any): void {
-    console.log('Solicitud Seguro Vida enviada:', payload);
-    // 🔥 backend después
-  }
-
-  abrirDetalleDesdeSolicitar(): void {
-  // oculto solicitar SIN borrar el plan
-  this.mostrarSolicitarModal = false;
-
-  setTimeout(() => {
-    this.mostrarDetalleModal = true;
-  }, 150);
-  }
+    }
+  
+    cerrarDetalle(): void {
+      this.mostrarDetalleModal = false;
+      this.planSeleccionado = null;
+    }
+  
+    cerrarSolicitar(): void {
+      this.mostrarSolicitarModal = false;
+      this.planSeleccionado = null;
+    }
+  
+    desdeDetalleASolicitar(): void {
+      this.mostrarDetalleModal = false;
+  
+      setTimeout(() => {
+        this.mostrarSolicitarModal = true;
+      }, 200);
+    }
+  
+    procesarSolicitud(payload: any): void {
+      console.log('Solicitud Isapre enviada:', payload);
+      // 🔥 luego conectas backend real
+    }
+  
+      abrirDetalleDesdeSolicitar(): void {
+    // oculto solicitar SIN borrar el plan
+    this.mostrarSolicitarModal = false;
+  
+    setTimeout(() => {
+      this.mostrarDetalleModal = true;
+    }, 150);
+    }
 }

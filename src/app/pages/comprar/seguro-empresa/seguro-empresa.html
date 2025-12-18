@@ -162,74 +162,92 @@
   </div>
 
   
-  <div class="container">
-
+<div class="container">
+  <div class="results-layout">
   <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <h4>Precio</h4>
-    <div class="price-box">
-      <span>$137.157 - $151.594</span>
-      <span class="max-price">$380.000</span>
-      <input type="range">
-    </div>
+    <aside class="sidebar">
+      <h4>Precio</h4>
+      <div class="price-box">
+        <span>$137.157 - $151.594</span>
+        <span class="max-price">$380.000</span>
+        <input type="range">
+      </div>
 
-    <h4>Clínicas y Hospitales</h4>
-    <input type="text" placeholder="Clínica..." class="input">
+      <h4>Clínicas y Hospitales</h4>
+      <input type="text" placeholder="Clínica..." class="input">
 
-    <label class="checkbox">
-      <input type="checkbox" checked>
-      Libre elección <span class="count">51</span>
-    </label>
+      <label class="checkbox">
+        <input type="checkbox" checked>
+        Libre elección <span class="count">51</span>
+      </label>
 
-    <label class="checkbox">
-      <input type="checkbox" checked>
-      Preferentes <span class="count">25</span>
-    </label>
-  </aside>
+      <label class="checkbox">
+        <input type="checkbox" checked>
+        Preferentes <span class="count">25</span>
+      </label>
+    </aside>
 
   <!-- RESULTADOS -->
-  <main class="results">
-    <!-- CARD -->
-    <div class="card" *ngFor="let plan of resultados" >
-      <div class="card-left">
-        <span class="tag">Preferente</span>
+    <main class="results" >
+      <!-- CARD -->
+      <div class="results-scroll">
+          <div class="card" *ngFor="let plan of resultados">
+            <div class="card-left">
+              <span class="tag">Preferente</span>
 
-        <div class="company">
-          <img src="https://via.placeholder.com/40" alt="">
-          <strong>{{plan.isapre}}</strong>
+              <div class="company">
+                <img src="https://via.placeholder.com/40" alt="">
+                <strong>{{ plan.isapre }}</strong>
+              </div>
+
+              <h5>{{ plan.nombrePlan }}</h5>
+
+              <div class="features">
+                <span>🏥 Hospitalaria 90%</span>
+                <span>🚑 Urgencia 70%</span>
+                <span>🩺 Ambulatoria 70%</span>
+                <span>📄 Tope anual 7.000 UF</span>
+              </div>
+            </div>
+
+            <div class="card-center">
+              <label>
+                <input type="checkbox"> Comparar
+              </label>
+
+              <div class="score" *ngIf="mostrarPuntaje">
+                Puntaje
+                <span class="score-value">7.8</span>
+                <small>de 7.8</small>
+              </div>
+            </div>
+
+            <div class="card-right">
+              <span class="price-label">Desde</span>
+              <span class="price">
+                ${{ plan.valor | number:'1.0-0' }}
+              </span>
+              <small>/mes</small>
+
+              <!-- 🔥 ESTE BOTÓN YA FUNCIONA -->
+              <button
+                class="btn-solicitar"
+                (click)="abrirSolicitud(plan)"
+              >
+                Solicitar
+              </button>
+
+              <button
+                class="btn-secondary"
+                (click)="abrirDetalle(plan)"
+              >
+                Ver detalle
+              </button>
+            </div>
+          </div>
         </div>
-
-        <h5>{{ plan.nombrePlan }}</h5>
-
-        <div class="features">
-          <span>🏥 Hospitalaria 90%</span>
-          <span>🚑 Urgencia 70%</span>
-          <span>🩺 Ambulatoria 70%</span>
-          <span>📄 Tope anual 7.000 UF</span>
-        </div>
-      </div>
-
-      <div class="card-center">
-        <label>
-          <input type="checkbox"> Comparar
-        </label>
-        <div class="score" *ngIf="mostrarPuntaje">
-          Puntaje
-          <span class="score-value">7.8</span>
-          <small>7.8</small>
-        </div>
-      </div>
-
-      <div class="card-right">
-        <span class="price-label">Desde</span>
-        <span class="price">${{ plan.valor | number:'1.0-0' }}</span>
-        <small>/mes</small>
-        <button class="btn-primary" (click)="abrirSolicitud(plan)">Solicitar</button>
-        <button class="btn-secondary" (click)="abrirDetalle(plan)">Ver detalle</button>
-      </div>
-    </div>
-
-  </main>
+    </main>
+  </div>
 </div>
 <footer class="footer">
   <div class="footer-container">
