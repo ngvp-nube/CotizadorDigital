@@ -117,7 +117,6 @@
 
       <div class="rating-toggle">
         <label>
-            <input type="checkbox" [(ngModel)]="mostrarPuntaje">
             <span class="puntaje-badge">✅ ¿Qué es el Puntaje?</span>
         </label>
       </div>
@@ -188,10 +187,10 @@
     </aside>
 
   <!-- RESULTADOS -->
-    <main class="results" >
+    <main class="results" id="cards-start">
       <!-- CARD -->
       <div class="results-scroll">
-          <div class="card" *ngFor="let plan of resultados">
+          <div class="card" *ngFor="let plan of resultadosPaginados">
             <div class="card-left">
               <span class="tag">Preferente</span>
 
@@ -246,82 +245,46 @@
             </div>
           </div>
         </div>
+
+        <div class="pagination" *ngIf="totalPaginas > 1">
+
+          <button (click)="paginaAnterior()" [disabled]="paginaActual === 1">
+            ‹ Anterior
+          </button>
+
+          <button
+            *ngIf="mostrarPrimeraPagina"
+            (click)="irAPagina(1)"
+            [class.active]="paginaActual === 1">
+            1
+          </button>
+
+          <span class="dots" *ngIf="mostrarDotsInicio">…</span>
+
+          <button
+            *ngFor="let page of paginasVisibles"
+            (click)="irAPagina(page)"
+            [class.active]="paginaActual === page">
+            {{ page }}
+          </button>
+
+          <span class="dots" *ngIf="mostrarDotsFinal">…</span>
+
+          <button
+            *ngIf="mostrarUltimaPagina"
+            (click)="irAPagina(totalPaginas)"
+            [class.active]="paginaActual === totalPaginas">
+            {{ totalPaginas }}
+          </button>
+
+          <button (click)="paginaSiguiente()" [disabled]="paginaActual === totalPaginas">
+            Siguiente ›
+          </button>
+
+        </div>
     </main>
   </div>
 </div>
-<footer class="footer">
-  <div class="footer-container">
-
-    <!-- COLUMNA 1 -->
-    <div class="footer-col">
-      <h3 class="logo">Cotizadordigital.cl</h3>
-
-      <ul class="contact">
-        <li>👤 Acceso Portal Clientes</li>
-        <li>✉️ Contacto</li>
-        <li>📞 +56 2 2712 7123</li>
-        <li>📞 +56 2 2712 7123</li>
-        <li>📍 Mons. Sótero Sanz #100, Of 801</li>
-        <li>📰 Contacto para prensa</li>
-      </ul>
-
-      <div class="social">
-        <a href="#">TikTok</a>
-        <a href="#">Facebook</a>
-        <a href="#">LinkedIn</a>
-        <a href="#">Instagram</a>
-        <a href="#">X</a>
-      </div>
-    </div>
-
-    <!-- COLUMNA 2 -->
-    <div class="footer-col">
-      <h4>SEGUROS</h4>
-      <ul>
-        <li>Comparar Seguros de Salud</li>
-        <li>Seguros Pyme</li>
-        <li>Seguros de Vida</li>
-      
-      </ul>
-    </div>
-
-    <!-- COLUMNA 3 -->
-    <div class="footer-col">
-      <h4>ISAPRES</h4>
-      <ul>
-        <li>Comparar Isapres Online</li>
-        <li>Tu Mejor Plan (beta)</li>
-        <li>Comparador de Planes de Isapre</li>
-        <li>Isapres de Chile</li>
-        <li>Mapa de Productos Isapres</li>
-      </ul>
-    </div>
-
-    <!-- COLUMNA 4 -->
-    <div class="footer-col">
-      <h4>MÁS DE COTIZADORDIGITAL.CL</h4>
-      <ul>
-        <li>Partners y Alianzas</li>
-        <li>Acerca de Cotizadordigital.cl</li>
-        <li>Blog</li>
-        <li>Presupuestos</li>
-        <li>Términos y Condiciones</li>
-        <li>Cotizadordigital.cl Referidos</li>
-      </ul>
-    </div>
-
-    <!-- COLUMNA 5 -->
-    <div class="footer-col footer-logos">
-      <h4>APOYADO POR:</h4>
-      <img src="https://via.placeholder.com/90x40" alt="CORFO">
-      <img src="https://via.placeholder.com/90x40" alt="Gobierno de Chile">
-
-      <h4>REGULADO POR:</h4>
-      <img src="https://via.placeholder.com/90x40" alt="CMF">
-    </div>
-
-  </div>
-</footer>
 
 <!-- MODAL DETALLE -->
 <app-modal-detalle
