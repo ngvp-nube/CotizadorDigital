@@ -335,28 +335,53 @@
 
 .social {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 16px;
   margin-top: 15px;
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+
+    svg {
+      width: 18px;
+      height: 18px;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    &:hover svg {
+      transform: scale(1.1);
+      opacity: 0.85;
+    }
+  }
+
+  /* ICONOS SOLO (TikTok / Instagram) → BLANCOS */
+  .icon-only {
+    svg {
+      fill: #ffffff;
+      width: 23px;
+      height: 23px;
+    }
+  }
+
+  /* ICONOS CON CUADRO (Facebook / LinkedIn / X) */
+  .icon-box {
+    width: 23px;
+    height: 23px;
+    background-color: #ffffff; // caja blanca
+    border-radius: 6px;
+
+    svg {
+      fill: black; // icono azul
+    }
+  }
 }
 
-.social a {
-  font-size: 13px;
-  color: #fff;
-  text-decoration: none;
-  background: rgba(255,255,255,0.15);
-  padding: 6px 10px;
-  border-radius: 50%;
-}
 
-.social a:hover {
-  background: rgba(255,255,255,0.3);
-}
 
-.footer-logos img {
-  display: block;
-  margin-bottom: 12px;
-  max-width: 100px;
-}
+
 
 /* RESPONSIVE */
 @media (max-width: 1000px) {
