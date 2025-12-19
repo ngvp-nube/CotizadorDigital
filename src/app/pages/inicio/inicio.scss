@@ -68,7 +68,7 @@
 }
 
 .footer {
-  background: #0d6db7;
+  background: black;
   color: #fff;
   padding: 40px 20px;
 }
@@ -107,6 +107,23 @@
 
 .footer-col ul li:hover {
   text-decoration: underline;
+}
+
+.footer-logos img {
+  max-width: 100px;
+  height: auto;
+  display: block;
+}
+
+.footer-logos img.logo-corfo {
+  max-width: 100px;
+}
+.footer-logos img.logo-cmf {
+  max-width: 180px; // ajusta el tamaño aquí
+}
+
+.footer-logos img.logo-gch {
+  max-width: 80px; // ajusta el tamaño aquí
 }
 
 .contact li {

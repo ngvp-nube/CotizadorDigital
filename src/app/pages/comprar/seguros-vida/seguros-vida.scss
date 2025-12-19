@@ -284,7 +284,7 @@ html, body {
    FOOTER
 =============================== */
 .footer {
-  background: #0d6db7;
+  background: black;
   color: #ffffff;
   padding: 40px 20px;
 }
@@ -296,6 +296,24 @@ html, body {
   grid-template-columns: repeat(5, 1fr);
   gap: 30px;
 }
+
+.footer-logos img {
+  max-width: 100px;
+  height: auto;
+  display: block;
+}
+
+.footer-logos img.logo-corfo {
+  max-width: 100px;
+}
+.footer-logos img.logo-cmf {
+  max-width: 180px; // ajusta el tamaño aquí
+}
+
+.footer-logos img.logo-gch {
+  max-width: 80px; // ajusta el tamaño aquí
+}
+
 
 /* ===============================
    RESPONSIVE
