@@ -1,0 +1,54 @@
+/* fondo claro */
+.loader-backdrop {
+  position: fixed;
+  inset: 0;
+  background: #f8fafc; // blanco light
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* contenedor */
+.loader-core {
+  width: 96px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ✚ cruz */
+.cross-svg {
+  width: 48px;
+  height: 48px;
+
+  animation:
+    rotateCross 2.2s linear infinite,
+    colorShift 2.2s ease-in-out infinite;
+
+  transform-origin: center;
+}
+
+/* rotación */
+@keyframes rotateCross {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* cambio de color (salud / corporativo) */
+@keyframes colorShift {
+  0% {
+    color: #2aa7ff; // azul salud
+  }
+  50% {
+    color: #e63946; // rojo salud
+  }
+  100% {
+    color: #2aa7ff;
+  }
+}
