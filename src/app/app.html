@@ -11,31 +11,7 @@
     <!-- LINKS -->
     <ul class="nav-links">
 
-      <!-- SEGUROS DE SALUD -->
-      <li
-        class="has-dropdown"
-        [class.open]="activeDropdown === 'salud'"
-        (click)="onDropdownTrigger($event, 'salud')"
-      >
-        <a routerLink="/comprar/seguro-salud">
-          Seguros de Salud <i class="arrow-down"></i>
-        </a>
-
-      </li>
-
-      <!-- SEGUROS PYME -->
-      <li
-        class="has-dropdown"
-        [class.open]="activeDropdown === 'pyme'"
-        (click)="onDropdownTrigger($event, 'pyme')"
-      >
-        <a routerLink="/comprar/seguro-empresa">
-          Seguros Pyme <i class="arrow-down"></i>
-        </a>
-
-      </li>
-
-      <!-- PLANES ISAPRE -->
+            <!-- PLANES ISAPRE -->
       <li
         class="has-dropdown"
         [class.open]="activeDropdown === 'isapre'"
@@ -47,7 +23,7 @@
 
       </li>
 
-      <!-- SEGUROS DE VIDA -->
+            <!-- SEGUROS DE VIDA -->
       <li
         class="has-dropdown"
         [class.open]="activeDropdown === 'vida'"
@@ -55,6 +31,30 @@
       >
         <a routerLink="/comprar/seguros-vida">
           Seguros de Vida <i class="arrow-down"></i>
+        </a>
+
+      </li>
+
+            <!-- SEGUROS PYME -->
+      <li
+        class="has-dropdown"
+        [class.open]="activeDropdown === 'pyme'"
+        (click)="onDropdownTrigger($event, 'pyme')"
+      >
+        <a routerLink="/comprar/seguro-empresa">
+          Seguros Pyme <i class="arrow-down"></i>
+        </a>
+
+      </li>
+
+      <!-- SEGUROS DE SALUD -->
+      <li
+        class="has-dropdown"
+        [class.open]="activeDropdown === 'salud'"
+        (click)="onDropdownTrigger($event, 'salud')"
+      >
+        <a routerLink="/comprar/seguro-salud">
+          Seguros de Salud <i class="arrow-down"></i>
         </a>
 
       </li>

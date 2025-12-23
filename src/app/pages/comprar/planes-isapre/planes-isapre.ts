@@ -97,7 +97,7 @@ export class PlanesIsapre {
   ========================= */
 
   paginaActual = 1;
-  itemsPorPagina = 15;
+  itemsPorPagina = 10;
   totalPaginas = 0;
   paginas: number[] = [];
 
@@ -254,4 +254,11 @@ actualizarPaginacion(): void {
       this.mostrarDetalleModal = true;
     }, 150);
   }
+
+  mostrarDropdownClinicas = false;
+
+  seleccionarClinica(nombre: string) {
+  // En maqueta basta con esto
+  this.mostrarDropdownClinicas = false;
+}
 }

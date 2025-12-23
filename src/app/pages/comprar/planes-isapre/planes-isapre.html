@@ -18,7 +18,16 @@
       </div>
 
       <div class="box-input">
-        <label>Ingreso Líquido</label>
+        <label class="label-info">
+            Renta imponible bruta
+          <span class="info-icon">
+            i
+            <span class="tooltip">
+              Puedes seleccionar el mínimo o máximo del valor prima dispuesto a pagar.
+              Buscaremos productos cuyo valor final se encuentre en este rango.
+            </span>
+          </span>
+        </label>
         <input type="number" [(ngModel)]="filtros.ingreso" placeholder="$ 0">
       </div>
 
@@ -28,11 +37,8 @@
       </div>
 
       <div class="box-input">
-        <label>Sexo</label>
-        <select [(ngModel)]="filtros.sexo">
-          <option value="Hombre">Hombre</option>
-          <option value="Mujer">Mujer</option>
-        </select>
+        <label>sistema de salud actual</label>
+          <input type="text">
       </div>
 
       <div class="box-input group-modal">
@@ -58,13 +64,10 @@
           <div class="conyuge-details" *ngIf="tieneConyuge">
             <div class="conyuge-row-inline">
               <div class="sex-pick-full">
-                <label>Sexo</label>
+                <label>sistema de salud actual</label>
                 <div class="radio-options">
                   <label>
-                    <input type="radio" [name]="'s-conyuge'" [(ngModel)]="conyuge.sexo" value="Hombre"> Hombre
-                  </label>
-                  <label>
-                    <input type="radio" [name]="'s-conyuge'" [(ngModel)]="conyuge.sexo" value="Mujer"> Mujer
+                    <input type="text" [name]="'s-conyuge'">
                   </label>
                 </div>
               </div>
@@ -75,7 +78,7 @@
             </div>
 
             <div class="input-full-width">
-              <label>Ingreso Mensual Líquido*</label>
+              <label>Renta imponible mensual / bruta</label>
               <input type="text" [(ngModel)]="conyuge.ingreso" placeholder="$ 0">
             </div>
           </div>
@@ -94,26 +97,6 @@
               <p>Carga {{ i + 1 }}</p>
 
               <div class="carga-row-inline">
-                <div class="sex-pick-full">
-                  <label>Sexo</label>
-                  <div class="radio-options">
-                    <label>
-                      <input type="radio"
-                             [name]="'sexo-carga-' + i"
-                             [(ngModel)]="c.sexo"
-                             value="Hombre">
-                      Hombre
-                    </label>
-                    <label>
-                      <input type="radio"
-                             [name]="'sexo-carga-' + i"
-                             [(ngModel)]="c.sexo"
-                             value="Mujer">
-                      Mujer
-                    </label>
-                  </div>
-                </div>
-
                 <div class="age-pick-full">
                   <label>Edad</label>
                   <input type="number" [(ngModel)]="c.edad">
@@ -174,26 +157,87 @@
 
 <div class="container results-layout">
   <aside class="sidebar">
-    <h4>Precio</h4>
-    <div class="price-box">
-      <span>$137.157 - $151.594</span>
-      <span class="max-price">$380.000</span>
-      <input type="range">
+
+    <!-- FILTRO: PRECIO -->
+    <div class="filter-card">
+
+      <div class="filter-header">
+        <h4>
+          Precio
+          <span class="info-icon">i</span>
+        </h4>
+      </div>
+
+      <div class="filter-body">
+
+        <div class="price-values">
+          <span class="price-min">$50.687</span>
+          <span class="price-max">$271.030</span>
+        </div>
+
+        <div class="price-slider">
+          <input type="range">
+          <input type="range">
+        </div>
+
+      </div>
     </div>
 
-    <h4>Clínicas y Hospitales</h4>
-    <input type="text" placeholder="Clínica..." class="input">
 
-    <label class="checkbox">
-      <input type="checkbox" checked>
-      Libre elección <span class="count">51</span>
-    </label>
+    <!-- FILTRO: CLÍNICAS Y HOSPITALES -->
+    <div class="filter-card">
 
-    <label class="checkbox">
-      <input type="checkbox" checked>
-      Preferentes <span class="count">25</span>
-    </label>
+      <div class="filter-header">
+        <h4>
+          Clínicas y Hospitales
+          <span class="info-icon">i</span>
+        </h4>
+      </div>
+
+      <div class="filter-body">
+
+        <div class="clinic-search" (clickOutside)="mostrarDropdownClinicas = false">
+          <input type="text" placeholder="Clínica..." (focus)="mostrarDropdownClinicas = true">
+
+          <div class="clinic-dropdown" *ngIf="mostrarDropdownClinicas">
+            <div class="clinic-item" (click)="seleccionarClinica('Arauco Salud')">Arauco Salud</div>
+            <div class="clinic-item" (click)="seleccionarClinica('Bionet')">Bionet</div>
+            <div class="clinic-item" (click)="seleccionarClinica('Centro Clínico el Portal')">Centro Clínico el Portal</div>
+            <div class="clinic-item">Centro del Cáncer UC CHRISTUS</div>
+          </div>
+        </div>
+
+
+        <div class="clinic-options">
+
+          <label class="clinic-option">
+            <input type="checkbox" checked>
+            <span class="option-text">Libre elección</span>
+            <span class="option-count">98</span>
+          </label>
+
+          <label class="clinic-option">
+            <input type="checkbox" checked>
+            <span class="option-text">Preferentes</span>
+            <span class="option-count">1350</span>
+          </label>
+
+          <label class="clinic-option">
+            <input type="checkbox" checked>
+            <span class="option-text">Cerrados</span>
+            <span class="option-count">55</span>
+          </label>
+
+        </div>
+
+      </div>
+    </div>
+
+
+
+
   </aside>
+
 
   <main class="results" id="cards-start">
 
