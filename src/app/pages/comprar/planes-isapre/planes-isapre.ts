@@ -63,6 +63,37 @@ export class PlanesIsapre {
     ingreso: null
   };
 
+  clinicaSearch = '';
+mostrarLista = false;
+
+clinicas: string[] = [
+  'Arauco Salud',
+  'Bionet',
+  'Centro Clínico el Portal',
+  'Centro del Cáncer UC CHRISTUS',
+  'Clínica Alemana',
+  'Clínica Las Condes',
+  'Clínica Santa María'
+];
+
+clinicasFiltradas: string[] = [];
+
+filtrarClinicas() {
+  const texto = this.clinicaSearch.toLowerCase();
+
+  this.clinicasFiltradas = this.clinicas.filter(c =>
+    c.toLowerCase().includes(texto)
+  );
+}
+
+seleccionarClinica(clinica: string) {
+  this.clinicaSearch = clinica;
+  this.mostrarLista = false;
+
+  // 👉 aquí luego puedes disparar el filtro real
+}
+
+
   toggleModal(): void {
     this.mostrarModal = !this.mostrarModal;
   }

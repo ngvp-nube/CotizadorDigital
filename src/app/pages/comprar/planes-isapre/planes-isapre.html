@@ -173,28 +173,60 @@
 </div>
 
 <div class="container results-layout">
-  <aside class="sidebar">
-    <h4>Precio</h4>
-    <div class="price-box">
-      <span>$137.157 - $151.594</span>
-      <span class="max-price">$380.000</span>
-      <input type="range">
-    </div>
+  <!-- SIDEBAR -->
+  <div class="sidebar-wrapper">
+    <aside class="sidebar">
+      <h4>Precio</h4>
+      <div class="price-box">
+        <span>$137.157 - $151.594</span>
+        <span class="max-price">$380.000</span>
+        <input type="range">
+      </div>
 
-    <h4>Clínicas y Hospitales</h4>
-    <input type="text" placeholder="Clínica..." class="input">
+    </aside>
 
-    <label class="checkbox">
-      <input type="checkbox" checked>
-      Libre elección <span class="count">51</span>
-    </label>
+<aside class="sidebar">
 
-    <label class="checkbox">
-      <input type="checkbox" checked>
-      Preferentes <span class="count">25</span>
-    </label>
-  </aside>
+  <!-- ===============================
+       AUTOCOMPLETE CLÍNICAS
+  ================================ -->
+  <h4 class="title-inline">
+    Clínicas y Hospitales
+    <span class="info">i</span>
+  </h4>
 
+  <div class="autocomplete">
+    <input
+      type="text"
+      class="input"
+      placeholder="Clínica..."
+      [(ngModel)]="clinicaSearch"
+      (input)="filtrarClinicas()"
+      (focus)="mostrarLista = true"
+    >
+
+    <ul class="autocomplete-list" *ngIf="mostrarLista && clinicasFiltradas.length">
+      <li
+        *ngFor="let clinica of clinicasFiltradas"
+        (click)="seleccionarClinica(clinica)">
+        {{ clinica }}
+      </li>
+    </ul>
+  </div>
+
+  <label class="checkbox">
+    <input type="checkbox" checked>
+    Libre elección <span class="count">51</span>
+  </label>
+
+  <label class="checkbox">
+    <input type="checkbox" checked>
+    Preferentes <span class="count">25</span>
+  </label>
+
+</aside>
+
+  </div>
   <main class="results" id="cards-start">
 
     <!-- CARDS -->
@@ -291,6 +323,8 @@
 
   </main>
 </div>
+
+
 
 <app-modal-detalle
   [plan]="planSeleccionado"

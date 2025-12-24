@@ -130,18 +130,11 @@ html, body {
    SIDEBAR
 =============================== */
 .sidebar {
-  width: 260px;
-  flex-shrink: 0;
-  background: #ffffff;
-  padding: 16px;
-  border-radius: 12px;
-
   position: sticky;
-  top: 20px;
-
-  max-height: 100%;
-  overflow-y: auto;
+  top: auto;        /* ❌ elimina el anclaje superior */
+  bottom: 20px;     /* ✅ ahora se “pega” abajo */
 }
+
 
 .sidebar h4 {
   margin-top: 0;
@@ -393,4 +386,200 @@ html, body {
   font-size: 14px;
   user-select: none;
 }
+
+/* Layout principal */
+.results-layout {
+  display: flex;
+  gap: 24px;
+  height: 100vh; /* necesario para el scroll interno */
+}
+
+/* ===============================
+   SIDEBAR
+=============================== */
+.sidebar-wrapper {
+  width: 260px;
+  flex-shrink: 0;
+
+  /* 👇 empuja el filtro hacia abajo */
+  
+}
+
+.sidebar {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+/* ===============================
+   RESULTADOS CON SCROLL
+=============================== */
+.results {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+/* ===============================
+   AUTOCOMPLETE
+=============================== */
+.autocomplete {
+  position: relative;
+}
+
+.autocomplete .input {
+  width: 100%;
+}
+
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+
+  background: #ffffff;
+  border-radius: 12px;
+  margin-top: 6px;
+  padding: 6px 0;
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: 20;
+}
+
+.autocomplete-list li {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.autocomplete-list li:hover {
+  background: #f3f6fb;
+}
+
+/* ===============================
+   TÍTULO CON INFO
+=============================== */
+.title-inline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.title-inline .info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+
+  font-size: 11px;
+  font-weight: bold;
+
+  background: #e9f2ff;
+  color: #2a7cff;
+  cursor: pointer;
+}
+
+/* ===============================
+   INPUT BONITO
+=============================== */
+.fancy-input {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #d6dbe3;
+  font-size: 14px;
+  transition: all 0.25s ease;
+}
+
+.fancy-input::placeholder {
+  color: #9aa3af;
+}
+
+.fancy-input:focus {
+  outline: none;
+  border-color: #2a7cff;
+  box-shadow: 0 0 0 3px rgba(42, 124, 255, 0.12);
+}
+
+/* ===============================
+   AUTOCOMPLETE LIST
+=============================== */
+.fancy-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 6px 0;
+
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.12),
+    0 2px 6px rgba(0, 0, 0, 0.06);
+
+  z-index: 30;
+}
+
+.fancy-list li {
+  padding: 12px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease, padding-left 0.2s ease;
+}
+
+.fancy-list li:hover {
+  background: #f1f6ff;
+  padding-left: 22px;
+}
+
+/* ===============================
+   TÍTULO + INFO
+=============================== */
+.title-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.title-inline .info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  background: linear-gradient(135deg, #e8f1ff, #f5f9ff);
+  color: #2a7cff;
+
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.title-inline .info:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(42, 124, 255, 0.25);
+}
+
+/* ===============================
+   SIDEBAR CARD FEEL
+=============================== */
+.sidebar {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+
+
+
 
