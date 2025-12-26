@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { ModalDetalleComponent, Planes } from '../../modals/modal-detalle/modal-detalle';
 import { ModalSolicitarComponent } from '../../modals/modal-solicitar/modal-solicitar';
 
@@ -10,15 +9,15 @@ import { ModalSolicitarComponent } from '../../modals/modal-solicitar/modal-soli
 ========================= */
 
 interface Conyuge {
-  sexo: string;
   edad: number | null;
   ingreso: number | null;
+  sistemaSalud: string;
 }
 
 interface CargaFamiliar {
-  sexo: string;
   edad: number | null;
 }
+
 
 /* =========================
    COMPONENTE
@@ -35,7 +34,10 @@ interface CargaFamiliar {
   ],
   templateUrl: './planes-isapre.html',
   styleUrls: ['./planes-isapre.scss']
+  
 })
+
+
 export class PlanesIsapre {
 
   /* =========================
@@ -58,27 +60,35 @@ export class PlanesIsapre {
   cargas: CargaFamiliar[] = [];
 
   conyuge: Conyuge = {
-    sexo: 'Mujer',
-    edad: null,
-    ingreso: null
+  edad: null,
+  ingreso: null,
+  sistemaSalud: ''
   };
+  conyugeHealthOpen = false;
+
+  selectConyugeHealth(value: string): void {
+  this.conyuge.sistemaSalud = value;
+  this.conyugeHealthOpen = false;
+}
+
+
 
   clinicaSearch = '';
-mostrarLista = false;
+  mostrarLista = false;
 
-clinicas: string[] = [
-  'Arauco Salud',
-  'Bionet',
-  'Centro Clínico el Portal',
-  'Centro del Cáncer UC CHRISTUS',
-  'Clínica Alemana',
-  'Clínica Las Condes',
-  'Clínica Santa María'
-];
+  clinicas: string[] = [
+    'Arauco Salud',
+    'Bionet',
+    'Centro Clínico el Portal',
+    'Centro del Cáncer UC CHRISTUS',
+    'Clínica Alemana',
+    'Clínica Las Condes',
+    'Clínica Santa María'
+  ];
 
-clinicasFiltradas: string[] = [];
+  clinicasFiltradas: string[] = [];
 
-filtrarClinicas() {
+  filtrarClinicas() {
   const texto = this.clinicaSearch.toLowerCase();
 
   this.clinicasFiltradas = this.clinicas.filter(c =>
@@ -99,7 +109,7 @@ seleccionarClinica(clinica: string) {
   }
 
   incrementarCargas(): void {
-    this.cargas.push({ sexo: 'Hombre', edad: null });
+    this.cargas.push({ edad: null });
   }
 
   decrementarCargas(): void {
@@ -293,5 +303,8 @@ actualizarPaginacion(): void {
   this.healthSelected = value;
   this.healthOpen = false;
   }
+
+
+
 
 }

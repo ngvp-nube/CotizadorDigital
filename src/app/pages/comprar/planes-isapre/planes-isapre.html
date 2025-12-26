@@ -2,13 +2,15 @@
   <header class="header-view">
     <div class="container-aligned">
       <h1>Planes Isapre</h1>
-      <p>Compara planes con precios directos y <strong>sin costo adicional</strong></p>
+      <p>
+        Compara planes con precios directos y
+        <strong>sin costo adicional</strong>
+      </p>
     </div>
   </header>
 
   <section class="search-bar">
     <div class="search-grid container-aligned">
-
       <div class="box-input">
         <label>Región</label>
         <select [(ngModel)]="filtros.region">
@@ -17,30 +19,26 @@
         </select>
       </div>
 
-    <div class="box-input">
-      <label class="label-info">
-        Renta imponible bruta
+      <div class="box-input">
+        <label class="label-info">
+          Renta imponible bruta
 
-        <span class="info-icon">
-          i
-          <span class="tooltip">
-            Puedes seleccionar el mínimo o máximo del valor prima dispuesto a pagar.
-            Buscaremos productos cuyo valor final se encuentre en este rango.
+          <span class="info-icon">
+            i
+            <span class="tooltip">
+              Puedes seleccionar el mínimo o máximo del valor prima dispuesto a
+              pagar. Buscaremos productos cuyo valor final se encuentre en este
+              rango.
+            </span>
           </span>
-        </span>
-      </label>
+        </label>
 
-      <input
-        type="number"
-        [(ngModel)]="filtros.ingreso"
-        placeholder="$ 0"
-      >
-    </div>
-
+        <input type="number" [(ngModel)]="filtros.ingreso" placeholder="$ 0" />
+      </div>
 
       <div class="box-input">
         <label>Edad</label>
-        <input type="number" [(ngModel)]="filtros.edad">
+        <input type="number" [(ngModel)]="filtros.edad" />
       </div>
 
       <div class="box-input">
@@ -49,97 +47,182 @@
           <span class="info-icon">i</span>
         </label>
 
-        <div class="health-select"(clickOutside)="healthOpen = false">
+        <div class="health-select" (clickOutside)="healthOpen = false">
           <div class="health-selected" (click)="healthOpen = !healthOpen">
             {{ healthSelected || 'Selecciona' }}
             <span class="arrow" [class.open]="healthOpen">⌄</span>
           </div>
 
           <div class="health-dropdown" *ngIf="healthOpen">
-            <div class="health-option" (click)="selectHealth('Fonasa')">Fonasa</div>
-            <div class="health-option" (click)="selectHealth('Banmédica')">Banmédica</div>
-            <div class="health-option" (click)="selectHealth('Colmena')">Colmena</div>
-            <div class="health-option" (click)="selectHealth('Consalud')">Consalud</div>
-            <div class="health-option" (click)="selectHealth('Cruz Blanca')">Cruz Blanca</div>
-            <div class="health-option" (click)="selectHealth('Nueva Masvida')">Nueva Masvida</div>
-            <div class="health-option" (click)="selectHealth('Vida Tres')">Vida Tres</div>
-            <div class="health-option" (click)="selectHealth('Esencial')">Esencial</div>
-            <div class="health-option" (click)="selectHealth('No tiene')">No tiene</div>
+            <div class="health-option" (click)="selectHealth('Fonasa')">
+              Fonasa
+            </div>
+            <div class="health-option" (click)="selectHealth('Banmédica')">
+              Banmédica
+            </div>
+            <div class="health-option" (click)="selectHealth('Colmena')">
+              Colmena
+            </div>
+            <div class="health-option" (click)="selectHealth('Consalud')">
+              Consalud
+            </div>
+            <div class="health-option" (click)="selectHealth('Cruz Blanca')">
+              Cruz Blanca
+            </div>
+            <div class="health-option" (click)="selectHealth('Nueva Masvida')">
+              Nueva Masvida
+            </div>
+            <div class="health-option" (click)="selectHealth('Vida Tres')">
+              Vida Tres
+            </div>
+            <div class="health-option" (click)="selectHealth('Esencial')">
+              Esencial
+            </div>
+            <div class="health-option" (click)="selectHealth('No tiene')">
+              No tiene
+            </div>
           </div>
         </div>
       </div>
 
-
-
+      <!-- BOTÓN + POPOVER ASEGURADOS -->
       <div class="box-input group-modal">
         <label>Asegurados</label>
+
         <button class="trigger" (click)="toggleModal()">
           {{ (cargas.length > 0 || tieneConyuge) ? 'Modificar asegurados' : 'Agregar asegurados' }}
         </button>
 
+        <!-- POPOVER (mini modal debajo del botón) -->
         <div class="popover-modal" *ngIf="mostrarModal">
+
+          <!-- HEADER -->
           <div class="popover-head">
             <span>Agregar asegurados</span>
             <button (click)="mostrarModal = false">×</button>
           </div>
 
-          <div class="popover-row">
-            <label>Pareja/Cónyuge</label>
-            <div class="toggle-switch">
-              <input type="checkbox" id="conyuge" [(ngModel)]="tieneConyuge">
-              <label for="conyuge" class="slider"></label>
-            </div>
-          </div>
+          <!-- CONTENIDO -->
+          <div class="popover-content">
 
-          <div class="conyuge-details" *ngIf="tieneConyuge">
-            <div class="conyuge-row-inline">
-              <div class="sex-pick-full">
-                <label>Sistema de salud actual</label>
-                <div class="radio-options">
-                  <label>
-                    <input type="text">
-                  </label>
+            <!-- CONYUGE TOGGLE -->
+            <div class="popover-row">
+              <label>Pareja/Cónyuge</label>
+              <div class="toggle-switch">
+                <input
+                  type="checkbox"
+                  id="conyuge"
+                  [(ngModel)]="tieneConyuge"
+                />
+                <label for="conyuge" class="slider"></label>
+              </div>
+            </div>
+
+            <!-- CONYUGE DETAILS -->
+            <div class="conyuge-details" *ngIf="tieneConyuge">
+
+              <div class="conyuge-row-inline">
+
+                <!-- SISTEMA DE SALUD -->
+                <div class="sex-pick-full">
+                  <label>Sistema de salud actual</label>
+
+                  <div
+                    class="health-select"
+                    (clickOutside)="conyugeHealthOpen = false"
+                  >
+                    <div
+                      class="health-selected"
+                      (click)="conyugeHealthOpen = !conyugeHealthOpen"
+                    >
+                      {{ conyuge.sistemaSalud || 'Selecciona' }}
+                      <span
+                        class="arrow"
+                        [class.open]="conyugeHealthOpen"
+                      >⌄</span>
+                    </div>
+
+                    <div
+                      class="health-dropdown"
+                      *ngIf="conyugeHealthOpen"
+                    >
+                      <div class="health-option" (click)="selectConyugeHealth('Fonasa')">Fonasa</div>
+                      <div class="health-option" (click)="selectConyugeHealth('Banmédica')">Banmédica</div>
+                      <div class="health-option" (click)="selectConyugeHealth('Colmena')">Colmena</div>
+                      <div class="health-option" (click)="selectConyugeHealth('Consalud')">Consalud</div>
+                      <div class="health-option" (click)="selectConyugeHealth('Cruz Blanca')">Cruz Blanca</div>
+                      <div class="health-option" (click)="selectConyugeHealth('Nueva Masvida')">Nueva Masvida</div>
+                      <div class="health-option" (click)="selectConyugeHealth('Vida Tres')">Vida Tres</div>
+                      <div class="health-option" (click)="selectConyugeHealth('Esencial')">Esencial</div>
+                      <div class="health-option" (click)="selectConyugeHealth('No tiene')">No tiene</div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="age-pick-full">
-                <label>Edad*</label>
-                <input type="number" [(ngModel)]="conyuge.edad" placeholder="27">
-              </div>
-            </div>
 
-            <div class="input-full-width">
-              <label>Ingreso Mensual Líquido*</label>
-              <input type="text" [(ngModel)]="conyuge.ingreso" placeholder="$ 0">
-            </div>
-          </div>
-
-          <div class="popover-row">
-            <label>Cargas</label>
-            <div class="stepper">
-              <button (click)="decrementarCargas()">−</button>
-              <span>{{ cargas.length }}</span>
-              <button (click)="incrementarCargas()">+</button>
-            </div>
-          </div>
-
-          <div class="cargas-dynamic-list" *ngIf="cargas.length > 0">
-            <div class="carga-card-item" *ngFor="let c of cargas; let i = index">
-              <p>Carga {{ i + 1 }}</p>
-
-              <div class="carga-row-inline">
+                <!-- EDAD -->
                 <div class="age-pick-full">
-                  <label>Edad</label>
-                  <input type="number" [(ngModel)]="c.edad">
+                  <label>Edad*</label>
+                  <input
+                    type="number"
+                    [(ngModel)]="conyuge.edad"
+                    placeholder="27"
+                  />
+                </div>
+              </div>
+
+              <!-- INGRESO -->
+              <div class="input-full-width">
+                <label>Ingreso Mensual Líquido*</label>
+                <input
+                  type="text"
+                  [(ngModel)]="conyuge.ingreso"
+                  placeholder="$ 0"
+                />
+              </div>
+            </div>
+
+            <!-- CARGAS -->
+            <div class="popover-row">
+              <label>Cargas</label>
+              <div class="stepper">
+                <button (click)="decrementarCargas()">−</button>
+                <span>{{ cargas.length }}</span>
+                <button (click)="incrementarCargas()">+</button>
+              </div>
+            </div>
+
+            <!-- LISTA DE CARGAS -->
+            <div class="cargas-dynamic-list" *ngIf="cargas.length > 0">
+              <div
+                class="carga-card-item"
+                *ngFor="let c of cargas; let i = index"
+              >
+                <p>Carga {{ i + 1 }}</p>
+
+                <div class="carga-row-inline">
+                  <div class="age-pick-full">
+                    <label>Edad</label>
+                    <input
+                      type="number"
+                      [(ngModel)]="c.edad"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <button class="btn-main-action" (click)="buscarPlanes()">Agregar y calcular precios</button>
+          <!-- CTA -->
+          <button class="btn-main-action" (click)="buscarPlanes()">
+            Agregar y calcular precios
+          </button>
+
         </div>
       </div>
 
-      <button class="btn-search" (click)="buscarPlanes()">Calcular precios</button>
+      <button class="btn-search" (click)="buscarPlanes()">
+        Calcular precios
+      </button>
     </div>
   </section>
 
@@ -151,7 +234,7 @@
 
       <div class="rating-toggle">
         <label>
-          <input type="checkbox">
+          <input type="checkbox" />
           <span class="puntaje-badge">✅ ¿Qué es el Puntaje?</span>
         </label>
       </div>
@@ -174,10 +257,16 @@
       </div>
 
       <div class="view-mode-toggle">
-        <button [class.active]="vista === 'list'" (click)="cambiarVista('list')">
+        <button
+          [class.active]="vista === 'list'"
+          (click)="cambiarVista('list')"
+        >
           <span>&#9776;</span>
         </button>
-        <button [class.active]="vista === 'grid'" (click)="cambiarVista('grid')">
+        <button
+          [class.active]="vista === 'grid'"
+          (click)="cambiarVista('grid')"
+        >
           <span>&#9638;</span>
         </button>
       </div>
@@ -193,62 +282,61 @@
       <div class="price-box">
         <span>$137.157 - $151.594</span>
         <span class="max-price">$380.000</span>
-        <input type="range">
+        <input type="range" />
       </div>
-
     </aside>
 
-<aside class="sidebar">
-
-  <!-- ===============================
+    <aside class="sidebar">
+      <!-- ===============================
        AUTOCOMPLETE CLÍNICAS
   ================================ -->
-  <h4 class="title-inline">
-    Clínicas y Hospitales
-    <span class="info">i</span>
-  </h4>
+      <h4 class="title-inline">
+        Clínicas y Hospitales
+        <span class="info">i</span>
+      </h4>
 
-  <div class="autocomplete">
-    <input
-      type="text"
-      class="input"
-      placeholder="Clínica..."
-      [(ngModel)]="clinicaSearch"
-      (input)="filtrarClinicas()"
-      (focus)="mostrarLista = true"
-    >
+      <div class="autocomplete">
+        <input
+          type="text"
+          class="input"
+          placeholder="Clínica..."
+          [(ngModel)]="clinicaSearch"
+          (input)="filtrarClinicas()"
+          (focus)="mostrarLista = true"
+        />
 
-    <ul class="autocomplete-list" *ngIf="mostrarLista && clinicasFiltradas.length">
-      <li
-        *ngFor="let clinica of clinicasFiltradas"
-        (click)="seleccionarClinica(clinica)">
-        {{ clinica }}
-      </li>
-    </ul>
-  </div>
+        <ul
+          class="autocomplete-list"
+          *ngIf="mostrarLista && clinicasFiltradas.length"
+        >
+          <li
+            *ngFor="let clinica of clinicasFiltradas"
+            (click)="seleccionarClinica(clinica)"
+          >
+            {{ clinica }}
+          </li>
+        </ul>
+      </div>
 
-  <label class="checkbox">
-    <input type="checkbox" checked>
-    Libre elección <span class="count">51</span>
-  </label>
+      <label class="checkbox">
+        <input type="checkbox" checked />
+        Libre elección <span class="count">51</span>
+      </label>
 
-  <label class="checkbox">
-    <input type="checkbox" checked>
-    Preferentes <span class="count">25</span>
-  </label>
-
-</aside>
-
+      <label class="checkbox">
+        <input type="checkbox" checked />
+        Preferentes <span class="count">25</span>
+      </label>
+    </aside>
   </div>
   <main class="results" id="cards-start">
-
     <!-- CARDS -->
     <div class="card" *ngFor="let plan of resultadosPaginados">
       <div class="card-left">
         <span class="tag">Preferente</span>
 
         <div class="company">
-          <img src="https://via.placeholder.com/40">
+          <img src="https://via.placeholder.com/40" />
           <strong>{{ plan.isapre }}</strong>
         </div>
 
@@ -263,9 +351,7 @@
       </div>
 
       <div class="card-center">
-        <label>
-          <input type="checkbox"> Comparar
-        </label>
+        <label> <input type="checkbox" /> Comparar </label>
 
         <div class="score" *ngIf="mostrarPuntaje">
           Puntaje
@@ -289,10 +375,8 @@
       </div>
     </div>
 
-    
     <!-- PAGINACIÓN -->
     <div class="pagination" *ngIf="totalPaginas > 1">
-
       <button (click)="paginaAnterior()" [disabled]="paginaActual === 1">
         ‹ Anterior
       </button>
@@ -301,7 +385,8 @@
       <button
         *ngIf="mostrarPrimeraPagina"
         (click)="irAPagina(1)"
-        [class.active]="paginaActual === 1">
+        [class.active]="paginaActual === 1"
+      >
         1
       </button>
 
@@ -312,7 +397,8 @@
       <button
         *ngFor="let page of paginasVisibles"
         (click)="irAPagina(page)"
-        [class.active]="paginaActual === page">
+        [class.active]="paginaActual === page"
+      >
         {{ page }}
       </button>
 
@@ -323,27 +409,27 @@
       <button
         *ngIf="mostrarUltimaPagina"
         (click)="irAPagina(totalPaginas)"
-        [class.active]="paginaActual === totalPaginas">
+        [class.active]="paginaActual === totalPaginas"
+      >
         {{ totalPaginas }}
       </button>
 
-      <button (click)="paginaSiguiente()" [disabled]="paginaActual === totalPaginas">
+      <button
+        (click)="paginaSiguiente()"
+        [disabled]="paginaActual === totalPaginas"
+      >
         Siguiente ›
       </button>
-
     </div>
-
-
   </main>
 </div>
-
-
 
 <app-modal-detalle
   [plan]="planSeleccionado"
   [isVisible]="mostrarDetalleModal"
   (close)="cerrarDetalle()"
-  (solicitar)="desdeDetalleASolicitar()">
+  (solicitar)="desdeDetalleASolicitar()"
+>
 </app-modal-detalle>
 
 <app-modal-solicitar
@@ -351,5 +437,6 @@
   [isVisible]="mostrarSolicitarModal"
   (close)="cerrarSolicitar()"
   (submitForm)="procesarSolicitud($event)"
-  (verDetallePlan)="abrirDetalleDesdeSolicitar()">
+  (verDetallePlan)="abrirDetalleDesdeSolicitar()"
+>
 </app-modal-solicitar>
