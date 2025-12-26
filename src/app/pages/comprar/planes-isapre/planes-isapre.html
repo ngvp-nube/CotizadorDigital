@@ -17,10 +17,26 @@
         </select>
       </div>
 
-      <div class="box-input">
-        <label>Ingreso Líquido</label>
-        <input type="number" [(ngModel)]="filtros.ingreso" placeholder="$ 0">
-      </div>
+    <div class="box-input">
+      <label class="label-info">
+        Renta imponible bruta
+
+        <span class="info-icon">
+          i
+          <span class="tooltip">
+            Puedes seleccionar el mínimo o máximo del valor prima dispuesto a pagar.
+            Buscaremos productos cuyo valor final se encuentre en este rango.
+          </span>
+        </span>
+      </label>
+
+      <input
+        type="number"
+        [(ngModel)]="filtros.ingreso"
+        placeholder="$ 0"
+      >
+    </div>
+
 
       <div class="box-input">
         <label>Edad</label>
@@ -28,11 +44,8 @@
       </div>
 
       <div class="box-input">
-        <label>Sexo</label>
-        <select [(ngModel)]="filtros.sexo">
-          <option value="Hombre">Hombre</option>
-          <option value="Mujer">Mujer</option>
-        </select>
+        <label>Sistema de salud actual</label>
+          <input type="text">
       </div>
 
       <div class="box-input group-modal">
@@ -58,13 +71,10 @@
           <div class="conyuge-details" *ngIf="tieneConyuge">
             <div class="conyuge-row-inline">
               <div class="sex-pick-full">
-                <label>Sexo</label>
+                <label>Sistema de salud actual</label>
                 <div class="radio-options">
                   <label>
-                    <input type="radio" [name]="'s-conyuge'" [(ngModel)]="conyuge.sexo" value="Hombre"> Hombre
-                  </label>
-                  <label>
-                    <input type="radio" [name]="'s-conyuge'" [(ngModel)]="conyuge.sexo" value="Mujer"> Mujer
+                    <input type="text">
                   </label>
                 </div>
               </div>
@@ -94,26 +104,6 @@
               <p>Carga {{ i + 1 }}</p>
 
               <div class="carga-row-inline">
-                <div class="sex-pick-full">
-                  <label>Sexo</label>
-                  <div class="radio-options">
-                    <label>
-                      <input type="radio"
-                             [name]="'sexo-carga-' + i"
-                             [(ngModel)]="c.sexo"
-                             value="Hombre">
-                      Hombre
-                    </label>
-                    <label>
-                      <input type="radio"
-                             [name]="'sexo-carga-' + i"
-                             [(ngModel)]="c.sexo"
-                             value="Mujer">
-                      Mujer
-                    </label>
-                  </div>
-                </div>
-
                 <div class="age-pick-full">
                   <label>Edad</label>
                   <input type="number" [(ngModel)]="c.edad">

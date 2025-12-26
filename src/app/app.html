@@ -11,6 +11,42 @@
     <!-- LINKS -->
     <ul class="nav-links">
 
+            <!-- PLANES ISAPRE -->
+      <li
+        class="has-dropdown"
+        [class.open]="activeDropdown === 'isapre'"
+        (click)="onDropdownTrigger($event, 'isapre')"
+      >
+        <a routerLink="/comprar/planes-isapre">
+          Planes de Isapre <i class="arrow-down"></i>
+        </a>
+
+      </li>
+
+            <!-- SEGUROS DE VIDA -->
+      <li
+        class="has-dropdown"
+        [class.open]="activeDropdown === 'vida'"
+        (click)="onDropdownTrigger($event, 'vida')"
+      >
+        <a routerLink="/comprar/seguros-vida">
+          Seguros de Vida <i class="arrow-down"></i>
+        </a>
+
+      </li>
+
+            <!-- SEGUROS PYME -->
+      <li
+        class="has-dropdown"
+        [class.open]="activeDropdown === 'pyme'"
+        (click)="onDropdownTrigger($event, 'pyme')"
+      >
+        <a routerLink="/comprar/seguro-empresa">
+          Seguros Pyme <i class="arrow-down"></i>
+        </a>
+
+      </li>
+
       <!-- SEGUROS DE SALUD -->
       <li
         class="has-dropdown"
@@ -23,41 +59,6 @@
 
       </li>
 
-      <!-- SEGUROS PYME -->
-      <li
-        class="has-dropdown"
-        [class.open]="activeDropdown === 'pyme'"
-        (click)="onDropdownTrigger($event, 'pyme')"
-      >
-        <a routerLink="/comprar/seguro-empresa">
-          Seguros Pyme <i class="arrow-down"></i>
-        </a>
-
-      </li>
-
-      <!-- PLANES ISAPRE -->
-      <li
-        class="has-dropdown"
-        [class.open]="activeDropdown === 'isapre'"
-        (click)="onDropdownTrigger($event, 'isapre')"
-      >
-        <a routerLink="/comprar/planes-isapre">
-          Planes de Isapre <i class="arrow-down"></i>
-        </a>
-
-      </li>
-
-      <!-- SEGUROS DE VIDA -->
-      <li
-        class="has-dropdown"
-        [class.open]="activeDropdown === 'vida'"
-        (click)="onDropdownTrigger($event, 'vida')"
-      >
-        <a routerLink="/comprar/seguros-vida">
-          Seguros de Vida <i class="arrow-down"></i>
-        </a>
-
-      </li>
 
       <!-- CONTACTO -->
       <li>
