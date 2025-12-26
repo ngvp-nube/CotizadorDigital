@@ -625,5 +625,80 @@ html, body {
   }
 }
 
+.health-select {
+  position: relative;
+}
+
+/* Caja cerrada */
+
+.health-select {
+  position: relative;
+}
+
+.health-selected {
+  padding: 10px;              // 👈 MISMO padding
+  border-radius: 8px;         // 👈 MISMO radio
+  border: 1px solid #ddd;     // 👈 MISMO borde
+  background: #fff;
+
+  font-size: 13px;
+  color: #111827;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  cursor: pointer;
+}
+
+
+/* Flecha */
+.arrow {
+  font-size: 12px;
+  transition: transform 0.2s ease;
+  color: #6b7280;
+
+  &.open {
+    transform: rotate(180deg);
+  }
+}
+
+/* Dropdown */
+.health-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+
+  overflow: hidden;
+  z-index: 3000;
+}
+
+/* Opciones */
+.health-option {
+  padding: 10px;          // 👈 MISMO padding que input
+  font-size: 14px;
+  cursor: pointer;
+
+  &:hover {
+    background: #e8f2ff;
+  }
+}
+
+
+.health-selected:hover {
+  border-color: #1e90ff;
+}
+
+.health-selected:focus-within {
+  border-color: #1e90ff;
+  box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.15);
+}
+
 
 

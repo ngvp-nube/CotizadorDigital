@@ -285,4 +285,13 @@ actualizarPaginacion(): void {
       this.mostrarDetalleModal = true;
     }, 150);
   }
+
+  healthOpen = false;
+  healthSelected: string | null = null;
+
+  selectHealth(value: string) {
+  this.healthSelected = value;
+  this.healthOpen = false;
+  }
+
 }

@@ -44,9 +44,32 @@
       </div>
 
       <div class="box-input">
-        <label>Sistema de salud actual</label>
-          <input type="text">
+        <label class="label-info">
+          <span class="label-text">Sistema de salud actual</span>
+          <span class="info-icon">i</span>
+        </label>
+
+        <div class="health-select"(clickOutside)="healthOpen = false">
+          <div class="health-selected" (click)="healthOpen = !healthOpen">
+            {{ healthSelected || 'Selecciona' }}
+            <span class="arrow" [class.open]="healthOpen">⌄</span>
+          </div>
+
+          <div class="health-dropdown" *ngIf="healthOpen">
+            <div class="health-option" (click)="selectHealth('Fonasa')">Fonasa</div>
+            <div class="health-option" (click)="selectHealth('Banmédica')">Banmédica</div>
+            <div class="health-option" (click)="selectHealth('Colmena')">Colmena</div>
+            <div class="health-option" (click)="selectHealth('Consalud')">Consalud</div>
+            <div class="health-option" (click)="selectHealth('Cruz Blanca')">Cruz Blanca</div>
+            <div class="health-option" (click)="selectHealth('Nueva Masvida')">Nueva Masvida</div>
+            <div class="health-option" (click)="selectHealth('Vida Tres')">Vida Tres</div>
+            <div class="health-option" (click)="selectHealth('Esencial')">Esencial</div>
+            <div class="health-option" (click)="selectHealth('No tiene')">No tiene</div>
+          </div>
+        </div>
       </div>
+
+
 
       <div class="box-input group-modal">
         <label>Asegurados</label>
