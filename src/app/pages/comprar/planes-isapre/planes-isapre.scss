@@ -700,5 +700,282 @@ html, body {
   box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.15);
 }
 
+// MODAL DE ASEGURADOS //
+
+.group-modal {
+  position: relative; // 🔑 necesario para anclar el popover
+}
+
+//POPOVER //
+
+.popover-modal {
+  position: absolute;
+  top: calc(100% + 10px);
+
+  left: 50%;
+  transform: translateX(-50%); // 👈 lo centra respecto al botón
+
+  width: 460px;
+  max-width: 95vw;
+
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.28);
+
+  z-index: 3000;
+
+  display: flex;
+  flex-direction: column;
+
+  animation: popoverIn 0.2s ease-out;
+}
+
+
+//ANIMACION//
+
+@keyframes popoverIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+//HEADER//
+
+.popover-head {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  span {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2563eb;
+  }
+
+  button {
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #6b7280;
+  }
+}
+
+.popover-content {
+  padding: 20px;
+}
+
+.popover-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  min-height: 32px;  
+
+  label {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+  }
+}
+
+.toggle-switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    inset: 0;
+    background-color: #e5e7eb;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .slider::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 2px;
+    top: 2px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+  }
+
+  input:checked + .slider {
+    background-color: #f472b6;
+  }
+
+  input:checked + .slider::before {
+    transform: translateX(20px);
+  }
+}
+
+.conyuge-row-inline,
+.carga-row-inline {
+  display: grid;
+  grid-template-columns: 1fr 170px;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.input-full-width {
+  margin-bottom: 16px;
+
+  input {
+    width: 100%;
+  }
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  button {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid #3b82f6;
+    background: #ffffff;
+    color: #3b82f6;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  span {
+    min-width: 20px;
+    text-align: center;
+    font-weight: 500;
+  }
+}
+
+.carga-card-item {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 12px;
+  margin-top: 12px;
+
+  p {
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+}
+
+.btn-main-action {
+  margin: 0 20px 20px;
+  padding: 14px;
+  border-radius: 12px;
+
+  background: #38bdf8;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+
+  border: none;
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #0ea5e9;
+  }
+}
+
+.age-pick-full input {
+  width: 100%;
+  min-width: 0; // 🔑 evita overflow en grid
+}
+
+.sex-pick-full {
+  min-width: 0; // 🔑 permite que el grid controle el ancho
+}
+
+
+@media (max-width: 768px) {
+  .popover-modal {
+    width: 100%;
+    right: auto;
+    left: 0;
+  }
+
+}
+
+@media (max-width: 1024px) {
+  .popover-modal {
+    width: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .popover-modal {
+    position: fixed;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+
+    transform: none;
+
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 90vh;
+
+    border-radius: 16px 16px 0 0;
+
+    animation: popoverMobileIn 0.25s ease-out;
+  }
+
+  .popover-content {
+    overflow-y: auto;
+    max-height: calc(90vh - 120px); // deja espacio al header + CTA
+  }
+
+  .btn-main-action {
+    position: sticky;
+    bottom: 0;
+    margin: 0;
+    border-radius: 0;
+  }
+}
+
+@keyframes popoverMobileIn {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .group-modal {
+    position: static; // evita conflictos con fixed
+  }
+}
+
+
+
 
 
