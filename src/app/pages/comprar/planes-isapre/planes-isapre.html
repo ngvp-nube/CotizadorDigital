@@ -26,9 +26,47 @@
           <span class="info-icon">
             i
             <span class="tooltip">
-              Puedes seleccionar el mínimo o máximo del valor prima dispuesto a
-              pagar. Buscaremos productos cuyo valor final se encuentre en este
-              rango.
+              ❓ ¿Qué significa “Renta imponible” y “Renta líquida”?
+             <p><strong>🔹 Renta imponible</strong></p>
+              <p>
+                Es el sueldo bruto sobre el cual se calculan tus cotizaciones obligatorias,
+                incluyendo el <strong>7% de salud</strong>.
+              </p>
+
+              <p class="highlight">
+                👉 Las Isapres calculan el valor del plan siempre sobre este monto,
+                no sobre el sueldo líquido.
+              </p>
+
+              <p class="example">
+    <strong>Ejemplo:</strong><br>
+    Si tu renta imponible es $1.000.000, tu 7% de salud corresponde a $70.000.
+  </p>
+
+  <hr>
+
+  <p><strong>🔹 Renta líquida</strong></p>
+  <p>
+    Es el dinero que recibes finalmente en tu cuenta,
+    después de descontar salud, AFP e impuestos.
+  </p>
+
+  <p class="highlight">
+    👉 No se utiliza para calcular planes de Isapre,
+    solo refleja tu ingreso final.
+  </p>
+
+  <hr>
+
+  <p><strong>✅ ¿Por qué te pedimos la renta imponible?</strong></p>
+  <p>
+    Porque la ley exige que el 7% de salud se calcule sobre la renta imponible.
+    Así podemos mostrarte planes reales, precios correctos y opciones
+    que efectivamente puedes contratar.
+  </p>
+
+              <p></p>
+
             </span>
           </span>
         </label>
@@ -106,17 +144,7 @@
           <div class="popover-content">
 
             <!-- CONYUGE TOGGLE -->
-            <div class="popover-row">
-              <label>Pareja/Cónyuge</label>
-              <div class="toggle-switch">
-                <input
-                  type="checkbox"
-                  id="conyuge"
-                  [(ngModel)]="tieneConyuge"
-                />
-                <label for="conyuge" class="slider"></label>
-              </div>
-            </div>
+      
 
             <!-- CONYUGE DETAILS -->
             <div class="conyuge-details" *ngIf="tieneConyuge">
@@ -234,8 +262,7 @@
 
       <div class="rating-toggle">
         <label>
-          <input type="checkbox" />
-          <span class="puntaje-badge">✅ ¿Qué es el Puntaje?</span>
+          <span class="info-link" (click)="mostrarInfo7Porciento()"> Reajustados a tu 7 %</span>
         </label>
       </div>
 
