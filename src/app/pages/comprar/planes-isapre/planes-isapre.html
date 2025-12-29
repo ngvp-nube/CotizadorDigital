@@ -15,7 +15,7 @@
         <label>Región</label>
         <select [(ngModel)]="filtros.region">
           <option value="" disabled selected>Selecciona</option>
-          <option value="RM">Metropolitana</option>
+          <option *ngFor="let region of regiones" [value]="region.id">{{ region.nombre }}</option>
         </select>
       </div>
 

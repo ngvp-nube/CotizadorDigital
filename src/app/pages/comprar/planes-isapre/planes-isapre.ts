@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalDetalleComponent, Planes } from '../../modals/modal-detalle/modal-detalle';
 import { ModalSolicitarComponent } from '../../modals/modal-solicitar/modal-solicitar';
+import { LocalstorageService } from '../../../services/localstorage';
 
 /* =========================
    INTERFACES AUXILIARES
@@ -37,8 +38,24 @@ interface CargaFamiliar {
   
 })
 
+  
+
 
 export class PlanesIsapre {
+
+  regiones: any[] = [];
+
+  constructor(private localstorageService: LocalstorageService) {
+    
+  }
+
+    ngOnInit(){
+    this.localstorageService.get('/api/regiones').subscribe(data => {
+    console.log(data);
+    this.regiones = data;
+    });
+    this.buscarPlanes();
+    }
 
   /* =========================
      FILTROS
@@ -220,9 +237,7 @@ actualizarPaginacion(): void {
   mostrarDetalleModal = false;
   mostrarSolicitarModal = false;
 
-  constructor() {
-    this.buscarPlanes();
-  }
+
 
   /* =========================
      BUSCAR PLANES (MOCK)

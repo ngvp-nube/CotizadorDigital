@@ -727,7 +727,7 @@ html, body {
   display: flex;
   flex-direction: column;
 
-  animation: popoverIn 0.2s ease-out;
+  animation: popoverFadeIn 0.2s ease-out;
 }
 
 
@@ -736,11 +736,11 @@ html, body {
 @keyframes popoverIn {
   from {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateX(-50%) translateY(-6px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
   }
 }
 
@@ -815,7 +815,8 @@ html, body {
     width: 20px;
     height: 20px;
     left: 2px;
-    top: 2px;
+    top: 50%;
+    transform: translateY(-50%);
     background-color: #ffffff;
     border-radius: 50%;
     transition: transform 0.2s ease;
@@ -826,7 +827,7 @@ html, body {
   }
 
   input:checked + .slider::before {
-    transform: translateX(20px);
+    transform: translate(20px, -50%);
   }
 }
 
