@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ModalDetalleComponent, Planes } from '../../modals/modal-detalle/modal-detalle';
 import { ModalSolicitarComponent } from '../../modals/modal-solicitar/modal-solicitar';
 import { LocalstorageService } from '../../../services/localstorage';
+import Swal from 'sweetalert2';
 
 /* =========================
    INTERFACES AUXILIARES
@@ -318,6 +319,76 @@ actualizarPaginacion(): void {
   this.healthSelected = value;
   this.healthOpen = false;
   }
+
+
+
+
+
+
+mostrarInfo7Porciento() {
+  Swal.fire({
+    title: 'Resultados ajustados a tu 7% de salud',
+    icon: 'info',
+    width: 500,
+    padding: '1.2rem',
+    confirmButtonText: 'Cerrar',
+    confirmButtonColor: '#3f4cff',
+    customClass: {
+      popup: 'swal-renta-info'
+    },
+    html: `
+      <div style="text-align:left; font-size:13px; line-height:1.6;">
+
+        <div style="display:flex; gap:16px; margin-bottom:12px;">
+          
+          <div style="flex:1;">
+            <p style="font-weight:600; color:#3f4cff; margin-bottom:6px;">
+              👨‍👩‍👧 Dependientes
+            </p>
+            <p>
+              Si trabajas con contrato, tu empleador aporta un <strong>7% de tu sueldo
+              imponible</strong> para salud.
+            </p>
+            <p>
+              Ese monto puedes destinarlo libremente en el plan que prefieras, pero
+              debes ocupar al menos ese monto.
+            </p>
+            <p>
+              Si te aparecen pocas opciones o no te gusta la cobertura, es porque
+              con ese 7% no alcanza para planes más altos.
+            </p>
+            <p>
+              👉 Usa el filtro <strong>“Precio”</strong> para ver opciones que se ajusten
+              a tu cotización.
+            </p>
+          </div>
+
+          <div style="flex:1;">
+            <p style="font-weight:600; color:#3f4cff; margin-bottom:6px;">
+              🧑 Independientes
+            </p>
+            <p>
+              Si trabajas sin contrato o no trabajas, puedes elegir igualmente
+              el plan que quieras.
+            </p>
+            <p>
+              La diferencia es que debes destinar lo que quieras al plan y
+              <strong>no ingreses renta</strong> en el perfil.
+            </p>
+            <p>
+              👉 Usa el filtro <strong>“Precio”</strong> para buscar planes que se
+              acomoden a tu disposición de pago.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    `
+  });
+}
+
+
 
 
 
