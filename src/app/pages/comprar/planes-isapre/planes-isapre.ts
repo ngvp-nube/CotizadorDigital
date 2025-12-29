@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ModalDetalleComponent, Planes } from '../../modals/modal-detalle/modal-detalle';
+import { ModalDetalleComponent } from '../../modals/modal-detalle/modal-detalle';
 import { ModalSolicitarComponent } from '../../modals/modal-solicitar/modal-solicitar';
 import { LocalstorageService } from '../../../services/localstorage';
 import Swal from 'sweetalert2';
@@ -20,7 +20,6 @@ interface CargaFamiliar {
   edad: number | null;
 }
 
-
 /* =========================
    COMPONENTE
 ========================= */
@@ -36,27 +35,48 @@ interface CargaFamiliar {
   ],
   templateUrl: './planes-isapre.html',
   styleUrls: ['./planes-isapre.scss']
-  
 })
-
-  
-
-
 export class PlanesIsapre {
 
-  regiones: any[] = [];
+  /* =========================
+     DATA BASE
+  ========================= */
 
-  constructor(private localstorageService: LocalstorageService) {
+  regiones: any[] = [];
+  planesIsapre: any[] = [];
+  resultados: any[] = [];
+  resultadosPaginados: any[] = [];
+
+  constructor(private localstorageService: LocalstorageService) {}
+
+  /* =========================
+     INIT
+  ========================= */
+
+  ngOnInit(): void {
+
+    // Regiones
+    this.localstorageService.getRegiones().subscribe({
+      next:(data) => {
+        this.regiones = data;
+        console.log("Regiones", data);
+         
+      }
+    });
+    
+
+    // Planes Isapre (FUENTE ÚNICA)
+    this.localstorageService.getPlanes().subscribe({
+      next:(data) => {
+        this.planesIsapre = data;
+        console.log("Planes", data);
+        this.resultados = data;
+        this.resetPaginacion();
+        this.actualizarPaginacion();
+      }
+    });
     
   }
-
-    ngOnInit(){
-    this.localstorageService.get('/api/regiones').subscribe(data => {
-    console.log(data);
-    this.regiones = data;
-    });
-    this.buscarPlanes();
-    }
 
   /* =========================
      FILTROS
@@ -70,6 +90,26 @@ export class PlanesIsapre {
   };
 
   /* =========================
+   SALUD (SELECT PRINCIPAL)
+  ========================= */
+
+  healthOpen = false;
+  healthSelected: string | null = null;
+
+  selectHealth(value: string): void {
+  this.healthSelected = value;
+  this.healthOpen = false;
+  }
+
+  /* =========================
+   MODAL ASEGURADOS
+  ========================= */
+
+  toggleModal(): void {
+  this.mostrarModal = !this.mostrarModal;
+  }
+
+  /* =========================
      ASEGURADOS
   ========================= */
 
@@ -78,18 +118,34 @@ export class PlanesIsapre {
   cargas: CargaFamiliar[] = [];
 
   conyuge: Conyuge = {
-  edad: null,
-  ingreso: null,
-  sistemaSalud: ''
+    edad: null,
+    ingreso: null,
+    sistemaSalud: ''
   };
+
   conyugeHealthOpen = false;
 
   selectConyugeHealth(value: string): void {
-  this.conyuge.sistemaSalud = value;
-  this.conyugeHealthOpen = false;
-}
+    this.conyuge.sistemaSalud = value;
+    this.conyugeHealthOpen = false;
+  }
 
+  /* =========================
+   CARGAS FAMILIARES
+  ========================= */
+  incrementarCargas(): void {
+  this.cargas.push({ edad: null });
+  }
 
+  decrementarCargas(): void {
+    if (this.cargas.length > 0) {
+      this.cargas.pop();
+    }
+  }
+
+  /* =========================
+     CLÍNICAS
+  ========================= */
 
   clinicaSearch = '';
   mostrarLista = false;
@@ -106,42 +162,21 @@ export class PlanesIsapre {
 
   clinicasFiltradas: string[] = [];
 
-  filtrarClinicas() {
-  const texto = this.clinicaSearch.toLowerCase();
-
-  this.clinicasFiltradas = this.clinicas.filter(c =>
-    c.toLowerCase().includes(texto)
-  );
-}
-
-seleccionarClinica(clinica: string) {
-  this.clinicaSearch = clinica;
-  this.mostrarLista = false;
-
-  // 👉 aquí luego puedes disparar el filtro real
-}
-
-
-  toggleModal(): void {
-    this.mostrarModal = !this.mostrarModal;
+  filtrarClinicas(): void {
+    const texto = this.clinicaSearch.toLowerCase();
+    this.clinicasFiltradas = this.clinicas.filter(c =>
+      c.toLowerCase().includes(texto)
+    );
   }
 
-  incrementarCargas(): void {
-    this.cargas.push({ edad: null });
-  }
-
-  decrementarCargas(): void {
-    if (this.cargas.length > 0) {
-      this.cargas.pop();
-    }
+  seleccionarClinica(clinica: string): void {
+    this.clinicaSearch = clinica;
+    this.mostrarLista = false;
   }
 
   /* =========================
-     RESULTADOS
+     RESULTADOS / VISTA
   ========================= */
-
-  resultados: Planes[] = [];
-  resultadosPaginados: Planes[] = [];
 
   mostrarPuntaje = true;
   ordenarPor = 'price';
@@ -158,53 +193,54 @@ seleccionarClinica(clinica: string) {
   paginaActual = 1;
   itemsPorPagina = 15;
   totalPaginas = 0;
-  paginas: number[] = [];
+  paginasVisibles: number[] = [];
 
-  // 🔥 ESTAS FALTABAN
   mostrarPrimeraPagina = false;
   mostrarUltimaPagina = false;
   mostrarDotsInicio = false;
   mostrarDotsFinal = false;
 
-actualizarPaginacion(): void {
-  this.totalPaginas = Math.ceil(this.resultados.length / this.itemsPorPagina);
-
-  const maxPaginasVisibles = 5;
-
-  // Rango central SIN incluir 1 ni última
-  let inicio = Math.max(this.paginaActual - 2, 2);
-  let fin = Math.min(inicio + maxPaginasVisibles - 1, this.totalPaginas - 1);
-
-  // Ajuste cuando estamos cerca del final
-  if (this.paginaActual >= this.totalPaginas - 2) {
-    fin = this.totalPaginas - 1;
-    inicio = Math.max(fin - maxPaginasVisibles + 1, 2);
+  private resetPaginacion(): void {
+    this.paginaActual = 1;
   }
 
-  // Ajuste cuando estamos cerca del inicio
-  if (this.paginaActual <= 3) {
-    inicio = 2;
-    fin = Math.min(maxPaginasVisibles + 1, this.totalPaginas - 1);
+  private aplicarResultados(data: any[]): void {
+    this.resultados = data;
+    this.resetPaginacion();
+    this.actualizarPaginacion();
   }
 
-  // Construir páginas centrales
-  this.paginasVisibles = [];
-  for (let i = inicio; i <= fin; i++) {
-    this.paginasVisibles.push(i);
+  actualizarPaginacion(): void {
+    this.totalPaginas = Math.ceil(this.resultados.length / this.itemsPorPagina);
+
+    const maxPaginasVisibles = 5;
+    let inicio = Math.max(this.paginaActual - 2, 2);
+    let fin = Math.min(inicio + maxPaginasVisibles - 1, this.totalPaginas - 1);
+
+    if (this.paginaActual >= this.totalPaginas - 2) {
+      fin = this.totalPaginas - 1;
+      inicio = Math.max(fin - maxPaginasVisibles + 1, 2);
+    }
+
+    if (this.paginaActual <= 3) {
+      inicio = 2;
+      fin = Math.min(maxPaginasVisibles + 1, this.totalPaginas - 1);
+    }
+
+    this.paginasVisibles = [];
+    for (let i = inicio; i <= fin; i++) {
+      this.paginasVisibles.push(i);
+    }
+
+    this.mostrarPrimeraPagina = this.totalPaginas > 1;
+    this.mostrarUltimaPagina = this.totalPaginas > 1;
+    this.mostrarDotsInicio = inicio > 2;
+    this.mostrarDotsFinal = fin < this.totalPaginas - 1;
+
+    const startIndex = (this.paginaActual - 1) * this.itemsPorPagina;
+    const endIndex = startIndex + this.itemsPorPagina;
+    this.resultadosPaginados = this.resultados.slice(startIndex, endIndex);
   }
-
-  // Flags visuales
-  this.mostrarPrimeraPagina = this.totalPaginas > 1;
-  this.mostrarUltimaPagina = this.totalPaginas > 1;
-
-  this.mostrarDotsInicio = inicio > 2;
-  this.mostrarDotsFinal = fin < this.totalPaginas - 1;
-
-  // Slice de resultados
-  const startIndex = (this.paginaActual - 1) * this.itemsPorPagina;
-  const endIndex = startIndex + this.itemsPorPagina;
-  this.resultadosPaginados = this.resultados.slice(startIndex, endIndex);
-}
 
   irAPagina(pagina: number): void {
     if (pagina < 1 || pagina > this.totalPaginas) return;
@@ -212,13 +248,11 @@ actualizarPaginacion(): void {
     this.paginaActual = pagina;
     this.actualizarPaginacion();
 
-    // 🔥 Scroll EXACTO al inicio de las cards
     setTimeout(() => {
       const el = document.getElementById('cards-start');
       el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 0);
   }
-
 
   paginaAnterior(): void {
     this.irAPagina(this.paginaActual - 1);
@@ -228,55 +262,20 @@ actualizarPaginacion(): void {
     this.irAPagina(this.paginaActual + 1);
   }
 
-  paginasVisibles: number[] = [];
-
   /* =========================
      MODALES
   ========================= */
 
-  planSeleccionado: Planes | null = null;
+  planSeleccionado: any | null = null;
   mostrarDetalleModal = false;
   mostrarSolicitarModal = false;
 
-
-
-  /* =========================
-     BUSCAR PLANES (MOCK)
-  ========================= */
-
-  buscarPlanes(): void {
-    this.mostrarModal = false;
-
-    const totalAsegurados =
-      1 + (this.tieneConyuge ? 1 : 0) + this.cargas.length;
-
-    this.resultados = new Array(400).fill(null).map((_, i): Planes => ({
-      isapre: 'Banmédica',
-      nombrePlan: `Plan Salud Total ${i + 1}`,
-      valor: 8500 * totalAsegurados,
-      puntaje: 7.8,
-      prestadores: 'Red Preferente Banmédica',
-      hospitalaria: '90%',
-      urgencia: '70%',
-      topeAnual: '7.000 UF',
-      tipoCobertura: 'Preferentes'
-    }));
-
-    // 🔥 RESET + PAGINACIÓN
-    this.paginaActual = 1;
-    this.actualizarPaginacion();
-  }
-
-  /* =========================
-     CONTROL MODALES
-  ========================= */
-
-  abrirDetalle(plan: Planes): void {
+  abrirDetalle(plan: any): void {
     this.planSeleccionado = plan;
     this.mostrarDetalleModal = true;
   }
 
-  abrirSolicitud(plan: Planes): void {
+  abrirSolicitud(plan: any): void {
     this.planSeleccionado = plan;
     this.mostrarSolicitarModal = true;
   }
@@ -293,7 +292,6 @@ actualizarPaginacion(): void {
 
   desdeDetalleASolicitar(): void {
     this.mostrarDetalleModal = false;
-
     setTimeout(() => {
       this.mostrarSolicitarModal = true;
     }, 200);
@@ -301,30 +299,18 @@ actualizarPaginacion(): void {
 
   procesarSolicitud(payload: any): void {
     console.log('Solicitud Isapre enviada:', payload);
-    // 🔥 aquí luego conectas backend real
   }
 
   abrirDetalleDesdeSolicitar(): void {
     this.mostrarSolicitarModal = false;
-
     setTimeout(() => {
       this.mostrarDetalleModal = true;
     }, 150);
   }
 
-  healthOpen = false;
-  healthSelected: string | null = null;
-
-  selectHealth(value: string) {
-  this.healthSelected = value;
-  this.healthOpen = false;
-  }
-
-
-
-
-
-
+  /* =========================
+     INFO 7%
+  ========================= */
 mostrarInfo7Porciento() {
   Swal.fire({
     title: 'Resultados ajustados a tu 7% de salud',
@@ -387,10 +373,5 @@ mostrarInfo7Porciento() {
     `
   });
 }
-
-
-
-
-
 
 }

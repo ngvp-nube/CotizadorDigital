@@ -64,9 +64,7 @@
     Así podemos mostrarte planes reales, precios correctos y opciones
     que efectivamente puedes contratar.
   </p>
-
               <p></p>
-
             </span>
           </span>
         </label>
@@ -128,7 +126,7 @@
         <label>Asegurados</label>
 
         <button class="trigger" (click)="toggleModal()">
-          {{ (cargas.length > 0 || tieneConyuge) ? 'Modificar asegurados' : 'Agregar asegurados' }}
+          {{ (cargas.length > 0) ? 'Modificar asegurados' : 'Agregar asegurados' }}
         </button>
 
         <!-- POPOVER (mini modal debajo del botón) -->
@@ -241,14 +239,14 @@
           </div>
 
           <!-- CTA -->
-          <button class="btn-main-action" (click)="buscarPlanes()">
+          <button class="btn-main-action">
             Agregar y calcular precios
           </button>
 
         </div>
       </div>
 
-      <button class="btn-search" (click)="buscarPlanes()">
+      <button class="btn-search" >
         Calcular precios
       </button>
     </div>
@@ -316,7 +314,7 @@
     <aside class="sidebar">
       <!-- ===============================
        AUTOCOMPLETE CLÍNICAS
-  ================================ -->
+      ================================ -->
       <h4 class="title-inline">
         Clínicas y Hospitales
         <span class="info">i</span>
@@ -357,23 +355,25 @@
     </aside>
   </div>
   <main class="results" id="cards-start">
+
     <!-- CARDS -->
+
     <div class="card" *ngFor="let plan of resultadosPaginados">
       <div class="card-left">
-        <span class="tag">Preferente</span>
+        <span class="tag" *ngIf="plan.preferente">Preferente</span>
 
         <div class="company">
           <img src="https://via.placeholder.com/40" />
-          <strong>{{ plan.isapre }}</strong>
+          <strong>{{ plan.nombrePlan }}</strong>
         </div>
 
-        <h5>{{ plan.nombrePlan }}</h5>
+        <h5>{{ plan.plan }}</h5>
 
         <div class="features">
-          <span>🏥 Hospitalaria 90%</span>
-          <span>🚑 Urgencia 70%</span>
-          <span>🩺 Ambulatoria 70%</span>
-          <span>📄 Tope anual 7.000 UF</span>
+          <span>🏥 Hospitalaria {{plan.hospitalaria}}%</span>
+          <span>🚑 Urgencia {{plan.urgencia}}%</span>
+          <span>🩺 Ambulatoria {{plan.ambulatoria}}%</span>
+          <span>📄 Tope anual {{plan.topeAnualUf}} UF</span>
         </div>
       </div>
 
@@ -382,14 +382,14 @@
 
         <div class="score" *ngIf="mostrarPuntaje">
           Puntaje
-          <span class="score-value">7.8</span>
+          <span class="score-value">{{plan.puntaje}}</span>
           <small>de 7.8</small>
         </div>
       </div>
 
       <div class="card-right">
         <span class="price-label">Desde</span>
-        <span class="price">${{ plan.valor | number:'1.0-0' }}</span>
+        <span class="price">${{ plan.precioDesde | number:'1.0-0' }}</span>
         <small>/mes</small>
 
         <button class="btn-solicitar" (click)="abrirSolicitud(plan)">

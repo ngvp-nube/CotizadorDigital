@@ -6,10 +6,7 @@ import { Observable, of } from 'rxjs';
 })
 export class LocalstorageService {
 
-  private readonly KEY = 'regiones_chile';
-
-  // 👉 Arreglo estático
-  private readonly REGIONES = [
+  regiones = [
     { id: 1, nombre: 'Arica y Parinacota' },
     { id: 2, nombre: 'Tarapacá' },
     { id: 3, nombre: 'Antofagasta' },
@@ -26,22 +23,134 @@ export class LocalstorageService {
     { id: 14, nombre: 'Los Lagos' },
     { id: 15, nombre: 'Aysén' },
     { id: 16, nombre: 'Magallanes y Antártica Chilena' }
-  ];
 
-  constructor() {
-    // Inicializa localStorage una sola vez
-    if (!localStorage.getItem(this.KEY)) {
-      localStorage.setItem(this.KEY, JSON.stringify(this.REGIONES));
+  ]
+  planes = [  {
+    id: 1,
+    preferente: true,
+    nombrePlan: 'Banmédica',
+    logo: 'assets/img/isapres/banmedica.png',
+    plan: 'Plan Salud Total 1',
+    hospitalaria: 90,
+    urgencia: 70,
+    ambulatoria: 70,
+    topeAnualUf: 9000,
+    puntaje: 7.5,
+    precioDesde: 158500,
+  }
+  ,
+  {
+    id: 2,
+    preferente: true,
+    nombrePlan: 'Colmena',
+    logo: 'assets/img/isapres/banmedica.png',
+    plan: 'Plan Salud Total 2',
+    hospitalaria: 80,
+    urgencia: 80,
+    ambulatoria: 60,
+    topeAnualUf: 8000,
+    puntaje: 7.5,
+    precioDesde: 165000
+  }
+    ,
+  {
+    id: 3,
+    preferente: true,
+    nombrePlan: 'Consalud',
+    logo: 'assets/img/isapres/banmedica.png',
+    plan: 'Plan Salud Total 3',
+    hospitalaria: 85,
+    urgencia: 70,
+    ambulatoria: 65,
+    topeAnualUf: 6000,
+    puntaje: 7.5,
+    precioDesde: 130000
+  }
+    ,
+  {
+    id: 4,
+    preferente: true,
+    nombrePlan: 'Cruz Blanca',
+    logo: 'assets/img/isapres/banmedica.png',
+    plan: 'Plan Salud Total 4',
+    hospitalaria: 85,
+    urgencia: 75,
+    ambulatoria: 70,
+    topeAnualUf: 5000,
+    puntaje: 7.6,
+    precioDesde: 180000
+  }
+    ,
+  {
+    id: 5,
+    preferente: true,
+    nombrePlan: 'Nueva MasVida',
+    logo: 'assets/img/isapres/banmedica.png',
+    plan: 'Plan Salud Total 5',
+    hospitalaria: 80,
+    urgencia: 80,
+    ambulatoria: 60,
+    topeAnualUf: 8000,
+    puntaje: 7.5,
+    precioDesde: 175000
+  }
+    ,
+  {
+    id: 6,
+    preferente: true,
+    nombrePlan: 'Vida Tres',
+    logo: 'assets/img/isapres/banmedica.png',
+    plan: 'Plan Salud Total 6',
+    hospitalaria: 80,
+    urgencia: 80,
+    ambulatoria: 60,
+    topeAnualUf: 8000,
+    puntaje: 7.2,
+    precioDesde: 155000
+  }
+    ,
+  {
+    id: 7,
+    preferente: true,
+    nombrePlan: 'Esencial',
+    logo: 'assets/img/isapres/banmedica.png',
+    plan: 'Plan Salud Total 7',
+    hospitalaria: 80,
+    urgencia: 80,
+    ambulatoria: 60,
+    topeAnualUf: 8000,
+    puntaje: 7.5,
+    precioDesde: 165000
+  }
+];
+
+  // ========================
+// DATA PLANES ISAPRE (CARD)
+// ========================
+
+
+
+  constructor() {}
+  
+
+  get(url: string): Observable<any[]> {
+    if (url === '/api/regiones') {
+      return of(this.regiones);
     }
+
+    if (url === '/api/planes-isapre') {
+     return of(this.planes);
+    }
+
+    return of([]);
   }
 
-  // 👉 "URL fake" para la maqueta
-  get(url: string): Observable<any> {
 
-    if (url === '/api/regiones') {
-      return of(JSON.parse(localStorage.getItem(this.KEY) || '[]'));
-    }
+  getPlanes(): Observable<any[]> {
+    return of(this.planes); // simula llamada HTTP
+  }
 
-    return of(null);
+  getRegiones(): Observable<any[]> {
+    return of(this.regiones); // simula llamada HTTP
   }
 }

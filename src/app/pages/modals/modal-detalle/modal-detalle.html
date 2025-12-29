@@ -27,7 +27,7 @@
         <!-- PRECIO + SOLICITAR -->
         <div class="plan-price-action">
           <span class="price-amount">
-            ${{ plan?.valor | number:'1.0-0' }} <span>/mes</span>
+            ${{ plan?.precioDesde | number:'1.0-0' }} <span>/mes</span>
           </span>
 
           <button class="btn-solicitar-modal" (click)="solicitar.emit()">
@@ -55,7 +55,7 @@
         <h3 class="tab-section-title">Características de este plan</h3>
 
         <p class="plan-subtitle">
-          Este plan es <b>Preferente</b> y está pensado para quienes idealmente
+          Este plan es <b>{{plan.preferente}}</b> y está pensado para quienes idealmente
           se atienden en los siguientes lugares de preferencia:
         </p>
 
@@ -105,7 +105,7 @@
                   <small>(Operaciones, enfermedades, etc.)</small>
                 </div>
                 <div class="le-right">
-                  <span class="le-porcentaje">90%</span>
+                  <span class="le-porcentaje">{{plan?.hospitalaria}}%</span>
                 </div>
               </div>
 
@@ -117,7 +117,7 @@
                   <small>(Consultas médicas, exámenes, etc.)</small>
                 </div>
                 <div class="le-right">
-                  <span class="le-porcentaje">80%</span>
+                  <span class="le-porcentaje">{{plan?.ambulatoria}}%</span>
                 </div>
               </div>
             </div>
@@ -138,7 +138,7 @@
                   <i class="fas fa-home icon"></i>
                   <div>
                     <p>
-                      Este plan cubre hasta <b>7.000 UF</b> ($277.531.940 al año
+                      Este plan cubre hasta <b>{{plan?.topeAnualUf}} UF</b> ($277.531.940 al año
                       por persona).
                     </p>
                     <small
@@ -160,7 +160,7 @@
           <!-- COLUMNA DERECHA       -->
           <!-- ====================== -->
           <div class="columna-der">
-            <h4 class="section-title">Beneficios de {{ plan?.isapre }}</h4>
+            <h4 class="section-title">Beneficios de {{ plan?.nombrePlan }}</h4>
 
             <div class="beneficios-grid">
               <div class="benef-card">
@@ -326,7 +326,7 @@
         <div class="footer-left">
           <span class="footer-plan-nombre">{{ plan?.nombrePlan }}</span>
           <span class="footer-plan-precio">
-            ${{ plan?.valor | number:'1.0-0' }}<small>/mes</small>
+            ${{ plan?.precioDesde | number:'1.0-0' }}<small>/mes</small>
           </span>
         </div>
 

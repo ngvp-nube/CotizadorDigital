@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ModalDetalleComponent, Planes } from '../../modals/modal-detalle/modal-detalle';
+import { ModalDetalleComponent } from '../../modals/modal-detalle/modal-detalle';
 import { ModalSolicitarComponent } from '../../modals/modal-solicitar/modal-solicitar';
 
 /* =========================
@@ -79,8 +79,8 @@ export class SeguroEmpresa{
      RESULTADOS
   ========================= */
 
-  resultados: Planes[] = [];
-  resultadosPaginados: Planes[] = [];
+  resultados: any[] = [];
+  resultadosPaginados: any[] = [];
   
   mostrarPuntaje = true;
   ordenarPor = 'price';
@@ -170,12 +170,11 @@ actualizarPaginacion(): void {
      MODALES
   ========================= */
 
-  planSeleccionado: Planes | null = null;
+  planSeleccionado: any | null = null;
   mostrarDetalleModal = false;
   mostrarSolicitarModal = false;
 
   constructor() {
-    this.buscarPlanes();
   }
 
   /* =========================
@@ -188,7 +187,7 @@ actualizarPaginacion(): void {
     const totalAsegurados =
       1 + (this.tieneConyuge ? 1 : 0) + this.cargas.length;
 
-    this.resultados = new Array(20).fill(null).map((_, i): Planes => ({
+    this.resultados = new Array(20).fill(null).map((_, i): any => ({
       isapre: 'Banmédica',
       nombrePlan: `Plan Salud Total ${i + 1}`,
       valor: 8500 * totalAsegurados,
@@ -209,12 +208,12 @@ actualizarPaginacion(): void {
      CONTROL MODALES
   ========================= */
 
-  abrirDetalle(plan: Planes): void {
+  abrirDetalle(plan: any): void {
     this.planSeleccionado = plan;
     this.mostrarDetalleModal = true;
   }
 
-  abrirSolicitud(plan: Planes): void {
+  abrirSolicitud(plan: any): void {
     this.planSeleccionado = plan;
     this.mostrarSolicitarModal = true;
   }
