@@ -1,21 +1,16 @@
 import { Component, HostListener } from '@angular/core';
-import {
-  RouterOutlet,
-  RouterLink,
-  Router,
-  NavigationStart,
-  NavigationEnd
-} from '@angular/router';
+import {RouterOutlet, RouterLink,Router, NavigationStart, NavigationEnd} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { LoaderComponent } from './loader/loader';
 import { LoaderService } from './services/loader';
 import { Observable } from 'rxjs';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, CommonModule, LoaderComponent],
+  imports: [RouterOutlet, RouterLink, CommonModule, LoaderComponent, ReactiveFormsModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

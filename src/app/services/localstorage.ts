@@ -36,7 +36,7 @@ export class LocalstorageService {
     ambulatoria: 70,
     topeAnualUf: 9000,
     puntaje: 7.5,
-    precioDesde: 158500,
+    precioBase: 35000,
   }
   ,
   {
@@ -50,7 +50,7 @@ export class LocalstorageService {
     ambulatoria: 60,
     topeAnualUf: 8000,
     puntaje: 7.5,
-    precioDesde: 165000
+    precioBase: 60000
   }
     ,
   {
@@ -64,7 +64,7 @@ export class LocalstorageService {
     ambulatoria: 65,
     topeAnualUf: 6000,
     puntaje: 7.5,
-    precioDesde: 130000
+    precioBase: 25000
   }
     ,
   {
@@ -78,7 +78,7 @@ export class LocalstorageService {
     ambulatoria: 70,
     topeAnualUf: 5000,
     puntaje: 7.6,
-    precioDesde: 180000
+    precioBase: 36000
   }
     ,
   {
@@ -92,7 +92,7 @@ export class LocalstorageService {
     ambulatoria: 60,
     topeAnualUf: 8000,
     puntaje: 7.5,
-    precioDesde: 175000
+    precioBase: 32000
   }
     ,
   {
@@ -106,7 +106,7 @@ export class LocalstorageService {
     ambulatoria: 60,
     topeAnualUf: 8000,
     puntaje: 7.2,
-    precioDesde: 155000
+    precioBase: 45000
   }
     ,
   {
@@ -120,7 +120,7 @@ export class LocalstorageService {
     ambulatoria: 60,
     topeAnualUf: 8000,
     puntaje: 7.5,
-    precioDesde: 165000
+    precioBase: 30000
   }
 ];
 

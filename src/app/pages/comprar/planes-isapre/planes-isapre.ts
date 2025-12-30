@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ModalDetalleComponent } from '../../modals/modal-detalle/modal-detalle';
 import { ModalSolicitarComponent } from '../../modals/modal-solicitar/modal-solicitar';
 import { LocalstorageService } from '../../../services/localstorage';
+import { ReactiveFormsModule, FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import Swal from 'sweetalert2';
 
 /* =========================
@@ -31,7 +32,8 @@ interface CargaFamiliar {
     CommonModule,
     FormsModule,
     ModalDetalleComponent,
-    ModalSolicitarComponent
+    ModalSolicitarComponent,
+    ReactiveFormsModule,
   ],
   templateUrl: './planes-isapre.html',
   styleUrls: ['./planes-isapre.scss']
@@ -41,19 +43,29 @@ export class PlanesIsapre {
   /* =========================
      DATA BASE
   ========================= */
-
+  
+  cotizacionForm!: FormGroup;
   regiones: any[] = [];
   planesIsapre: any[] = [];
   resultados: any[] = [];
   resultadosPaginados: any[] = [];
 
-  constructor(private localstorageService: LocalstorageService) {}
+  constructor(private localstorageService: LocalstorageService, private fb: FormBuilder) {}
 
   /* =========================
      INIT
   ========================= */
 
   ngOnInit(): void {
+
+    this.initForm();
+
+    this.cotizacionForm.get('edad')?.valueChanges.subscribe(() => {
+    });
+
+    this.cotizacionForm.get('cargas')?.valueChanges.subscribe(() => {
+    // fuerza detección de cambios
+    });
 
     // Regiones
     this.localstorageService.getRegiones().subscribe({
@@ -69,13 +81,26 @@ export class PlanesIsapre {
     this.localstorageService.getPlanes().subscribe({
       next:(data) => {
         this.planesIsapre = data;
-        console.log("Planes", data);
+        console.log("Planes", this.planesIsapre[0].precioDesde);
         this.resultados = data;
         this.resetPaginacion();
         this.actualizarPaginacion();
       }
     });
-    
+  }
+
+  /* =========================
+     FORM INIT
+  ========================= */
+
+  initForm(): void {
+    this.cotizacionForm = this.fb.group({
+      edad: [0],
+      regioncoti: [''],
+      ingresocoti: [null],
+      sistemasaludcoti: [''],
+      cargas: this.fb.array([])
+    });
   }
 
   /* =========================
@@ -85,7 +110,7 @@ export class PlanesIsapre {
   filtros = {
     region: '',
     ingreso: null as number | null,
-    edad: 29,
+    edad: 0,
     sexo: 'Hombre'
   };
 
@@ -99,6 +124,9 @@ export class PlanesIsapre {
   selectHealth(value: string): void {
   this.healthSelected = value;
   this.healthOpen = false;
+  this.cotizacionForm.patchValue({
+    sistemasaludcoti: value
+  });
   }
 
   /* =========================
@@ -115,7 +143,6 @@ export class PlanesIsapre {
 
   mostrarModal = false;
   tieneConyuge = false;
-  cargas: CargaFamiliar[] = [];
 
   conyuge: Conyuge = {
     edad: null,
@@ -133,15 +160,34 @@ export class PlanesIsapre {
   /* =========================
    CARGAS FAMILIARES
   ========================= */
+
+  get cargasForm(): FormArray {
+  return this.cotizacionForm.get('cargas') as FormArray;
+  }
   incrementarCargas(): void {
-  this.cargas.push({ edad: null });
+  this.cargasForm.push(this.fb.group({ edadCarga: [null] }));
   }
 
   decrementarCargas(): void {
-    if (this.cargas.length > 0) {
-      this.cargas.pop();
+    if (this.cargasForm.length > 0) {
+      this.cargasForm.removeAt(this.cargasForm.length - 1);
     }
   }
+
+  getFactorCargas(): number {
+  let total = 0;
+
+  for (const carga of this.cargasForm.value) {
+    const edadCarga = Number(carga.edadCarga);
+
+    if (!isNaN(edadCarga) && edadCarga > 0) {
+      total += this.precioCargaPorEdad(edadCarga);
+    }
+  }
+  console.log('Factor cargas total:', total);
+    return total;
+  }
+
 
   /* =========================
      CLÍNICAS
@@ -374,4 +420,75 @@ mostrarInfo7Porciento() {
   });
 }
 
+//CALCULO DE PRECIO POR EDAD 
+  precioTitularPoredad(edad: number): number {
+    switch (true) {
+      case edad >= 0 && edad < 20:
+        return 0.6;
+
+      case edad >= 20 && edad < 25:
+        return 0.9;
+
+      case edad >= 25 && edad < 35:
+        return 1.0;
+
+      case edad >= 35 && edad < 45:
+        return 1.3;
+
+      case edad >= 45 && edad < 55:
+        return 1.4;
+
+      case edad >= 55 && edad < 65:
+        return 2.0;
+
+      default:
+        return 2.4;
+    }
+  }
+
+  precioCargaPorEdad(edad: number): number {
+    switch (true) {
+      case edad >= 0 && edad < 20:
+        return 0.6;
+
+      case edad >= 20 && edad < 25:
+        return 0.7;
+
+      case edad >= 25 && edad < 35:
+        return 0.7;
+
+      case edad >= 35 && edad < 45:
+        return 0.9;
+
+      case edad >= 45 && edad < 55:
+        return 1.0;
+
+      case edad >= 55 && edad < 65:
+        return 1.4;
+
+      default:
+        return 2.2;
+    }
+  }
+
+
+  calcularPrecioPlan(precioBase: number): number{
+    const edadRaw: number | null = this.cotizacionForm.get('edad')?.value;
+    const edadTitular = Number(edadRaw);
+
+    if (isNaN(edadTitular) || edadTitular < 0) {
+      return precioBase;
+    }
+
+     // 1️⃣ Factor del titular
+    const factorTitular = this.precioTitularPoredad(edadTitular);
+
+    // 2️⃣ Factor total de cargas
+    const factorCargas = this.getFactorCargas();
+
+    // 3️⃣ Precio final
+    return precioBase * (factorTitular + factorCargas);
+  }
+  
 }
+

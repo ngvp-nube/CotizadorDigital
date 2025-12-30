@@ -8,12 +8,12 @@
       </p>
     </div>
   </header>
-
+<form [formGroup]="cotizacionForm">
   <section class="search-bar">
     <div class="search-grid container-aligned">
       <div class="box-input">
         <label>Región</label>
-        <select [(ngModel)]="filtros.region">
+        <select  formControlName="regioncoti">
           <option value="" disabled selected>Selecciona</option>
           <option *ngFor="let region of regiones" [value]="region.id">{{ region.nombre }}</option>
         </select>
@@ -69,12 +69,12 @@
           </span>
         </label>
 
-        <input type="number" [(ngModel)]="filtros.ingreso" placeholder="$ 0" />
+        <input type="number" placeholder="$ 0" formControlName="ingresocoti" />
       </div>
 
       <div class="box-input">
         <label>Edad</label>
-        <input type="number" [(ngModel)]="filtros.edad" />
+        <input type="number" formControlName="edad" />
       </div>
 
       <div class="box-input">
@@ -84,8 +84,11 @@
         </label>
 
         <div class="health-select" (clickOutside)="healthOpen = false">
+
+          <input type="hidden" formControlName="sistemasaludcoti" />
+
           <div class="health-selected" (click)="healthOpen = !healthOpen">
-            {{ healthSelected || 'Selecciona' }}
+            {{ cotizacionForm.get('sistemasaludcoti')?.value || 'Selecciona' }}
             <span class="arrow" [class.open]="healthOpen">⌄</span>
           </div>
 
@@ -125,8 +128,8 @@
       <div class="box-input group-modal">
         <label>Asegurados</label>
 
-        <button class="trigger" (click)="toggleModal()">
-          {{ (cargas.length > 0) ? 'Modificar asegurados' : 'Agregar asegurados' }}
+        <button class="trigger" (click)="toggleModal()" type="button">
+          {{ (cargasForm.length > 0) ? 'Modificar asegurados' : 'Agregar asegurados' }}
         </button>
 
         <!-- POPOVER (mini modal debajo del botón) -->
@@ -135,7 +138,7 @@
           <!-- HEADER -->
           <div class="popover-head">
             <span>Agregar asegurados</span>
-            <button (click)="mostrarModal = false">×</button>
+            <button (click)="mostrarModal = false" type="button">×</button>
           </div>
 
           <!-- CONTENIDO -->
@@ -211,18 +214,15 @@
             <div class="popover-row">
               <label>Cargas</label>
               <div class="stepper">
-                <button (click)="decrementarCargas()">−</button>
-                <span>{{ cargas.length }}</span>
-                <button (click)="incrementarCargas()">+</button>
+                <button (click)="decrementarCargas()" type="button">−</button>
+                <span>{{ cargasForm.length }}</span>
+                <button (click)="incrementarCargas()" type="button">+</button>
               </div>
             </div>
 
             <!-- LISTA DE CARGAS -->
-            <div class="cargas-dynamic-list" *ngIf="cargas.length > 0">
-              <div
-                class="carga-card-item"
-                *ngFor="let c of cargas; let i = index"
-              >
+            <div class="cargas-dynamic-list" *ngIf="cargasForm.length > 0" formArrayName="cargas" >
+              <div class="carga-card-item" *ngFor="let carga of cargasForm.controls; let i = index" [formGroupName]="i">
                 <p>Carga {{ i + 1 }}</p>
 
                 <div class="carga-row-inline">
@@ -230,7 +230,7 @@
                     <label>Edad</label>
                     <input
                       type="number"
-                      [(ngModel)]="c.edad"
+                      formControlName = "edadCarga"
                     />
                   </div>
                 </div>
@@ -239,7 +239,7 @@
           </div>
 
           <!-- CTA -->
-          <button class="btn-main-action">
+          <button class="btn-main-action" type="button">
             Agregar y calcular precios
           </button>
 
@@ -251,6 +251,7 @@
       </button>
     </div>
   </section>
+</form>
 
   <section class="results-bar">
     <div class="container-aligned results-grid">
@@ -388,8 +389,7 @@
       </div>
 
       <div class="card-right">
-        <span class="price-label">Desde</span>
-        <span class="price">${{ plan.precioDesde | number:'1.0-0' }}</span>
+        <span class="price">${{ calcularPrecioPlan(plan.precioBase) | number:'1.0-0' }}</span>
         <small>/mes</small>
 
         <button class="btn-solicitar" (click)="abrirSolicitud(plan)">
