@@ -283,6 +283,7 @@ export class PlanesIsapre {
     this.mostrarDotsInicio = inicio > 2;
     this.mostrarDotsFinal = fin < this.totalPaginas - 1;
 
+    
     const startIndex = (this.paginaActual - 1) * this.itemsPorPagina;
     const endIndex = startIndex + this.itemsPorPagina;
     this.resultadosPaginados = this.resultados.slice(startIndex, endIndex);
