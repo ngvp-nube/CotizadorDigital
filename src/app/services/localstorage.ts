@@ -28,7 +28,7 @@ export class LocalstorageService {
   planes = [  {
     id: 1,
     preferente: true,
-    nombrePlan: 'Banmédica',
+    nombrePlan: 'Colmena',
     logo: 'assets/img/isapres/banmedica.png',
     plan: 'Plan Salud Total 1',
     hospitalaria: 90,
@@ -56,7 +56,7 @@ export class LocalstorageService {
   {
     id: 3,
     preferente: true,
-    nombrePlan: 'Consalud',
+    nombrePlan: 'Colmena',
     logo: 'assets/img/isapres/banmedica.png',
     plan: 'Plan Salud Total 3',
     hospitalaria: 85,
@@ -70,7 +70,7 @@ export class LocalstorageService {
   {
     id: 4,
     preferente: true,
-    nombrePlan: 'Cruz Blanca',
+    nombrePlan: 'Colmena',
     logo: 'assets/img/isapres/banmedica.png',
     plan: 'Plan Salud Total 4',
     hospitalaria: 85,
@@ -84,7 +84,7 @@ export class LocalstorageService {
   {
     id: 5,
     preferente: true,
-    nombrePlan: 'Nueva MasVida',
+    nombrePlan: 'Colmena',
     logo: 'assets/img/isapres/banmedica.png',
     plan: 'Plan Salud Total 5',
     hospitalaria: 80,
@@ -98,7 +98,7 @@ export class LocalstorageService {
   {
     id: 6,
     preferente: true,
-    nombrePlan: 'Vida Tres',
+    nombrePlan: 'Colmena',
     logo: 'assets/img/isapres/banmedica.png',
     plan: 'Plan Salud Total 6',
     hospitalaria: 80,
@@ -112,7 +112,7 @@ export class LocalstorageService {
   {
     id: 7,
     preferente: true,
-    nombrePlan: 'Esencial',
+    nombrePlan: 'Colmena',
     logo: 'assets/img/isapres/banmedica.png',
     plan: 'Plan Salud Total 7',
     hospitalaria: 80,

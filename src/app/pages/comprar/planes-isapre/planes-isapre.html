@@ -13,11 +13,29 @@
     <div class="search-grid container-aligned">
       <div class="box-input">
         <label>Región</label>
-        <select  formControlName="regioncoti">
-          <option value="" disabled selected>Selecciona</option>
-          <option *ngFor="let region of regiones" [value]="region.id">{{ region.nombre }}</option>
-        </select>
+
+        <div class="custom-select" (clickOutside)="regionOpen = false">
+
+          <!-- valor seleccionado -->
+          <div class="custom-selected" (click)="regionOpen = !regionOpen">
+            {{ regionSeleccionada?.nombre || 'Selecciona' }}
+            <span class="arrow" [class.open]="regionOpen">⌄</span>
+          </div>
+
+          <!-- dropdown -->
+          <div class="custom-options" *ngIf="regionOpen">
+            <div
+              class="custom-option"
+              *ngFor="let region of regiones"
+              (click)="selectRegion(region)"
+            >
+              {{ region.nombre }}
+            </div>
+          </div>
+
+        </div>
       </div>
+
 
       <div class="box-input">
         <label class="label-info">
@@ -239,7 +257,7 @@
           </div>
 
           <!-- CTA -->
-          <button class="btn-main-action" type="button">
+          <button class="btn-main-action" type="button" (click)="confirmarCargas()">
             Agregar y calcular precios
           </button>
 
@@ -389,7 +407,7 @@
       </div>
 
       <div class="card-right">
-        <span class="price">${{ calcularPrecioPlan(plan.precioBase) | number:'1.0-0' }}</span>
+        <span class="price">${{ calcularPrecioPlan(plan) | number:'1.0-0' }}</span>
         <small>/mes</small>
 
         <button class="btn-solicitar" (click)="abrirSolicitud(plan)">

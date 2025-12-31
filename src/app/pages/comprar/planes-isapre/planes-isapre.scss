@@ -330,6 +330,214 @@ html, body {
 /* Desktop */
 @media (min-width: 1200px) {}
 
+@media (max-width: 768px) {
+    .custom-options {
+    max-height: 200px;
+  }
+
+  /* Evita que el contenedor corte el dropdown */
+  .search-bar,
+  .search-grid,
+  .box-input {
+    overflow: visible;
+  }
+  .search-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .box-input {
+    width: 100%;
+  }
+
+  .btn-search {
+    width: 100%;
+    margin-top: 8px;
+  }
+}
+
+.custom-select {
+  position: relative;
+  width: 100%;
+}
+
+/* INPUT */
+.custom-selected {
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1.5px solid #cfd6ff;
+  background: #fff;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: #1f2937;
+
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.custom-selected:hover {
+  border-color: #9aa7ff;
+}
+
+.custom-selected:focus-within {
+  border-color: #6b7cff;
+  box-shadow: 0 0 0 2px rgba(107, 124, 255, 0.15);
+}
+
+/* DROPDOWN */
+.custom-options {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+
+  max-height: 260px;
+  overflow-y: auto;
+
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+
+  padding: 6px 0;
+  z-index: 1000;
+}
+
+/* OPCIONES */
+.custom-option {
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #111827;
+  cursor: pointer;
+
+  transition: background 0.15s ease;
+}
+
+.custom-option:hover {
+  background-color: #f2f4ff;
+}
+
+/* FLECHA */
+.arrow {
+  font-size: 12px;
+  color: #6b7280;
+  transition: transform 0.2s ease;
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .custom-options {
+    max-height: 220px;
+  }
+
+  .custom-option {
+    padding: 14px 16px;
+    font-size: 15px;
+  }
+}
+.custom-select {
+  position: relative;
+  width: 100%;
+}
+
+/* INPUT */
+.custom-selected {
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1.5px solid #cfd6ff;
+  background: #fff;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: #1f2937;
+
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.custom-selected:hover {
+  border-color: #9aa7ff;
+}
+
+.custom-selected:focus-within {
+  border-color: #6b7cff;
+  box-shadow: 0 0 0 2px rgba(107, 124, 255, 0.15);
+}
+
+/* DROPDOWN */
+.custom-options {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+
+  max-height: 260px;
+  overflow-y: auto;
+
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+
+  padding: 6px 0;
+  z-index: 1000;
+}
+
+/* OPCIONES */
+.custom-option {
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #111827;
+  cursor: pointer;
+
+  transition: background 0.15s ease;
+}
+
+.custom-option:hover {
+  background-color: #f2f4ff;
+}
+
+/* FLECHA */
+.arrow {
+  font-size: 12px;
+  color: #6b7280;
+  transition: transform 0.2s ease;
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .custom-options {
+    max-height: 220px;
+  }
+
+  .custom-option {
+    padding: 14px 16px;
+    font-size: 15px;
+  }
+}
+
+
+
+
 
 .pagination {
   display: flex;

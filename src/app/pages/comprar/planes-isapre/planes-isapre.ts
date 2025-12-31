@@ -43,7 +43,7 @@ export class PlanesIsapre {
   /* =========================
      DATA BASE
   ========================= */
-  
+  cargasConfirmadas: { edadCarga: number }[] = [];
   cotizacionForm!: FormGroup;
   regiones: any[] = [];
   planesIsapre: any[] = [];
@@ -171,13 +171,16 @@ export class PlanesIsapre {
   decrementarCargas(): void {
     if (this.cargasForm.length > 0) {
       this.cargasForm.removeAt(this.cargasForm.length - 1);
+
+      this.cargasConfirmadas = this.cargasForm.value
+      .filter((c: any) => c.edadCarga && c.edadCarga > 0);
     }
   }
 
   getFactorCargas(): number {
   let total = 0;
 
-  for (const carga of this.cargasForm.value) {
+  for (const carga of this.cargasConfirmadas) {
     const edadCarga = Number(carga.edadCarga);
 
     if (!isNaN(edadCarga) && edadCarga > 0) {
@@ -283,7 +286,6 @@ export class PlanesIsapre {
     this.mostrarDotsInicio = inicio > 2;
     this.mostrarDotsFinal = fin < this.totalPaginas - 1;
 
-    
     const startIndex = (this.paginaActual - 1) * this.itemsPorPagina;
     const endIndex = startIndex + this.itemsPorPagina;
     this.resultadosPaginados = this.resultados.slice(startIndex, endIndex);
@@ -354,6 +356,19 @@ export class PlanesIsapre {
       this.mostrarDetalleModal = true;
     }, 150);
   }
+
+  regionOpen = false;
+  regionSeleccionada: any = null;
+
+  selectRegion(region: any): void {
+  this.regionSeleccionada = region;
+  this.regionOpen = false;
+
+  this.cotizacionForm.patchValue({
+    regioncoti: region.id
+  });
+  }
+
 
   /* =========================
      INFO 7%
@@ -472,24 +487,47 @@ mostrarInfo7Porciento() {
     }
   }
 
+  factoresIsapre: Record<string, number> = {
+    Colmena: 1.036
+    // futuro:
+    // Banmédica: 1.02,
+    // Consalud: 1.04
+  };
 
-  calcularPrecioPlan(precioBase: number): number{
-    const edadRaw: number | null = this.cotizacionForm.get('edad')?.value;
+  getFactorIsapre(nombrePlan: string): number {
+  return this.factoresIsapre[nombrePlan] ?? 0;
+  }
+
+
+
+
+ calcularPrecioPlan(plan: any): number {
+    const edadRaw = this.cotizacionForm.get('edad')?.value;
     const edadTitular = Number(edadRaw);
 
     if (isNaN(edadTitular) || edadTitular < 0) {
-      return precioBase;
+      return plan.precioBase;
     }
 
-     // 1️⃣ Factor del titular
     const factorTitular = this.precioTitularPoredad(edadTitular);
-
-    // 2️⃣ Factor total de cargas
     const factorCargas = this.getFactorCargas();
+    const factorIsapre = this.getFactorIsapre(plan.nombrePlan);
 
-    // 3️⃣ Precio final
-    return precioBase * (factorTitular + factorCargas);
+    return Math.round(
+      plan.precioBase * (factorTitular + factorCargas + factorIsapre)
+    );
   }
+
+
+  confirmarCargas(): void {
+  // 1️⃣ Guardamos snapshot de las cargas
+  this.cargasConfirmadas = this.cargasForm.value
+    .filter((c: any) => c.edadCarga && c.edadCarga > 0);
+
+  // 2️⃣ Cerramos el modal
+  this.mostrarModal = false;
+}
+
   
 }
 
