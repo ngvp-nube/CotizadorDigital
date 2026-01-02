@@ -27,7 +27,7 @@
         <!-- PRECIO + SOLICITAR -->
         <div class="plan-price-action">
           <span class="price-amount">
-            ${{ plan?.precioDesde | number:'1.0-0' }} <span>/mes</span>
+            ${{ plan?.precioCalculado | number:'1.0-0' }} <span>/mes</span>
           </span>
 
           <button class="btn-solicitar-modal" (click)="solicitar.emit()">
@@ -326,7 +326,7 @@
         <div class="footer-left">
           <span class="footer-plan-nombre">{{ plan?.nombrePlan }}</span>
           <span class="footer-plan-precio">
-            ${{ plan?.precioDesde | number:'1.0-0' }}<small>/mes</small>
+            ${{ plan?.precioCalculado | number:'1.0-0' }}<small>/mes</small>
           </span>
         </div>
 

@@ -14,6 +14,7 @@ export class ModalDetalleComponent implements OnChanges {
      INPUTS / OUTPUTS
   ========================= */
 
+
   @Input() plan: any | null = null;
   @Input() isVisible = false;
 

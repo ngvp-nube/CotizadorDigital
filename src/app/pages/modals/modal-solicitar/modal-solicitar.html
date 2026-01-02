@@ -29,7 +29,7 @@
         <p class="plan-score" *ngIf="plan?.puntaje">
           Puntuación del plan
           <span class="score-badge">
-            {{ plan?.puntaje | number:'1.1-1' }}
+            ${{ plan?.precioCalculado | number:'1.0-0' }}
           </span>
         </p>
       </div>

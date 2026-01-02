@@ -285,7 +285,7 @@
 }
 
 .logo {
-  font-size: 22px;
+  font-size: 17px;
   font-weight: bold;
   margin-bottom: 15px;
 }
@@ -313,21 +313,14 @@
 }
 
 .footer-logos img {
-  max-width: 100px;
+  max-width: 70px;
   height: auto;
-  display: block;
 }
 
-.footer-logos img.logo-corfo {
-  max-width: 100px;
-}
 .footer-logos img.logo-cmf {
-  max-width: 180px; // ajusta el tamaño aquí
+  max-width: 120px; // ajusta el tamaño aquí
 }
 
-.footer-logos img.logo-gch {
-  max-width: 80px; // ajusta el tamaño aquí
-}
 
 .contact li {
   font-size: 13px;
@@ -346,8 +339,8 @@
     text-decoration: none;
 
     svg {
-      width: 18px;
-      height: 18px;
+      width: 13px;
+      height: 13px;
       transition: transform 0.2s ease, opacity 0.2s ease;
     }
 
@@ -361,15 +354,15 @@
   .icon-only {
     svg {
       fill: #ffffff;
-      width: 23px;
-      height: 23px;
+      width: 17px;
+      height: 17px;
     }
   }
 
   /* ICONOS CON CUADRO (Facebook / LinkedIn / X) */
   .icon-box {
-    width: 23px;
-    height: 23px;
+    width: 17px;
+    height: 17px;
     background-color: #ffffff; // caja blanca
     border-radius: 6px;
 
@@ -379,8 +372,38 @@
   }
 }
 
+.apoyado-logos {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
 
+.logo-corfo {
+  max-height: 40px;
+}
 
+.logo-gch {
+  max-height: 40px;
+}
+
+.logos-row {
+  display: flex;
+  flex-direction: column;   /* desktop */
+  gap: 16px;
+}
+
+.logos-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.apoyado-logos {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
 
 /* RESPONSIVE */
@@ -395,3 +418,38 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 768px) {
+  .footer-mobile {
+    display: none;
+  }
+
+  .footer-logos .logos-row {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: left !important;
+    align-items: flex-start;
+    gap: 24px;          /* 👈 controla la cercanía */
+    width: 100%;
+  }
+
+  .footer-logos .logos-block {
+    text-align: center;
+  }
+
+  .apoyado-logos {
+    justify-content: center;
+  }
+
+  .apoyado-logos img,
+  .logo-cmf {
+    max-height: 34px;
+  }
+}
+
+
+
+
+
+
+
