@@ -63,6 +63,10 @@ export class PlanesIsapre {
     this.cotizacionForm.get('edad')?.valueChanges.subscribe(() => {
     });
 
+    this.cotizacionForm.get('ingresocoti')?.valueChanges.subscribe(() => {
+    // Angular vuelve a evaluar calcularPrecioPlan automáticamente
+    });
+
     this.cotizacionForm.get('cargas')?.valueChanges.subscribe(() => {
     // fuerza detección de cambios
     });
@@ -75,6 +79,13 @@ export class PlanesIsapre {
          
       }
     });
+
+    this.cotizacionForm
+      .get('sistemasaludcoti')
+      ?.valueChanges.subscribe(() => {
+      this.filtrarPorSistemaSalud();
+    });
+
     
 
     // Planes Isapre (FUENTE ÚNICA)
@@ -364,9 +375,7 @@ export class PlanesIsapre {
   this.regionSeleccionada = region;
   this.regionOpen = false;
 
-  this.cotizacionForm.patchValue({
-    regioncoti: region.id
-  });
+  this.filtrarPorRegion();;
   }
 
 
@@ -498,6 +507,24 @@ mostrarInfo7Porciento() {
   return this.factoresIsapre[nombrePlan] ?? 0;
   }
 
+  getDescuentoPorRenta(): number {
+  const rentaRaw = this.cotizacionForm.get('ingresocoti')?.value;
+  const renta = Number(rentaRaw);
+
+    if (isNaN(renta) || renta <= 0) {
+      return 0;
+    }
+
+    if (renta >= 600_000 && renta <= 1_500_000) {
+      return 0.07; // 7%
+    }
+
+    if (renta >= 1_500_001 && renta <= 2_500_000) {
+      return 0.05; // 5%
+    }
+
+    return 0;
+  }
 
 
 
@@ -513,9 +540,12 @@ mostrarInfo7Porciento() {
     const factorCargas = this.getFactorCargas();
     const factorIsapre = this.getFactorIsapre(plan.nombrePlan);
 
-    return Math.round(
-      plan.precioBase * (factorTitular + factorCargas + factorIsapre)
-    );
+    const precioBaseCalculado =
+    plan.precioBase * (factorTitular + factorCargas + factorIsapre);
+    const descuento = this.getDescuentoPorRenta();
+    const precioFinal = precioBaseCalculado * (1 - descuento);
+
+    return Math.round(precioFinal);
   }
 
 
@@ -528,24 +558,60 @@ mostrarInfo7Porciento() {
   this.mostrarModal = false;
 }
 
-getDescuentoPorRenta(): number {
-  const rentaRaw = this.cotizacionForm.get('ingresocoti')?.value;
-  const renta = Number(rentaRaw);
+filtrarPorSistemaSalud(): void {
+  const sistemaActual = this.cotizacionForm.get('sistemasaludcoti')?.value;
 
-  if (isNaN(renta) || renta <= 0) {
-    return 0;
+  // Si no selecciona nada o es "No tiene", mostramos todo
+  if (!sistemaActual || sistemaActual === 'No tiene') {
+    this.aplicarResultados(this.planesIsapre);
+    return;
   }
 
-  if (renta >= 600_000 && renta <= 1_500_000) {
-    return 0.07; // 7%
-  }
+  // Mostrar todos los planes EXCEPTO la isapre actual
+  const filtrados = this.planesIsapre.filter(
+    plan => plan.nombrePlan !== sistemaActual
+  );
 
-  if (renta >= 1_500_001 && renta <= 2_500_000) {
-    return 0.05; // 5%
-  }
-
-  return 0;
+  this.aplicarResultados(filtrados);
 }
+
+prestadoresPorRegion: Record<string, string[]> = {
+  'Arica y Parinacota': ['San José Interclínica'],
+  'Metropolitana de Santiago': ['Clínica Dávila'],
+  'Magallanes y Antártica Chilena': ['Clínica RedSalud Magallanes']
+};
+
+
+
+
+filtrarPorRegion(): void {
+  if (!this.regionSeleccionada) {
+    this.aplicarResultados(this.planesIsapre);
+    return;
+  }
+
+  const regionNombre = this.regionSeleccionada.nombre;
+  const prestadoresPermitidos = this.prestadoresPorRegion[regionNombre];
+
+  if (!prestadoresPermitidos) {
+    // Si la región no tiene mapeo, mostramos todo
+    this.aplicarResultados(this.planesIsapre);
+    return;
+  }
+
+  const filtrados = this.planesIsapre.filter(plan =>
+    Array.isArray(plan.prestadores) &&
+    plan.prestadores.some((prestador: string) =>
+      prestadoresPermitidos.some((permitido: string) =>
+        prestador.toLowerCase().includes(permitido.toLowerCase())
+      )
+    )
+  );
+
+  this.aplicarResultados(filtrados);
+}
+
+
 
 
   
