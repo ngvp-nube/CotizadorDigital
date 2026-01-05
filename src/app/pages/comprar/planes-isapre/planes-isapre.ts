@@ -528,6 +528,26 @@ mostrarInfo7Porciento() {
   this.mostrarModal = false;
 }
 
+getDescuentoPorRenta(): number {
+  const rentaRaw = this.cotizacionForm.get('ingresocoti')?.value;
+  const renta = Number(rentaRaw);
+
+  if (isNaN(renta) || renta <= 0) {
+    return 0;
+  }
+
+  if (renta >= 600_000 && renta <= 1_500_000) {
+    return 0.07; // 7%
+  }
+
+  if (renta >= 1_500_001 && renta <= 2_500_000) {
+    return 0.05; // 5%
+  }
+
+  return 0;
+}
+
+
   
 }
 
