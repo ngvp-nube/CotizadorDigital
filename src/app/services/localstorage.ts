@@ -43,7 +43,7 @@ export class LocalstorageService {
   {
     id: 2,
     preferente: true,
-    nombrePlan: 'Colmena',
+    nombrePlan: 'Consalud',
     logo: 'assets/img/isapres/banmedica.png',
     plan: 'Plan Salud Total 2',
     prestadores: ['Clínica Dávila'],
