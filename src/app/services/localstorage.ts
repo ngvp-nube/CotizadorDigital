@@ -25,8 +25,11 @@ export class LocalstorageService {
     { id: 16, nombre: 'Magallanes y Antártica Chilena' }
 
   ]
-  planes = [  {
+  
+  planes = [
+  {
     id: 1,
+    codigoPlan: '13-SF1088-33',
     preferente: true,
     nombrePlan: 'Consalud',
     logo: 'assets/img/isapres/banmedica.png',
@@ -38,10 +41,10 @@ export class LocalstorageService {
     topeAnualUf: 9000,
     puntaje: 7.5,
     precioBase: 35000,
-  }
-  ,
+  },
   {
     id: 2,
+    codigoPlan: '13-SA5663-36',
     preferente: true,
     nombrePlan: 'Consalud',
     logo: 'assets/img/isapres/banmedica.png',
@@ -52,11 +55,11 @@ export class LocalstorageService {
     ambulatoria: 60,
     topeAnualUf: 8000,
     puntaje: 7.5,
-    precioBase: 60000
-  }
-    ,
+    precioBase: 60000,
+  },
   {
     id: 3,
+    codigoPlan: '13-SB5663-36',
     preferente: true,
     nombrePlan: 'Consalud',
     logo: 'assets/img/isapres/banmedica.png',
@@ -67,11 +70,11 @@ export class LocalstorageService {
     ambulatoria: 65,
     topeAnualUf: 6000,
     puntaje: 7.5,
-    precioBase: 25000
-  }
-    ,
+    precioBase: 25000,
+  },
   {
     id: 4,
+    codigoPlan: '13-SED8060-26',
     preferente: true,
     nombrePlan: 'Consalud',
     logo: 'assets/img/isapres/banmedica.png',
@@ -82,11 +85,11 @@ export class LocalstorageService {
     ambulatoria: 70,
     topeAnualUf: 5000,
     puntaje: 7.6,
-    precioBase: 36000
-  }
-    ,
+    precioBase: 36000,
+  },
   {
     id: 5,
+    codigoPlan: '13-SFT020-26',
     preferente: true,
     nombrePlan: 'Consalud',
     logo: 'assets/img/isapres/banmedica.png',
@@ -97,11 +100,11 @@ export class LocalstorageService {
     ambulatoria: 60,
     topeAnualUf: 8000,
     puntaje: 7.5,
-    precioBase: 32000
-  }
-    ,
+    precioBase: 32000,
+  },
   {
     id: 6,
+    codigoPlan: '13-SFT006-20',
     preferente: true,
     nombrePlan: 'Consalud',
     logo: 'assets/img/isapres/banmedica.png',
@@ -112,11 +115,11 @@ export class LocalstorageService {
     ambulatoria: 60,
     topeAnualUf: 8000,
     puntaje: 7.2,
-    precioBase: 45000
-  }
-    ,
+    precioBase: 45000,
+  },
   {
     id: 7,
+    codigoPlan: '13-SFT1088-20',
     preferente: true,
     nombrePlan: 'Consalud',
     logo: 'assets/img/isapres/banmedica.png',
@@ -127,9 +130,40 @@ export class LocalstorageService {
     ambulatoria: 60,
     topeAnualUf: 8000,
     puntaje: 7.5,
-    precioBase: 30000
-  }
+    precioBase: 30000,
+  },
+  {
+    id: 8,
+    codigoPlan: '13-SPB6628-26',
+    preferente: true,
+    nombrePlan: 'Consalud',
+    logo: 'assets/img/isapres/banmedica.png',
+    plan: 'Plan Salud Total 8',
+    prestadores: ['San José Interclínica'],
+    hospitalaria: 80,
+    urgencia: 80,
+    ambulatoria: 60,
+    topeAnualUf: 8000,
+    puntaje: 7.5,
+    precioBase: 30000,
+  },
+  {
+    id: 9,
+    codigoPlan: '13-SBP-3005-25',
+    preferente: true,
+    nombrePlan: 'Consalud',
+    logo: 'assets/img/isapres/banmedica.png',
+    plan: 'Plan Salud Total 9',
+    prestadores: ['San José Interclínica'],
+    hospitalaria: 80,
+    urgencia: 80,
+    ambulatoria: 60,
+    topeAnualUf: 8000,
+    puntaje: 7.5,
+    precioBase: 30000,
+  },
 ];
+
 
   // ========================
 // DATA PLANES ISAPRE (CARD)

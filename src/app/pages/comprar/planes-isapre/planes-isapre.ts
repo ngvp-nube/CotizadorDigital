@@ -106,7 +106,7 @@ export class PlanesIsapre {
 
   initForm(): void {
     this.cotizacionForm = this.fb.group({
-      edad: [0],
+      edad: [null],
       regioncoti: [''],
       ingresocoti: [null],
       sistemasaludcoti: [''],
@@ -445,6 +445,40 @@ mostrarInfo7Porciento() {
   });
 }
 
+porcentajePorCobertura(codigoPlan:string): number{
+  switch (codigoPlan) {
+    case '13-SF1088-33':
+      return 0.0345;
+
+    case '13-SA5663-36':
+      return 0.0364;
+    
+    case '13-SB5663-36':
+      return 0.0379;
+
+    case '13-SED8060-26':
+      return 0.0368;
+
+    case '13-SFT020-26':
+      return 0.0395;
+
+    case '13-SFT006-20':
+      return 0.0409;
+
+    case '13-SFT1088-20':
+      return 0.0378;
+
+    case '13-SPB6628-26':
+      return 0.0425;
+
+    case '13-SBP-3005-25':
+      return 0.0435;
+
+    default:
+      return 0;
+  }
+}
+
 //CALCULO DE PRECIO POR EDAD 
   precioTitularPoredad(edad: number): number {
     switch (true) {
@@ -497,7 +531,7 @@ mostrarInfo7Porciento() {
   }
 
   factoresIsapre: Record<string, number> = {
-    Colmena: 1.036
+    Consalud: 1.036
     // futuro:
     // Banmédica: 1.02,
     // Consalud: 1.04
@@ -528,25 +562,49 @@ mostrarInfo7Porciento() {
 
 
 
- calcularPrecioPlan(plan: any): number {
-    const edadRaw = this.cotizacionForm.get('edad')?.value;
-    const edadTitular = Number(edadRaw);
+  calcularPrecioPlan(plan: any): number {
+  const edadRaw = this.cotizacionForm.get('edad')?.value;
+  const edadTitular = Number(edadRaw);
 
-    if (isNaN(edadTitular) || edadTitular < 0) {
-      return plan.precioBase;
-    }
+  console.log('--- DEBUG CÁLCULO PLAN ---');
+  console.log('Edad raw:', edadRaw);
+  console.log('Edad titular:', edadTitular);
 
-    const factorTitular = this.precioTitularPoredad(edadTitular);
-    const factorCargas = this.getFactorCargas();
-    const factorIsapre = this.getFactorIsapre(plan.nombrePlan);
-
-    const precioBaseCalculado =
-    plan.precioBase * (factorTitular + factorCargas + factorIsapre);
-    const descuento = this.getDescuentoPorRenta();
-    const precioFinal = precioBaseCalculado * (1 - descuento);
-
-    return Math.round(precioFinal);
+  if (edadRaw === null|| edadTitular < 0) {
+    return plan.precioBase;
   }
+
+  const factorTitular = this.precioTitularPoredad(edadTitular);
+  const factorCargas = this.getFactorCargas();
+  const factorIsapre = this.getFactorIsapre(plan.nombrePlan);
+  const porcentajeCodigo = this.porcentajePorCobertura(plan.codigoPlan);
+
+  console.log('Precio base:', plan.precioBase);
+  console.log('Código plan:', plan.codigoPlan);
+  console.log('Porcentaje código:', porcentajeCodigo);
+
+  console.log('Factor titular (edad):', factorTitular);
+  console.log('Factor cargas:', factorCargas);
+  console.log('Factor isapre:', factorIsapre);
+
+  // 1️⃣ Se suma el porcentaje al precio base
+  const precioBaseAjustado =
+    plan.precioBase * (1 + porcentajeCodigo);
+
+  // 2️⃣ Se aplican los factores
+  const precioBaseCalculado =
+    precioBaseAjustado *
+    (factorTitular + factorCargas + factorIsapre);
+
+  // 3️⃣ Descuento final
+  const descuento = this.getDescuentoPorRenta();
+  const precioFinal = precioBaseCalculado * (1 - descuento);
+
+
+  return Math.round(precioFinal);
+}
+
+
 
 
   confirmarCargas(): void {
@@ -595,7 +653,7 @@ filtrarPorRegion(): void {
 
   if (!prestadoresPermitidos) {
     // Si la región no tiene mapeo, mostramos todo
-    this.aplicarResultados(this.planesIsapre);
+    this.aplicarResultados([]);
     return;
   }
 
@@ -610,8 +668,6 @@ filtrarPorRegion(): void {
 
   this.aplicarResultados(filtrados);
 }
-
-
 
 
   

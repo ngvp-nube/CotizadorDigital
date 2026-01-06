@@ -92,7 +92,7 @@
 
       <div class="box-input">
         <label>Edad</label>
-        <input type="number" formControlName="edad" />
+        <input type="number" placeholder="0" formControlName="edad" />
       </div>
 
       <div class="box-input">
@@ -146,7 +146,7 @@
       <div class="box-input group-modal">
         <label>Asegurados</label>
 
-        <button class="trigger" (click)="toggleModal()" type="button">
+        <button class="trigger" (click)="toggleModal()" type="button" >
           {{ (cargasForm.length > 0) ? 'Modificar asegurados' : 'Agregar asegurados' }}
         </button>
 
