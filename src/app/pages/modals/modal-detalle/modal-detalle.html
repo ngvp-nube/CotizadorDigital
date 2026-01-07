@@ -8,18 +8,18 @@
         <!-- INFO PLAN -->
         <div class="plan-info-header">
           <img
-            [src]="'assets/logos/vidatres.png' + (plan?.isapre || '').toLowerCase().replace(' ', '') + '.png'"
+            [src]="'assets/logos/vidatres.png' + (plan.nombrePlan || '').toLowerCase().replace(' ', '') + '.png'"
             class="isapre-logo-modal"
           />
 
           <div class="text-info">
             <span class="rating">★★★★☆</span>
             <span class="plan-recommendation">Plan recomendado</span>
-            <h2 class="plan-title">{{ plan?.nombrePlan }}</h2>
+            <h2 class="plan-title">{{ plan.nombrePlan }}</h2>
 
             <p *ngIf="plan?.puntaje">
               Puntuación:
-              <span class="score-badge">{{ plan?.puntaje | number:'1.1-1' }}</span>
+              <span class="score-badge">{{ plan.puntaje | number:'1.1-1' }}</span>
             </p>
           </div>
         </div>
@@ -27,7 +27,7 @@
         <!-- PRECIO + SOLICITAR -->
         <div class="plan-price-action">
           <span class="price-amount">
-            ${{ plan?.precioCalculado | number:'1.0-0' }} <span>/mes</span>
+            ${{ plan.precioFinal | number:'1.0-0' }} <span>/mes</span>
           </span>
 
           <button class="btn-solicitar-modal" (click)="solicitar.emit()">
@@ -105,7 +105,7 @@
                   <small>(Operaciones, enfermedades, etc.)</small>
                 </div>
                 <div class="le-right">
-                  <span class="le-porcentaje">{{plan?.hospitalaria}}%</span>
+                  <span class="le-porcentaje">{{plan.hospitalaria}}%</span>
                 </div>
               </div>
 
@@ -117,7 +117,7 @@
                   <small>(Consultas médicas, exámenes, etc.)</small>
                 </div>
                 <div class="le-right">
-                  <span class="le-porcentaje">{{plan?.ambulatoria}}%</span>
+                  <span class="le-porcentaje">{{plan.ambulatoria}}%</span>
                 </div>
               </div>
             </div>
@@ -138,7 +138,7 @@
                   <i class="fas fa-home icon"></i>
                   <div>
                     <p>
-                      Este plan cubre hasta <b>{{plan?.topeAnualUf}} UF</b> ($277.531.940 al año
+                      Este plan cubre hasta <b>{{plan.topeAnualUf}} UF</b> ($277.531.940 al año
                       por persona).
                     </p>
                     <small
@@ -160,7 +160,7 @@
           <!-- COLUMNA DERECHA       -->
           <!-- ====================== -->
           <div class="columna-der">
-            <h4 class="section-title">Beneficios de {{ plan?.nombrePlan }}</h4>
+            <h4 class="section-title">Beneficios de {{ plan.nombrePlan }}</h4>
 
             <div class="beneficios-grid">
               <div class="benef-card">
@@ -200,13 +200,13 @@
 
             <div class="contrato-box">
               <img
-                *ngIf="plan?.imagenContrato"
-                [src]="plan?.imagenContrato"
+                *ngIf="plan.imagenContrato"
+                [src]="plan.imagenContrato"
                 alt="Contrato del plan"
                 class="contrato-img"
               />
 
-              <p *ngIf="!plan?.imagenContrato" class="contrato-placeholder">
+              <p *ngIf="!plan.imagenContrato" class="contrato-placeholder">
                 Aquí se mostrará el documento de contrato cuando esté
                 disponible.
               </p>
@@ -251,7 +251,7 @@
 
               <div class="form-group-full">
                 <span class="radio-group-label"
-                  >¿Es {{ plan?.isapre }} tu Isapre Actual?</span
+                  >¿Es {{ plan.nombrePlan }} tu Isapre Actual?</span
                 >
 
                 <div class="radio-options-inline">
@@ -324,9 +324,9 @@
       <!-- FOOTER -->
       <div class="modal-footer-fijo">
         <div class="footer-left">
-          <span class="footer-plan-nombre">{{ plan?.nombrePlan }}</span>
+          <span class="footer-plan-nombre">{{ plan.nombrePlan }}</span>
           <span class="footer-plan-precio">
-            ${{ plan?.precioCalculado | number:'1.0-0' }}<small>/mes</small>
+            ${{ plan.precioFinal | number:'1.0-0' }}<small>/mes</small>
           </span>
         </div>
 

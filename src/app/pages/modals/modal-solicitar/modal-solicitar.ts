@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Plan } from '../../../services/localstorage'; 
 
 @Component({
   selector: 'app-modal-solicitar',
@@ -15,7 +16,7 @@ export class ModalSolicitarComponent implements OnInit {
      INPUTS / OUTPUTS
      ========================= */
   @Input() isVisible = false;
-  @Input() plan: any | null = null;
+  @Input() plan!: Plan & { precioFinal: number };
 
   @Output() close = new EventEmitter<void>();
   @Output() submitForm = new EventEmitter<any>();

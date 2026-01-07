@@ -9,8 +9,8 @@
       <!-- LOGO ISAPRE -->
       <div class="logo-col">
         <img
-          [src]="'assets/logos/' + (plan?.isapre || '').toLowerCase() + '.png'"
-          alt="{{ plan?.isapre }}"
+          [src]="'assets/logos/' + (plan.nombrePlan || '').toLowerCase() + '.png'"
+          alt="{{ plan.nombrePlan }}"
         />
       </div>
 
@@ -23,13 +23,13 @@
         </span>
 
         <h2 class="plan-title">
-          {{ plan?.nombrePlan }}
+          {{ plan.nombrePlan }}
         </h2>
 
-        <p class="plan-score" *ngIf="plan?.puntaje">
+        <p class="plan-score" *ngIf="plan.puntaje">
           Puntuación del plan
           <span class="score-badge">
-            ${{ plan?.precioCalculado | number:'1.0-0' }}
+            {{ plan.puntaje | number:'1.1-1' }}
           </span>
         </p>
       </div>
@@ -37,7 +37,7 @@
       <!-- PRECIO + CTA -->
       <div class="action-col">
         <div class="price">
-          ${{ plan?.valor | number:'1.0-0' }}
+          ${{ plan.precioFinal | number:'1.0-0' }}
           <small>/mes</small>
         </div>
 
@@ -110,7 +110,7 @@
         <!-- ISAPRE ACTUAL -->
         <div class="form-group-full">
           <span class="radio-group-label">
-            ¿Es {{ plan?.isapre }} tu Isapre actual?
+            ¿Es {{ plan.nombrePlan }} tu Isapre actual?
           </span>
 
           <div class="radio-options">

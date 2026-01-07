@@ -1,6 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
+export interface Plan {
+  id: number;
+  codigoPlan: string;
+  preferente: boolean;
+  nombrePlan: string;
+  logo: string;
+  plan: string;
+  prestadores: string[];
+  hospitalaria: number;
+  urgencia: number;
+  ambulatoria: number;
+  topeAnualUf: number;
+  puntaje: number;
+  precioBase: number;
+  imagenContrato?: string;
+}
+
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,7 +45,7 @@ export class LocalstorageService {
 
   ]
   
-  planes = [
+  planes: Plan[] = [
   {
     id: 1,
     codigoPlan: '13-SF1088-33',
@@ -41,6 +60,7 @@ export class LocalstorageService {
     topeAnualUf: 9000,
     puntaje: 7.5,
     precioBase: 35000,
+    imagenContrato: 'assets/contratos/consalud-plan-1.pdf'
   },
   {
     id: 2,
@@ -56,6 +76,7 @@ export class LocalstorageService {
     topeAnualUf: 8000,
     puntaje: 7.5,
     precioBase: 60000,
+    imagenContrato: 'assets/contratos/consalud-plan-1.pdf'
   },
   {
     id: 3,
@@ -71,6 +92,7 @@ export class LocalstorageService {
     topeAnualUf: 6000,
     puntaje: 7.5,
     precioBase: 25000,
+    imagenContrato: 'assets/contratos/consalud-plan-1.pdf'
   },
   {
     id: 4,
@@ -86,6 +108,7 @@ export class LocalstorageService {
     topeAnualUf: 5000,
     puntaje: 7.6,
     precioBase: 36000,
+    imagenContrato: 'assets/contratos/consalud-plan-1.pdf'
   },
   {
     id: 5,
@@ -101,6 +124,7 @@ export class LocalstorageService {
     topeAnualUf: 8000,
     puntaje: 7.5,
     precioBase: 32000,
+    imagenContrato: 'assets/contratos/consalud-plan-1.pdf'
   },
   {
     id: 6,
@@ -116,6 +140,7 @@ export class LocalstorageService {
     topeAnualUf: 8000,
     puntaje: 7.2,
     precioBase: 45000,
+    imagenContrato: 'assets/contratos/consalud-plan-1.pdf'
   },
   {
     id: 7,
@@ -131,6 +156,7 @@ export class LocalstorageService {
     topeAnualUf: 8000,
     puntaje: 7.5,
     precioBase: 30000,
+    imagenContrato: 'assets/contratos/consalud-plan-1.pdf'
   },
   {
     id: 8,
@@ -146,6 +172,7 @@ export class LocalstorageService {
     topeAnualUf: 8000,
     puntaje: 7.5,
     precioBase: 30000,
+    imagenContrato: 'assets/contratos/consalud-plan-1.pdf'
   },
   {
     id: 9,
@@ -161,6 +188,7 @@ export class LocalstorageService {
     topeAnualUf: 8000,
     puntaje: 7.5,
     precioBase: 30000,
+    imagenContrato: 'assets/contratos/consalud-plan-1.pdf'
   },
 ];
 
@@ -187,7 +215,7 @@ export class LocalstorageService {
   }
 
 
-  getPlanes(): Observable<any[]> {
+  getPlanes(): Observable<Plan[]> {
     return of(this.planes); // simula llamada HTTP
   }
 

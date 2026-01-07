@@ -1,5 +1,6 @@
 import {Component,Input,Output,EventEmitter,OnChanges,SimpleChanges} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Plan } from '../../../services/localstorage';
 
 @Component({
   selector: 'app-modal-detalle',
@@ -15,7 +16,7 @@ export class ModalDetalleComponent implements OnChanges {
   ========================= */
 
 
-  @Input() plan: any | null = null;
+  @Input() plan!: Plan & { precioFinal: number };
   @Input() isVisible = false;
 
   @Output() close = new EventEmitter<void>();

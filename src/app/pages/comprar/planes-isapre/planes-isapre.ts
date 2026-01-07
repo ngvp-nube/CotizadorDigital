@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalDetalleComponent } from '../../modals/modal-detalle/modal-detalle';
 import { ModalSolicitarComponent } from '../../modals/modal-solicitar/modal-solicitar';
-import { LocalstorageService } from '../../../services/localstorage';
+import { LocalstorageService, Plan } from '../../../services/localstorage';
 import { ReactiveFormsModule, FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import Swal from 'sweetalert2';
+
 
 /* =========================
    INTERFACES AUXILIARES
@@ -20,6 +21,8 @@ interface Conyuge {
 interface CargaFamiliar {
   edad: number | null;
 }
+
+
 
 /* =========================
    COMPONENTE
@@ -330,15 +333,28 @@ export class PlanesIsapre {
   mostrarDetalleModal = false;
   mostrarSolicitarModal = false;
 
-  abrirDetalle(plan: any): void {
-    this.planSeleccionado = plan;
+
+  abrirDetalle(plan: Plan): void {
+    this.planSeleccionado = {
+      ...plan,
+      precioFinal: this.calcularPrecioPlan(plan)
+    };
+
     this.mostrarDetalleModal = true;
   }
 
-  abrirSolicitud(plan: any): void {
-    this.planSeleccionado = plan;
+
+
+  abrirSolicitud(plan: Plan): void {
+    this.planSeleccionado = {
+      ...plan,
+      precioFinal: this.calcularPrecioPlan(plan)
+    };
+
     this.mostrarSolicitarModal = true;
-  }
+}
+
+
 
   cerrarDetalle(): void {
     this.mostrarDetalleModal = false;
@@ -562,11 +578,17 @@ porcentajePorCobertura(codigoPlan:string): number{
 
 
 
-  calcularPrecioPlan(plan: any): number {
+ calcularPrecioPlan(plan: any): number {
   const edadRaw = this.cotizacionForm.get('edad')?.value;
+
+  // 🛑 SIN EDAD → PRECIO BASE
+  if (edadRaw === null || edadRaw === '') {
+    return plan.precioBase;
+  }
+
   const edadTitular = Number(edadRaw);
 
-  if (edadRaw === null|| edadTitular < 0) {
+  if (isNaN(edadTitular) || edadTitular <= 0) {
     return plan.precioBase;
   }
 
@@ -575,23 +597,18 @@ porcentajePorCobertura(codigoPlan:string): number{
   const factorIsapre = this.getFactorIsapre(plan.nombrePlan);
   const porcentajeCodigo = this.porcentajePorCobertura(plan.codigoPlan);
 
-
-  // 1️⃣ Se suma el porcentaje al precio base
   const precioBaseAjustado =
     plan.precioBase * (1 + porcentajeCodigo);
 
-  // 2️⃣ Se aplican los factores
-  const precioBaseCalculado =
+  const precioFinal =
     precioBaseAjustado *
     (factorTitular + factorCargas + factorIsapre);
 
-  // 3️⃣ Descuento final
   const descuento = this.getDescuentoPorRenta();
-  const precioFinal = precioBaseCalculado * (1 - descuento);
 
-
-  return Math.round(precioFinal);
+  return Math.round(precioFinal * (1 - descuento));
 }
+
 
 
 
