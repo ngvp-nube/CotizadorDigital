@@ -566,10 +566,6 @@ porcentajePorCobertura(codigoPlan:string): number{
   const edadRaw = this.cotizacionForm.get('edad')?.value;
   const edadTitular = Number(edadRaw);
 
-  console.log('--- DEBUG CÁLCULO PLAN ---');
-  console.log('Edad raw:', edadRaw);
-  console.log('Edad titular:', edadTitular);
-
   if (edadRaw === null|| edadTitular < 0) {
     return plan.precioBase;
   }
@@ -579,13 +575,6 @@ porcentajePorCobertura(codigoPlan:string): number{
   const factorIsapre = this.getFactorIsapre(plan.nombrePlan);
   const porcentajeCodigo = this.porcentajePorCobertura(plan.codigoPlan);
 
-  console.log('Precio base:', plan.precioBase);
-  console.log('Código plan:', plan.codigoPlan);
-  console.log('Porcentaje código:', porcentajeCodigo);
-
-  console.log('Factor titular (edad):', factorTitular);
-  console.log('Factor cargas:', factorCargas);
-  console.log('Factor isapre:', factorIsapre);
 
   // 1️⃣ Se suma el porcentaje al precio base
   const precioBaseAjustado =
