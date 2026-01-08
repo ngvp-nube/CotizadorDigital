@@ -239,6 +239,19 @@ export class PlanesIsapre {
     return total;
   }
 
+  getFactorTotalCargas(): number {
+  return this.cargasForm.value.reduce(
+    (total: number, carga: any) => {
+      const edad = Number(carga.edadCarga);
+      if (!isNaN(edad) && edad > 0) {
+        return total + this.precioCargaPorEdad(edad);
+      }
+      return total;
+    },
+    0
+  );
+}
+
 
   /* =========================
      CLÍNICAS
@@ -661,8 +674,7 @@ mostrarInfo7Porciento() {
     if (!this.valorUF) return 0;
 
     const edadRaw = this.cotizacionForm.get('edad')?.value;
-    if (!edadRaw) return 0;
-
+    if (!edadRaw) return (plan.precioBase * this.valorUF);
     const edadTitular = Number(edadRaw);
     if (isNaN(edadTitular) || edadTitular <= 0) return 0;
 

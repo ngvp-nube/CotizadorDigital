@@ -237,6 +237,7 @@
                 <button (click)="incrementarCargas()" type="button">+</button>
               </div>
             </div>
+            <span>factor total : {{ getFactorTotalCargas() | number:'1.2-2' }} </span>
 
             <!-- LISTA DE CARGAS -->
             <div class="cargas-dynamic-list" *ngIf="cargasForm.length > 0" formArrayName="cargas" >
