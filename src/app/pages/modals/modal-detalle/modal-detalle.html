@@ -287,8 +287,6 @@
         <p class="description">Desglose del puntaje del plan.</p>
       </div>
 
-      
-      <!-- 🔹 Precio -->
       <!-- 🔹 Precio -->
       <div *ngIf="tabActiva === 'precio' && plan" class="precio-tab-container">
 
@@ -318,7 +316,7 @@
               </span>
             </div>
             <span class="step-value positive">
-              × {{ plan.detallePrecio.factorEdad | number:'1.2-2' }}
+              × {{ plan.detallePrecio.factorEdad | number:'1.2-2' }} UF
             </span>
           </div>
 
@@ -331,7 +329,7 @@
               </span>
             </div>
             <span class="step-value">
-              + {{ plan.detallePrecio.factorCargas | number:'1.2-2' }}
+              + {{ plan.detallePrecio.factorCargas | number:'1.2-2' }} UF
             </span>
           </div>
 
@@ -340,7 +338,7 @@
             <div class="step-left">
               <span class="icon">🏥</span>
               <span class="step-label">
-                Factor Isapre
+                GES
                 <small class="hint">
                   (0.731 UF × {{ plan.detallePrecio.beneficiarios }} beneficiarios)
                 </small>
