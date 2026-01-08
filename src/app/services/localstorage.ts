@@ -176,7 +176,7 @@ export class LocalstorageService {
     ambulatoria: 60,
     topeAnualUf: 8000,
     puntaje: 7.5,
-    precioBase: 4.25,
+    precioBase: 4.25, 
     imagenContrato: 'assets/contratos/consalud-plan-1.pdf'
   },
   {
