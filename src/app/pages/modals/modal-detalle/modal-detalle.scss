@@ -1091,3 +1091,85 @@ $qp-shadow: rgba(0, 0, 0, 0.08);
     font-size: 0.85rem;
   }
 }
+
+
+//PESTAÑA PRECIO
+
+.precio-tab-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tab-subtitle {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.price-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.price-step {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px dashed #e5e7eb;
+  font-size: 14px;
+}
+
+.price-step:last-child {
+  border-bottom: none;
+}
+
+.step-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon {
+  font-size: 18px;
+}
+
+.step-label {
+  color: #374151;
+}
+
+.step-value {
+  font-weight: 600;
+  color: #111827;
+}
+
+.step-value.positive {
+  color: #2563eb;
+}
+
+.step-value.negative {
+  color: #dc2626;
+}
+
+.price-total-card {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: #fff;
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-label {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.total-value {
+  font-size: 22px;
+  font-weight: 700;
+}

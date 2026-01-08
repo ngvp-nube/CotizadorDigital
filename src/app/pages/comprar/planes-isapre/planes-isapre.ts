@@ -24,17 +24,18 @@ interface CargaFamiliar {
 
 export type DetallePrecio = {
   precioBaseUF: number;
-  edadTitular: number;
 
+  edadTitular: number;
   factorEdad: number;
   factorCargas: number;
-  factorIsapreUF: number;
   factorRiesgo: number;
 
+  beneficiarios: number;
+  factorIsapreUF: number;
   precioFinalUF: number;
+  
   valorUF: number;
   precioFinalCLP: number;
-
   descuento: number;
   precioConDescuentoCLP: number;
 };
@@ -368,24 +369,22 @@ export class PlanesIsapre {
 
 
   abrirDetalle(plan: Plan): void {
-    const detalle = this.calcularDetallePrecio(plan);
+    const detallePrecio = this.calcularDetallePrecio(plan);
 
     this.planSeleccionado = {
-    ...plan,
-    precioFinal: detalle
-      ? Math.round(detalle.precioConDescuentoCLP)
-      : plan.precioBase,
-    detallePrecio: detalle
+      ...plan,
+      precioFinal: detallePrecio?.precioConDescuentoCLP ?? 0,
+      detallePrecio
     };
 
     this.mostrarDetalleModal = true;
- 
   }
 
 
 
-  calcularDetallePrecio(plan: Plan): DetallePrecio | null {
 
+  calcularDetallePrecio(plan: Plan): DetallePrecio | null {
+    // Validaciones básicas
     if (!this.valorUF) return null;
 
     const edadRaw = this.cotizacionForm.get('edad')?.value;
@@ -394,37 +393,58 @@ export class PlanesIsapre {
     const edadTitular = Number(edadRaw);
     if (isNaN(edadTitular) || edadTitular <= 0) return null;
 
+    // 1️⃣ Factores de riesgo (UF)
     const factorEdad = this.precioTitularPoredad(edadTitular);
     const factorCargas = this.getFactorCargas();
     const factorRiesgo = factorEdad + factorCargas;
 
+    // 2️⃣ Precio base UF
     const precioBaseUF = plan.precioBase;
+
+    // 3️⃣ Precio ajustado por riesgo (UF)
     const precioRiesgoUF = precioBaseUF * factorRiesgo;
 
-    const factorIsapreUF = this.getFactorIsapre(plan.nombrePlan);
+    // 4️⃣ Beneficiarios
+    const beneficiarios = 1 + this.cargasConfirmadas.length;
+
+    // 5️⃣ Factor Isapre (UF)
+    const factorIsapreBase = this.factoresIsapre[plan.nombrePlan] ?? 0;
+    const factorIsapreUF = factorIsapreBase * beneficiarios;
+
+    // 6️⃣ Total UF
     const precioFinalUF = precioRiesgoUF + factorIsapreUF;
 
-    const precioFinalCLP = precioFinalUF * this.valorUF;
+    // 7️⃣ Conversión a CLP
+    const valorUF = this.valorUF;
+    const precioFinalCLP = Math.round(precioFinalUF * valorUF);
 
+    // 8️⃣ Descuento
     const descuento = this.getDescuentoPorRenta();
-    const precioConDescuentoCLP = precioFinalCLP * (1 - descuento);
+    const precioConDescuentoCLP = Math.round(
+      precioFinalCLP * (1 - descuento)
+    );
 
     return {
       precioBaseUF,
-      edadTitular,
 
+      edadTitular,
       factorEdad,
       factorCargas,
-      factorIsapreUF,
       factorRiesgo,
 
+      beneficiarios,
+      factorIsapreUF,
+
       precioFinalUF,
-      valorUF: this.valorUF,
+
+      valorUF,
       precioFinalCLP,
       descuento,
       precioConDescuentoCLP
     };
-}
+  }
+
+
 
 
 
@@ -598,11 +618,18 @@ mostrarInfo7Porciento() {
   }
 
   factoresIsapre: Record<string, number> = {
-    Consalud: 1.036
+    Consalud: 0.731
     // futuro:
     // Banmédica: 1.02,
     // Consalud: 1.04
   };
+
+  getFactorIsapreUF(plan: Plan): number {
+  const base = this.factoresIsapre[plan.nombrePlan] ?? 0;
+  const beneficiarios = 1 + this.cargasConfirmadas.length;
+  return base * beneficiarios;
+}
+
 
   getFactorIsapre(nombrePlan: string): number {
   return this.factoresIsapre[nombrePlan] ?? 0;
@@ -629,45 +656,46 @@ mostrarInfo7Porciento() {
 
 
 
-calcularPrecioPlan(plan: Plan): number {
+  calcularPrecioPlan(plan: Plan): number {
 
-  if (!this.valorUF) return 0;
+    if (!this.valorUF) return 0;
 
-  const edadRaw = this.cotizacionForm.get('edad')?.value;
-  if (!edadRaw) return 0;
+    const edadRaw = this.cotizacionForm.get('edad')?.value;
+    if (!edadRaw) return 0;
 
-  const edadTitular = Number(edadRaw);
-  if (isNaN(edadTitular) || edadTitular <= 0) return 0;
+    const edadTitular = Number(edadRaw);
+    if (isNaN(edadTitular) || edadTitular <= 0) return 0;
 
-  // 1️⃣ Factores de riesgo
-  const factorTitular = this.precioTitularPoredad(edadTitular);
-  const factorCargas = this.getFactorCargas();
-  const factorRiesgo = factorTitular + factorCargas;
+    // 1️⃣ Factores de riesgo
+    const factorTitular = this.precioTitularPoredad(edadTitular);
+    const factorCargas = this.getFactorCargas();
+    const factorRiesgo = factorTitular + factorCargas;
+    
 
-  // 2️⃣ Precio base en UF
-  const precioBaseUF = plan.precioBase;
+    // 2️⃣ Precio base en UF
+    const precioBaseUF = plan.precioBase;
 
-  // 3️⃣ Precio ajustado por riesgo (UF)
-  const precioRiesgoUF = precioBaseUF * factorRiesgo;
+    // 3️⃣ Precio ajustado por riesgo (UF)
+    const precioRiesgoUF = precioBaseUF * factorRiesgo;
 
-  // 4️⃣ Factor Isapre (UF)
-  const factorIsapreUF = this.getFactorIsapre(plan.nombrePlan);
+    // 4️⃣ Factor Isapre (UF)
+    const factorIsapreUF = this.getFactorIsapreUF(plan);
 
-  // 5️⃣ Total UF
-  const precioFinalUF = precioRiesgoUF + factorIsapreUF;
+    // 5️⃣ Total UF
+    const precioFinalUF = precioRiesgoUF + factorIsapreUF;
 
-  // 6️⃣ Conversión a CLP
-  const precioFinalCLP = precioFinalUF * this.valorUF;
+    // 6️⃣ Conversión a CLP
+    const precioFinalCLP = precioFinalUF * this.valorUF;
 
-  console.log("valoruf", this.valorUF)
+    console.log("valoruf", this.valorUF)
 
-  // 7️⃣ Descuento por renta
-  const descuento = this.getDescuentoPorRenta(); // 0.07, 0.05 o 0
-  const precioConDescuento =
-    precioFinalCLP * (1 - descuento);
+    // 7️⃣ Descuento por renta
+    const descuento = this.getDescuentoPorRenta(); // 0.07, 0.05 o 0
+    const precioConDescuento =
+      precioFinalCLP * (1 - descuento);
 
-  return Math.round(precioConDescuento);
-}
+    return Math.round(precioConDescuento);
+  }
 
 
   confirmarCargas(): void {
@@ -701,8 +729,6 @@ prestadoresPorRegion: Record<string, string[]> = {
   'Metropolitana de Santiago': ['Clínica Dávila'],
   'Magallanes y Antártica Chilena': ['Clínica RedSalud Magallanes']
 };
-
-
 
 
 filtrarPorRegion(): void {
