@@ -22,6 +22,27 @@ interface CargaFamiliar {
   edad: number | null;
 }
 
+export type DetallePrecio = {
+  precioBaseUF: number;
+  edadTitular: number;
+
+  factorEdad: number;
+  factorCargas: number;
+  factorIsapreUF: number;
+  factorRiesgo: number;
+
+  precioFinalUF: number;
+  valorUF: number;
+  precioFinalCLP: number;
+
+  descuento: number;
+  precioConDescuentoCLP: number;
+};
+
+export type PlanConPrecioFinal = Plan & {
+  precioFinal: number;
+  detallePrecio: DetallePrecio;
+};
 
 
 /* =========================
@@ -52,7 +73,8 @@ export class PlanesIsapre {
   planesIsapre: any[] = [];
   resultados: any[] = [];
   resultadosPaginados: any[] = [];
-
+  valorUF: number | null = null;
+  
   constructor(private localstorageService: LocalstorageService, private fb: FormBuilder) {}
 
   /* =========================
@@ -60,6 +82,17 @@ export class PlanesIsapre {
   ========================= */
 
   ngOnInit(): void {
+
+    this.localstorageService.getUF().subscribe({
+      next: (uf) => {
+        this.valorUF = uf;
+        console.log('UF cargada:', uf);
+      },
+      error: () => {
+        console.error('Error al obtener UF');
+        this.valorUF = null;
+      }
+    });
 
     this.initForm();
 
@@ -335,13 +368,64 @@ export class PlanesIsapre {
 
 
   abrirDetalle(plan: Plan): void {
+    const detalle = this.calcularDetallePrecio(plan);
+
     this.planSeleccionado = {
-      ...plan,
-      precioFinal: this.calcularPrecioPlan(plan)
+    ...plan,
+    precioFinal: detalle
+      ? Math.round(detalle.precioConDescuentoCLP)
+      : plan.precioBase,
+    detallePrecio: detalle
     };
 
     this.mostrarDetalleModal = true;
+ 
   }
+
+
+
+  calcularDetallePrecio(plan: Plan): DetallePrecio | null {
+
+    if (!this.valorUF) return null;
+
+    const edadRaw = this.cotizacionForm.get('edad')?.value;
+    if (!edadRaw) return null;
+
+    const edadTitular = Number(edadRaw);
+    if (isNaN(edadTitular) || edadTitular <= 0) return null;
+
+    const factorEdad = this.precioTitularPoredad(edadTitular);
+    const factorCargas = this.getFactorCargas();
+    const factorRiesgo = factorEdad + factorCargas;
+
+    const precioBaseUF = plan.precioBase;
+    const precioRiesgoUF = precioBaseUF * factorRiesgo;
+
+    const factorIsapreUF = this.getFactorIsapre(plan.nombrePlan);
+    const precioFinalUF = precioRiesgoUF + factorIsapreUF;
+
+    const precioFinalCLP = precioFinalUF * this.valorUF;
+
+    const descuento = this.getDescuentoPorRenta();
+    const precioConDescuentoCLP = precioFinalCLP * (1 - descuento);
+
+    return {
+      precioBaseUF,
+      edadTitular,
+
+      factorEdad,
+      factorCargas,
+      factorIsapreUF,
+      factorRiesgo,
+
+      precioFinalUF,
+      valorUF: this.valorUF,
+      precioFinalCLP,
+      descuento,
+      precioConDescuentoCLP
+    };
+}
+
 
 
 
@@ -461,39 +545,6 @@ mostrarInfo7Porciento() {
   });
 }
 
-porcentajePorCobertura(codigoPlan:string): number{
-  switch (codigoPlan) {
-    case '13-SF1088-33':
-      return 0.0345;
-
-    case '13-SA5663-36':
-      return 0.0364;
-    
-    case '13-SB5663-36':
-      return 0.0379;
-
-    case '13-SED8060-26':
-      return 0.0368;
-
-    case '13-SFT020-26':
-      return 0.0395;
-
-    case '13-SFT006-20':
-      return 0.0409;
-
-    case '13-SFT1088-20':
-      return 0.0378;
-
-    case '13-SPB6628-26':
-      return 0.0425;
-
-    case '13-SBP-3005-25':
-      return 0.0435;
-
-    default:
-      return 0;
-  }
-}
 
 //CALCULO DE PRECIO POR EDAD 
   precioTitularPoredad(edad: number): number {
@@ -578,39 +629,45 @@ porcentajePorCobertura(codigoPlan:string): number{
 
 
 
- calcularPrecioPlan(plan: any): number {
-  const edadRaw = this.cotizacionForm.get('edad')?.value;
+calcularPrecioPlan(plan: Plan): number {
 
-  // 🛑 SIN EDAD → PRECIO BASE
-  if (edadRaw === null || edadRaw === '') {
-    return plan.precioBase;
-  }
+  if (!this.valorUF) return 0;
+
+  const edadRaw = this.cotizacionForm.get('edad')?.value;
+  if (!edadRaw) return 0;
 
   const edadTitular = Number(edadRaw);
+  if (isNaN(edadTitular) || edadTitular <= 0) return 0;
 
-  if (isNaN(edadTitular) || edadTitular <= 0) {
-    return plan.precioBase;
-  }
-
+  // 1️⃣ Factores de riesgo
   const factorTitular = this.precioTitularPoredad(edadTitular);
   const factorCargas = this.getFactorCargas();
-  const factorIsapre = this.getFactorIsapre(plan.nombrePlan);
-  const porcentajeCodigo = this.porcentajePorCobertura(plan.codigoPlan);
+  const factorRiesgo = factorTitular + factorCargas;
 
-  const precioBaseAjustado =
-    plan.precioBase * (1 + porcentajeCodigo);
+  // 2️⃣ Precio base en UF
+  const precioBaseUF = plan.precioBase;
 
-  const precioFinal =
-    precioBaseAjustado *
-    (factorTitular + factorCargas + factorIsapre);
+  // 3️⃣ Precio ajustado por riesgo (UF)
+  const precioRiesgoUF = precioBaseUF * factorRiesgo;
 
-  const descuento = this.getDescuentoPorRenta();
+  // 4️⃣ Factor Isapre (UF)
+  const factorIsapreUF = this.getFactorIsapre(plan.nombrePlan);
 
-  return Math.round(precioFinal * (1 - descuento));
+  // 5️⃣ Total UF
+  const precioFinalUF = precioRiesgoUF + factorIsapreUF;
+
+  // 6️⃣ Conversión a CLP
+  const precioFinalCLP = precioFinalUF * this.valorUF;
+
+  console.log("valoruf", this.valorUF)
+
+  // 7️⃣ Descuento por renta
+  const descuento = this.getDescuentoPorRenta(); // 0.07, 0.05 o 0
+  const precioConDescuento =
+    precioFinalCLP * (1 - descuento);
+
+  return Math.round(precioConDescuento);
 }
-
-
-
 
 
   confirmarCargas(): void {

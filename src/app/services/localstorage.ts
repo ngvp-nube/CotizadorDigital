@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, map } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+
 
 export interface Plan {
   id: number;
@@ -24,6 +26,9 @@ export interface Plan {
   providedIn: 'root'
 })
 export class LocalstorageService {
+
+  private readonly API_INDICADORES = 'https://mindicador.cl/api';
+
 
   regiones = [
     { id: 1, nombre: 'Arica y Parinacota' },
@@ -59,7 +64,7 @@ export class LocalstorageService {
     ambulatoria: 70,
     topeAnualUf: 9000,
     puntaje: 7.5,
-    precioBase: 35000,
+    precioBase: 3.41,
     imagenContrato: 'assets/contratos/consalud-plan-1.pdf'
   },
   {
@@ -75,7 +80,7 @@ export class LocalstorageService {
     ambulatoria: 60,
     topeAnualUf: 8000,
     puntaje: 7.5,
-    precioBase: 60000,
+    precioBase: 3.64,
     imagenContrato: 'assets/contratos/consalud-plan-1.pdf'
   },
   {
@@ -91,7 +96,7 @@ export class LocalstorageService {
     ambulatoria: 65,
     topeAnualUf: 6000,
     puntaje: 7.5,
-    precioBase: 25000,
+    precioBase: 3.79,
     imagenContrato: 'assets/contratos/consalud-plan-1.pdf'
   },
   {
@@ -107,7 +112,7 @@ export class LocalstorageService {
     ambulatoria: 70,
     topeAnualUf: 5000,
     puntaje: 7.6,
-    precioBase: 36000,
+    precioBase: 3.68,
     imagenContrato: 'assets/contratos/consalud-plan-1.pdf'
   },
   {
@@ -123,7 +128,7 @@ export class LocalstorageService {
     ambulatoria: 60,
     topeAnualUf: 8000,
     puntaje: 7.5,
-    precioBase: 32000,
+    precioBase: 3.95,
     imagenContrato: 'assets/contratos/consalud-plan-1.pdf'
   },
   {
@@ -139,7 +144,7 @@ export class LocalstorageService {
     ambulatoria: 60,
     topeAnualUf: 8000,
     puntaje: 7.2,
-    precioBase: 45000,
+    precioBase: 4.09,
     imagenContrato: 'assets/contratos/consalud-plan-1.pdf'
   },
   {
@@ -155,7 +160,7 @@ export class LocalstorageService {
     ambulatoria: 60,
     topeAnualUf: 8000,
     puntaje: 7.5,
-    precioBase: 30000,
+    precioBase: 3.78,
     imagenContrato: 'assets/contratos/consalud-plan-1.pdf'
   },
   {
@@ -171,7 +176,7 @@ export class LocalstorageService {
     ambulatoria: 60,
     topeAnualUf: 8000,
     puntaje: 7.5,
-    precioBase: 30000,
+    precioBase: 4.25,
     imagenContrato: 'assets/contratos/consalud-plan-1.pdf'
   },
   {
@@ -187,7 +192,7 @@ export class LocalstorageService {
     ambulatoria: 60,
     topeAnualUf: 8000,
     puntaje: 7.5,
-    precioBase: 30000,
+    precioBase: 4.25,
     imagenContrato: 'assets/contratos/consalud-plan-1.pdf'
   },
 ];
@@ -199,8 +204,13 @@ export class LocalstorageService {
 
 
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
   
+  getUF(): Observable<number> {
+    return this.http.get<any>(`${this.API_INDICADORES}/uf`).pipe(
+      map(resp => resp.serie[0].valor)
+    );
+  }
 
   get(url: string): Observable<any[]> {
     if (url === '/api/regiones') {
