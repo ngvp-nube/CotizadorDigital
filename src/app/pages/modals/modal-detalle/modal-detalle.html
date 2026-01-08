@@ -287,82 +287,86 @@
         <p class="description">Desglose del puntaje del plan.</p>
       </div>
 
-      
       <!-- 🔹 Precio -->
-      <!-- 🔹 Precio -->
-      <div *ngIf="tabActiva === 'precio' && plan?.detallePrecio" class="precio-tab-container">
+      <div *ngIf="tabActiva === 'precio' && plan" class="precio-tab-container">
 
         <h3 class="tab-section-title">
           ¿Cómo se calcula el precio de tu plan?
         </h3>
 
-        <!-- 💠 Precio base en UF -->
-        <div class="price-step">
-          <span class="step-label">Precio base del plan</span>
-          <span class="step-value">
-            {{ plan.detallePrecio.precioBaseUF | number:'1.2-2' }} UF
-          </span>
-        </div>
+        <div class="price-card">
 
-        <!-- 👤 Factor edad -->
-        <div class="price-step">
-          <span class="step-label">
-            Factor por edad ({{ plan.detallePrecio.edadTitular }} años)
-          </span>
-          <span class="step-value">
-            × {{ plan.detallePrecio.factorEdad | number:'1.2-2' }}
-          </span>
-        </div>
+          <!-- 💰 Precio base -->
+          <div class="price-step">
+            <div class="step-left">
+              <span class="icon">💰</span>
+              <span class="step-label">Precio base del plan</span>
+            </div>
+            <span class="step-value">
+              {{ plan.precioBase | number:'1.2-2' }} UF
+            </span>
+          </div>
 
-        <!-- 👨‍👩‍👧 Cargas -->
-        <div class="price-step">
-          <span class="step-label">
-            {{ plan.detallePrecio.factorCargas > 0
-              ? 'Factor por cargas familiares'
-              : 'Sin cargas familiares' }}
-          </span>
-          <span class="step-value">
-            + {{ plan.detallePrecio.factorCargas | number:'1.2-2' }}
-          </span>
-        </div>
+          <!-- 👤 Edad -->
+          <div class="price-step" *ngIf="plan.detallePrecio">
+            <div class="step-left">
+              <span class="icon">👤</span>
+              <span class="step-label">
+                Factor por edad ({{ plan.detallePrecio.edadTitular }} años)
+              </span>
+            </div>
+            <span class="step-value positive">
+              × {{ plan.detallePrecio.factorEdad | number:'1.2-2' }} UF
+            </span>
+          </div>
 
-        <!-- 🏥 Factor Isapre -->
-        <div class="price-step">
-          <span class="step-label">Factor Isapre</span>
-          <span class="step-value">
-            + {{ plan.detallePrecio.factorIsapreUF | number:'1.3-3' }} UF
-          </span>
-        </div>
+          <!-- 👨‍👩‍👧 Cargas -->
+          <div class="price-step" *ngIf="plan.detallePrecio">
+            <div class="step-left">
+              <span class="icon">👨‍👩‍👧</span>
+              <span class="step-label">
+                {{ plan.detallePrecio.factorCargas > 0 ? 'Factor por cargas familiares' : 'Sin cargas familiares' }}
+              </span>
+            </div>
+            <span class="step-value">
+              + {{ plan.detallePrecio.factorCargas | number:'1.2-2' }} UF
+            </span>
+          </div>
 
-        <!-- 📊 Total en UF -->
-        <div class="price-step total-uf">
-          <span class="step-label">Total en UF</span>
-          <span class="step-value">
-            {{ plan.detallePrecio.precioFinalUF | number:'1.2-2' }} UF
-          </span>
-        </div>
+          <!-- 🏥 Isapre -->
+          <div class="price-step" *ngIf="plan.detallePrecio">
+            <div class="step-left">
+              <span class="icon">🏥</span>
+              <span class="step-label">
+                GES
+                <small class="hint">
+                  (0.731 UF × {{ plan.detallePrecio.beneficiarios }} beneficiarios)
+                </small>
+              </span>
+            </div>
+            <span class="step-value">
+              + {{ plan.detallePrecio.factorIsapreUF | number:'1.3-3' }} UF
+            </span>
+          </div>
 
-        <!-- 💱 Conversión UF a CLP -->
-        <div class="price-step">
-          <span class="step-label">Valor UF</span>
-          <span class="step-value">
-            ${{ plan.detallePrecio.valorUF | number:'1.0-0' }}
-          </span>
-        </div>
+          <!-- 🔻 Descuento -->
+          <div
+            class="price-step discount"
+            *ngIf="plan.detallePrecio.descuento > 0"
+          >
+            <div class="step-left">
+              <span class="icon">🔻</span>
+              <span class="step-label">Descuento por renta</span>
+            </div>
+            <span class="step-value negative">
+              - {{ plan.detallePrecio.descuento * 100 | number:'1.0-0' }}%
+            </span>
+          </div>
 
-        <!-- 🔻 Descuento -->
-        <div
-          class="price-step discount"
-          *ngIf="plan.detallePrecio.descuento > 0"
-        >
-          <span class="step-label">Descuento por renta</span>
-          <span class="step-value negative">
-            - {{ plan.detallePrecio.descuento * 100 | number:'1.0-0' }}%
-          </span>
         </div>
 
         <!-- 🧮 Resultado final -->
-        <div class="price-total">
+        <div class="price-total-card">
           <span class="total-label">Precio final mensual</span>
           <span class="total-value">
             ${{ plan.precioFinal | number:'1.0-0' }}
@@ -371,6 +375,8 @@
         </div>
 
       </div>
+
+
 
 
 
