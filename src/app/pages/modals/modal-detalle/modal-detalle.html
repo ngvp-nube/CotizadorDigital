@@ -290,42 +290,36 @@
       
       <!-- 🔹 Precio -->
       <!-- 🔹 Precio -->
-      <div *ngIf="tabActiva === 'precio' && plan" class="precio-tab-container">
+      <div *ngIf="tabActiva === 'precio' && plan?.detallePrecio" class="precio-tab-container">
 
-        <h3 class="tab-section-title">¿Cómo se calcula el precio de tu plan?</h3>
+        <h3 class="tab-section-title">
+          ¿Cómo se calcula el precio de tu plan?
+        </h3>
 
-        <!-- 💰 Precio base -->
+        <!-- 💠 Precio base en UF -->
         <div class="price-step">
           <span class="step-label">Precio base del plan</span>
           <span class="step-value">
-            ${{ plan.precioBase | number:'1.0-0' }}
+            {{ plan.detallePrecio.precioBaseUF | number:'1.2-2' }} UF
           </span>
         </div>
 
-        <!-- ➕ Porcentaje por código -->
-        <div class="price-step" *ngIf="plan.detallePrecio">
-          <span class="step-label">
-            Ajuste por código del plan ({{ plan.codigoPlan }})
-          </span>
-          <!-- <span class="step-value positive">
-            + {{ plan.detallePrecio.porcentajeCodigo * 100 | number:'1.2-2' }}%
-          </span> -->
-        </div>
-
-        <!-- 👤 Edad -->
-        <div class="price-step" *ngIf="plan.detallePrecio">
+        <!-- 👤 Factor edad -->
+        <div class="price-step">
           <span class="step-label">
             Factor por edad ({{ plan.detallePrecio.edadTitular }} años)
           </span>
           <span class="step-value">
-            : {{ plan.detallePrecio.factorEdad | number:'1.2-2' }}%
+            × {{ plan.detallePrecio.factorEdad | number:'1.2-2' }}
           </span>
         </div>
 
         <!-- 👨‍👩‍👧 Cargas -->
-        <div class="price-step" *ngIf="plan.detallePrecio">
+        <div class="price-step">
           <span class="step-label">
-            {{ plan.detallePrecio.factorCargas > 0 ? 'Con cargas familiares' : 'Sin cargas familiares' }}
+            {{ plan.detallePrecio.factorCargas > 0
+              ? 'Factor por cargas familiares'
+              : 'Sin cargas familiares' }}
           </span>
           <span class="step-value">
             + {{ plan.detallePrecio.factorCargas | number:'1.2-2' }}
@@ -333,18 +327,37 @@
         </div>
 
         <!-- 🏥 Factor Isapre -->
-        <div class="price-step" *ngIf="plan.detallePrecio">
+        <div class="price-step">
           <span class="step-label">Factor Isapre</span>
-          <!-- <span class="step-value">
-            + {{ plan.detallePrecio.factorIsapre | number:'1.3-3' }}
-          </span> -->
+          <span class="step-value">
+            + {{ plan.detallePrecio.factorIsapreUF | number:'1.3-3' }} UF
+          </span>
+        </div>
+
+        <!-- 📊 Total en UF -->
+        <div class="price-step total-uf">
+          <span class="step-label">Total en UF</span>
+          <span class="step-value">
+            {{ plan.detallePrecio.precioFinalUF | number:'1.2-2' }} UF
+          </span>
+        </div>
+
+        <!-- 💱 Conversión UF a CLP -->
+        <div class="price-step">
+          <span class="step-label">Valor UF</span>
+          <span class="step-value">
+            ${{ plan.detallePrecio.valorUF | number:'1.0-0' }}
+          </span>
         </div>
 
         <!-- 🔻 Descuento -->
-        <div class="price-step discount" *ngIf="plan.detallePrecio && plan.detallePrecio.descuento > 0">
-          <span class="step-label">Descuento aplicado</span>
+        <div
+          class="price-step discount"
+          *ngIf="plan.detallePrecio.descuento > 0"
+        >
+          <span class="step-label">Descuento por renta</span>
           <span class="step-value negative">
-            - {{ plan.detallePrecio.descuento * 100 }}%
+            - {{ plan.detallePrecio.descuento * 100 | number:'1.0-0' }}%
           </span>
         </div>
 
@@ -358,6 +371,7 @@
         </div>
 
       </div>
+
 
 
 
