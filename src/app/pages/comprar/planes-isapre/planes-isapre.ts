@@ -87,7 +87,6 @@ export class PlanesIsapre {
     this.localstorageService.getUF().subscribe({
       next: (uf) => {
         this.valorUF = uf;
-        console.log('UF cargada:', uf);
       },
       error: () => {
         console.error('Error al obtener UF');
@@ -112,7 +111,6 @@ export class PlanesIsapre {
     this.localstorageService.getRegiones().subscribe({
       next:(data) => {
         this.regiones = data;
-        console.log("Regiones", data);
          
       }
     });
@@ -129,7 +127,6 @@ export class PlanesIsapre {
     this.localstorageService.getPlanes().subscribe({
       next:(data) => {
         this.planesIsapre = data;
-        console.log("Planes", this.planesIsapre[0].precioDesde);
         this.resultados = data;
         this.resetPaginacion();
         this.actualizarPaginacion();
@@ -235,7 +232,7 @@ export class PlanesIsapre {
       total += this.precioCargaPorEdad(edadCarga);
     }
   }
-  console.log('Factor cargas total:', total);
+
     return total;
   }
 
@@ -699,7 +696,7 @@ mostrarInfo7Porciento() {
     // 6️⃣ Conversión a CLP
     const precioFinalCLP = precioFinalUF * this.valorUF;
 
-    console.log("valoruf", this.valorUF)
+    
 
     // 7️⃣ Descuento por renta
     const descuento = this.getDescuentoPorRenta(); // 0.07, 0.05 o 0
