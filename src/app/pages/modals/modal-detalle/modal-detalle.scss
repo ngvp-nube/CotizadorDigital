@@ -70,13 +70,15 @@ $qp-shadow: rgba(0, 0, 0, 0.08);
 .plan-info-header {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 50px;
+  margin-left: 50px;
 
   .isapre-logo-modal {
     width: 95px;
   }
 
   .text-info {
+    margin-left: 100px;
     .rating {
       color: #ffcc00;
       font-size: 1.1rem;
@@ -1172,4 +1174,10 @@ $qp-shadow: rgba(0, 0, 0, 0.08);
 .total-value {
   font-size: 22px;
   font-weight: 700;
+}
+
+.logo-consalud{
+  max-width: 15rem;
+  width: 240px;
+  height: 64px;
 }

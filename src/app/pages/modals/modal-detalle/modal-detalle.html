@@ -8,14 +8,14 @@
         <!-- INFO PLAN -->
         <div class="plan-info-header">
           <img
-            [src]="'assets/logos/vidatres.png' + (plan.nombrePlan || '').toLowerCase().replace(' ', '') + '.png'"
-            class="isapre-logo-modal"
+            [src]="'/' + (plan.nombrePlan || '').toLowerCase().replace(' ', '') + '.png'"
+            class="logo-consalud"
           />
 
           <div class="text-info">
             <span class="rating">★★★★☆</span>
             <span class="plan-recommendation">Plan recomendado</span>
-            <h2 class="plan-title">{{ plan.nombrePlan }}</h2>
+            <h2 class="plan-title">{{ plan.codigoPlan }}</h2>
 
             <p *ngIf="plan?.puntaje">
               Puntuación:
@@ -375,12 +375,6 @@
         </div>
 
       </div>
-
-
-
-
-
-
 
 
       <!-- FOOTER -->

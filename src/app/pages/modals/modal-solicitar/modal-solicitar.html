@@ -9,8 +9,9 @@
       <!-- LOGO ISAPRE -->
       <div class="logo-col">
         <img
-          [src]="'assets/logos/' + (plan.nombrePlan || '').toLowerCase() + '.png'"
-          alt="{{ plan.nombrePlan }}"
+          [src]="'/' + (plan.nombrePlan || '').toLowerCase().replace(' ', '') + '.png'"
+          alt="Consalud"
+          class = "logo-consalud"
         />
       </div>
 
@@ -23,7 +24,7 @@
         </span>
 
         <h2 class="plan-title">
-          {{ plan.nombrePlan }}
+          {{ plan.codigoPlan}}
         </h2>
 
         <p class="plan-score" *ngIf="plan.puntaje">

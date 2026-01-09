@@ -126,34 +126,132 @@ html, body {
   overflow: hidden;
 }
 
+/* =========================================================
+   SIDEBAR – BASE
+========================================================= */
+
 /* ===============================
-   SIDEBAR
+   PRICE FILTER CARD
 =============================== */
-.sidebar {
-  position: sticky;
-  top: auto;        /* ❌ elimina el anclaje superior */
-  bottom: 20px;     /* ✅ ahora se “pega” abajo */
+
+.price-card {
+  padding: 0; // 🔑 el padding lo manejan los bloques internos
+  overflow: hidden;
 }
 
+/* Header */
+.price-card-header {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #ffffff;
 
-.sidebar h4 {
-  margin-top: 0;
+  padding: 14px 18px;
+  font-size: 15px;
+  font-weight: 600;
+
+  border-radius: 16px 16px 0 0;
 }
 
-.price-box {
+/* Body */
+.price-card-body {
+  padding: 18px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+  background: #ffffff;
 }
 
-.price-box input[type="range"] {
+/* Rangos */
+.price-range {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.max-price {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* Slider */
+.price-card-body input[type="range"] {
+  margin-top: 10px;
   width: 100%;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  cursor: pointer;
+}
+
+/* Thumb */
+.price-card-body input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3b82f6;
+  box-shadow: 0 6px 14px rgba(59, 130, 246, 0.45);
+  cursor: pointer;
+}
+
+.price-card-body input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: none;
+  cursor: pointer;
+}
+
+.sidebar.price-card {
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+}
+
+
+/* ===============================
+   AUTOCOMPLETE CLÍNICAS
+=============================== */
+.autocomplete .input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+.autocomplete .input:focus {
+  outline: none;
+  border-color: #3f4cff;
+  box-shadow: 0 0 0 3px rgba(63, 76, 255, 0.15);
+}
+
+.autocomplete-list {
+  border-radius: 12px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.14);
 }
 
 .checkbox {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
   margin-top: 10px;
+}
+
+.checkbox input {
+  accent-color: #3f4cff;
+}
+
+.checkbox .count {
+  margin-left: auto;
+  background: #eef1ff;
+  color: #3f4cff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 999px;
 }
 
 .count {
@@ -162,6 +260,200 @@ html, body {
   border-radius: 6px;
   font-size: 12px;
 }
+
+/* ===============================
+   PRICE FILTER CARD
+=============================== */
+
+/* =========================================================
+   SIDEBAR – BASE
+========================================================= */
+
+.sidebar {
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+}
+
+/* =========================================================
+   PRICE CARD
+========================================================= */
+
+.price-card {
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+/* Header */
+.price-card-header {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #ffffff;
+  padding: 14px 18px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* Body */
+.price-card-body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Rangos */
+.price-range {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.max-price {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* Slider */
+.price-card-body input[type="range"] {
+  margin-top: 10px;
+  width: 100%;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  cursor: pointer;
+}
+
+.price-card-body input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3b82f6;
+  box-shadow: 0 6px 14px rgba(59, 130, 246, 0.45);
+  cursor: pointer;
+}
+
+.price-card-body input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: none;
+  cursor: pointer;
+}
+
+/* =========================================================
+   CLINIC FILTER CARD
+========================================================= */
+
+.clinic-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+/* Title */
+.title-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.title-inline .info {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #eef2ff;
+  color: #3f4cff;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Input */
+.clinic-input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #dbe0ff;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.clinic-input:focus {
+  border-color: #3f4cff;
+  box-shadow: 0 0 0 3px rgba(63, 76, 255, 0.15);
+}
+
+/* Autocomplete */
+.autocomplete-list {
+  margin-top: 6px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  z-index: 20;
+}
+
+.autocomplete-list li {
+  padding: 10px 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.autocomplete-list li:hover {
+  background: #f2f4ff;
+}
+
+/* Options */
+.clinic-options {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.clinic-check {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.clinic-check input {
+  accent-color: #3f4cff;
+  margin-right: 8px;
+}
+
+.clinic-check span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Counter */
+.count {
+  background: #eef2ff;
+  color: #3f4cff;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+
 
 /* ===============================
    RESULTADOS
@@ -207,7 +499,7 @@ html, body {
 .company {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 15px;
   margin: 10px 0;
 }
 
@@ -216,6 +508,7 @@ html, body {
   flex-wrap: wrap;
   gap: 8px;
   font-size: 13px;
+  margin-top: 10px;
 }
 
 /* ===============================
@@ -1186,13 +1479,81 @@ html, body {
 
 
 
+//BOTON FACTORES 
 
-
-
-.info-link {
-  color: #3f4cff;
-  cursor: pointer;
-  font-size: 13px;
-  text-decoration: underline;
+.factores {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
 }
 
+.factores-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  padding: 8px 10px;
+  font-size: 13px;
+  font-weight: 600;
+
+  color: #3f4cff;
+  background-color: #f4f6ff;
+
+  border: 1px solid #d9ddff;
+  border-radius: 6px;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.factores-btn:hover {
+  background-color: #e9edff;
+  border-color: #3f4cff;
+}
+
+.factores-btn:active {
+  transform: translateY(1px);
+}
+
+.factores-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+//BOTON 7%
+
+.rating-toggle {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.reajuste-btn {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  
+  padding: 8px 10px;
+  font-size: 13px;
+  font-weight: 600;
+
+  color: #3f4cff;
+  background-color: #f4f6ff;
+
+  border: 1px solid #d9ddff;
+  border-radius: 6px;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reajuste-btn:hover {
+  background-color: #e9edff;
+  border-color: #3f4cff;
+}
+
+.reajuste-btn:active {
+  transform: translateY(1px);
+  text-decoration: none;
+}

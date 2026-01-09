@@ -54,9 +54,9 @@ $qp-shadow: rgba(0, 0, 0, 0.08);
 
 /* LOGO */
 .logo-col img {
-  width: 80px;
-  height: auto;
-  margin-right: 40px;
+  width: 150px;
+  height: 32;
+  margin-right: 30px;
 }
 
 /* INFO PLAN */
@@ -405,4 +405,8 @@ $qp-shadow: rgba(0, 0, 0, 0.08);
 
 }
 
-
+.logo-consalud{
+  max-width: 15rem;
+  width: 240px;
+  height: 64px;
+}

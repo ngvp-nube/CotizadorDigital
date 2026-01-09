@@ -161,73 +161,6 @@
 
           <!-- CONTENIDO -->
           <div class="popover-content">
-
-            <!-- CONYUGE TOGGLE -->
-      
-
-            <!-- CONYUGE DETAILS -->
-            <div class="conyuge-details" *ngIf="tieneConyuge">
-
-              <div class="conyuge-row-inline">
-
-                <!-- SISTEMA DE SALUD -->
-                <div class="sex-pick-full">
-                  <label>Sistema de salud actual</label>
-
-                  <div
-                    class="health-select"
-                    (clickOutside)="conyugeHealthOpen = false"
-                  >
-                    <div
-                      class="health-selected"
-                      (click)="conyugeHealthOpen = !conyugeHealthOpen"
-                    >
-                      {{ conyuge.sistemaSalud || 'Selecciona' }}
-                      <span
-                        class="arrow"
-                        [class.open]="conyugeHealthOpen"
-                      >⌄</span>
-                    </div>
-
-                    <div
-                      class="health-dropdown"
-                      *ngIf="conyugeHealthOpen"
-                    >
-                      <div class="health-option" (click)="selectConyugeHealth('Fonasa')">Fonasa</div>
-                      <div class="health-option" (click)="selectConyugeHealth('Banmédica')">Banmédica</div>
-                      <div class="health-option" (click)="selectConyugeHealth('Colmena')">Colmena</div>
-                      <div class="health-option" (click)="selectConyugeHealth('Consalud')">Consalud</div>
-                      <div class="health-option" (click)="selectConyugeHealth('Cruz Blanca')">Cruz Blanca</div>
-                      <div class="health-option" (click)="selectConyugeHealth('Nueva Masvida')">Nueva Masvida</div>
-                      <div class="health-option" (click)="selectConyugeHealth('Vida Tres')">Vida Tres</div>
-                      <div class="health-option" (click)="selectConyugeHealth('Esencial')">Esencial</div>
-                      <div class="health-option" (click)="selectConyugeHealth('No tiene')">No tiene</div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- EDAD -->
-                <div class="age-pick-full">
-                  <label>Edad*</label>
-                  <input
-                    type="number"
-                    [(ngModel)]="conyuge.edad"
-                    placeholder="27"
-                  />
-                </div>
-              </div>
-
-              <!-- INGRESO -->
-              <div class="input-full-width">
-                <label>Ingreso Mensual Líquido*</label>
-                <input
-                  type="text"
-                  [(ngModel)]="conyuge.ingreso"
-                  placeholder="$ 0"
-                />
-              </div>
-            </div>
-
             <!-- CARGAS -->
             <div class="popover-row">
               <label>Cargas</label>
@@ -279,10 +212,18 @@
       </div>
 
       <div class="rating-toggle">
-        <label>
+        <button class = "reajuste-btn">
           <span class="info-link" (click)="mostrarInfo7Porciento()"> Reajustados a tu 7 %</span>
-        </label>
+        </button>
       </div>
+
+      <div class="factores">
+        <button class="factores-btn">
+          <span class="factores-icon">⚙️</span>
+          <span class="factores-text" (click) = "mostrarInfoFactores()">Factores</span>
+        </button>
+      </div>
+
 
       <div class="sort-select">
         <label>Ordenar por:</label>
@@ -322,56 +263,61 @@
 <div class="container results-layout">
   <!-- SIDEBAR -->
   <div class="sidebar-wrapper">
-    <aside class="sidebar">
-      <h4>Precio</h4>
-      <div class="price-box">
-        <span>$137.157 - $151.594</span>
-        <span class="max-price">$380.000</span>
-        <input type="range" />
-      </div>
+    <aside class="sidebar price-card">
+      <div class = "price-card-header">Precio </div>
+
+      <div class="price-card-body">
+        <div class="price-box">
+          <span>$137.157 - $151.594</span>
+          <span class="max-price">$380.000</span>
+          <input type="range" />
+        </div>
+    </div>
     </aside>
 
-    <aside class="sidebar">
       <!-- ===============================
        AUTOCOMPLETE CLÍNICAS
       ================================ -->
-      <h4 class="title-inline">
+    <aside class="sidebar price-card">
+      <div class="price-card-header">
         Clínicas y Hospitales
         <span class="info">i</span>
-      </h4>
-
-      <div class="autocomplete">
-        <input
-          type="text"
-          class="input"
-          placeholder="Clínica..."
-          [(ngModel)]="clinicaSearch"
-          (input)="filtrarClinicas()"
-          (focus)="mostrarLista = true"
-        />
-
-        <ul
-          class="autocomplete-list"
-          *ngIf="mostrarLista && clinicasFiltradas.length"
-        >
-          <li
-            *ngFor="let clinica of clinicasFiltradas"
-            (click)="seleccionarClinica(clinica)"
-          >
-            {{ clinica }}
-          </li>
-        </ul>
       </div>
 
-      <label class="checkbox">
-        <input type="checkbox" checked />
-        Libre elección <span class="count">51</span>
-      </label>
+      <div class="price-card-body">
+          <div class="autocomplete">
+            <input
+              type="text"
+              class="input"
+              placeholder="Clínica..."
+              [(ngModel)]="clinicaSearch"
+              (input)="filtrarClinicas()"
+              (focus)="mostrarLista = true"
+            />
 
-      <label class="checkbox">
-        <input type="checkbox" checked />
-        Preferentes <span class="count">25</span>
-      </label>
+            <ul
+              class="autocomplete-list"
+              *ngIf="mostrarLista && clinicasFiltradas.length"
+            >
+              <li
+                *ngFor="let clinica of clinicasFiltradas"
+                (click)="seleccionarClinica(clinica)"
+              >
+                {{ clinica }}
+              </li>
+            </ul>
+          </div>
+        
+          <label class="checkbox">
+            <input type="checkbox" checked />
+            Libre elección <span class="count">51</span>
+          </label>
+
+          <label class="checkbox">
+            <input type="checkbox" checked />
+            Preferentes <span class="count">25</span>
+          </label>  
+      </div>
     </aside>
   </div>
   <main class="results" id="cards-start">
@@ -383,11 +329,11 @@
         <span class="tag" *ngIf="plan.preferente">Preferente</span>
 
         <div class="company">
-          <img src="https://via.placeholder.com/40" />
-          <strong>{{ plan.nombrePlan }}</strong>
+          <img src="/consalud.png" alt="Consalud" width ="100px" class="logo-consalud">
+          <h5>Plan {{ plan.codigoPlan }}</h5>
         </div>
-
-        <h5>Plan {{ plan.codigoPlan }}</h5>
+        <h5>Valor base plan {{plan.precioBase}} UF</h5>
+        
 
         <div class="features">
           <span>🏥 Prestadores {{plan.prestadores}}</span>
