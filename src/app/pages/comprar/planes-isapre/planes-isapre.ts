@@ -3,7 +3,13 @@
  * ====================================================== */
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormGroup,
+  FormBuilder,
+  FormArray
+} from '@angular/forms';
 import Swal from 'sweetalert2';
 import { ModalDetalleComponent } from '../../modals/modal-detalle/modal-detalle';
 import { ModalSolicitarComponent } from '../../modals/modal-solicitar/modal-solicitar';
@@ -53,7 +59,6 @@ export type PlanConPrecioFinal = Plan & {
   styleUrls: ['./planes-isapre.scss']
 })
 export class PlanesIsapre {
-
   /* ======================================================
    * DATA BASE / STATE
    * ====================================================== */
@@ -61,12 +66,89 @@ export class PlanesIsapre {
 
   regiones: any[] = [];
   planesIsapre: any[] = [];
+
+  /** Base por región/sistema/etc */
   resultados: any[] = [];
+
+  /** Base + filtro precio (esto es lo que se pagina y se muestra) */
+  resultadosFiltrados: any[] = [];
+
   resultadosPaginados: any[] = [];
 
   valorUF: number | null = null;
 
   cargasConfirmadas: { edadCarga: number }[] = [];
+
+    /* ======================================================
+   * FORM / INIT
+   * ====================================================== */
+  constructor(
+    private localstorageService: LocalstorageService,
+    private fb: FormBuilder
+  ) {}
+
+  ngOnInit(): void {
+    // UF
+    this.localstorageService.getUF().subscribe({
+      next: (uf) => {
+        this.valorUF = uf;
+        // cuando llega UF cambia el precio => reaplicar filtro
+        this.aplicarFiltrosPrecio(true);
+      },
+      error: () => {
+        console.error('Error al obtener UF');
+        this.valorUF = null;
+        this.aplicarFiltrosPrecio(true);
+      }
+    });
+
+    // Form
+    this.initForm();
+
+    // Cambios que afectan precio => reaplicar filtro
+    this.cotizacionForm.get('edad')?.valueChanges.subscribe(() => {
+      this.aplicarFiltrosPrecio(true);
+    });
+
+    this.cotizacionForm.get('ingresocoti')?.valueChanges.subscribe(() => {
+      this.aplicarFiltrosPrecio(true);
+    });
+
+    this.cotizacionForm.get('cargas')?.valueChanges.subscribe(() => {
+      this.aplicarFiltrosPrecio(true);
+    });
+
+    // Regiones
+    this.localstorageService.getRegiones().subscribe({
+      next: (data) => {
+        this.regiones = data;
+      }
+    });
+
+    // Sistema salud -> filtra
+    this.cotizacionForm.get('sistemasaludcoti')
+      ?.valueChanges.subscribe(() => {
+        this.filtrarPorSistemaSalud();
+      });
+
+    // Planes Isapre
+    this.localstorageService.getPlanes().subscribe({
+      next: (data) => {
+        this.planesIsapre = data;
+        this.aplicarResultados(data);
+      }
+    });
+  }
+
+  private initForm(): void {
+    this.cotizacionForm = this.fb.group({
+      edad: [null],
+      regioncoti: [''],
+      ingresocoti: [null],
+      sistemasaludcoti: [''],
+      cargas: this.fb.array([])
+    });
+  }
 
   /* ======================================================
    * SELECT SALUD (PRINCIPAL)
@@ -105,16 +187,21 @@ export class PlanesIsapre {
       this.cargasForm.removeAt(this.cargasForm.length - 1);
 
       // Mantener snapshot consistente
-      this.cargasConfirmadas = this.cargasForm.value
-        .filter((c: any) => c.edadCarga && c.edadCarga > 0);
+      this.cargasConfirmadas = this.cargasForm.value.filter(
+        (c: any) => c.edadCarga && c.edadCarga > 0
+      );
     }
   }
 
   confirmarCargas(): void {
-    this.cargasConfirmadas = this.cargasForm.value
-      .filter((c: any) => c.edadCarga && c.edadCarga > 0);
+    this.cargasConfirmadas = this.cargasForm.value.filter(
+      (c: any) => c.edadCarga && c.edadCarga > 0
+    );
 
     this.mostrarModal = false;
+
+    // Si cambian cargas, cambia el precio => reaplicar filtro
+    this.aplicarFiltrosPrecio();
   }
 
   getFactorCargas(): number {
@@ -202,14 +289,31 @@ export class PlanesIsapre {
     this.paginaActual = 1;
   }
 
+  /** Este método ahora aplica base (resultados) y luego filtro precio */
   private aplicarResultados(data: any[]): void {
     this.resultados = data;
-    this.resetPaginacion();
+    this.aplicarFiltrosPrecio(true);
+  }
+
+  /** Aplica el filtro de precio sobre `resultados` y recalcula paginación */
+  private aplicarFiltrosPrecio(resetPage: boolean = false): void {
+    if (resetPage) this.resetPaginacion();
+
+    // Filtra usando el mismo cálculo que muestran las cards
+    this.resultadosFiltrados = (this.resultados ?? []).filter((plan: Plan) => {
+      const precio = this.calcularPrecioPlan(plan);
+      // Si aún no hay UF o edad y tu función retorna 0, no lo mates por filtro:
+      if (precio === 0) return true;
+      return precio >= this.minPrice && precio <= this.maxPrice;
+    });
+
     this.actualizarPaginacion();
   }
 
   actualizarPaginacion(): void {
-    this.totalPaginas = Math.ceil(this.resultados.length / this.itemsPorPagina);
+    const base = this.resultadosFiltrados ?? [];
+
+    this.totalPaginas = Math.ceil(base.length / this.itemsPorPagina);
 
     const maxPaginasVisibles = 5;
     let inicio = Math.max(this.paginaActual - 2, 2);
@@ -237,7 +341,8 @@ export class PlanesIsapre {
 
     const startIndex = (this.paginaActual - 1) * this.itemsPorPagina;
     const endIndex = startIndex + this.itemsPorPagina;
-    this.resultadosPaginados = this.resultados.slice(startIndex, endIndex);
+
+    this.resultadosPaginados = base.slice(startIndex, endIndex);
   }
 
   irAPagina(pagina: number): void {
@@ -336,9 +441,6 @@ export class PlanesIsapre {
    * ====================================================== */
   factoresIsapre: Record<string, number> = {
     Consalud: 0.731
-    // futuro:
-    // Banmédica: 1.02,
-    // Consalud: 1.04
   };
 
   prestadoresPorRegion: Record<string, string[]> = {
@@ -423,7 +525,7 @@ export class PlanesIsapre {
     });
   }
 
-  mostrarInfoFactores(): void{
+ mostrarInfoFactorDeRiesgo(): void{
     Swal.fire({
     title: 'Factores que influyen en el precio de tu plan',
     icon: 'info',
@@ -466,9 +568,24 @@ export class PlanesIsapre {
             <tr><td style="padding:8px; border:1px solid #ddd;">65 años y más</td><td style="padding:8px; border:1px solid #ddd;">2.4</td><td style="padding:8px; border:1px solid #ddd;">2.2</td></tr>
           </tbody>
         </table>
+    `
+  });
+}
 
-        <hr style="margin:20px 0;" />
-
+mostrarInfoGes(): void{
+    Swal.fire({
+    title: 'Factores que influyen en el precio de tu plan',
+    icon: 'info',
+    width: '900',
+    heightAuto: false,
+    scrollbarPadding: false,
+    confirmButtonText: 'Cerrar',
+    confirmButtonColor: '#3f4cff',
+    padding: '1.5rem',
+    customClass: {
+    popup: 'swal-no-inner-scroll'
+    },
+    html: `
         <!-- GES -->
         <h3 style="margin-bottom:8px; color:#3f4cff;">
           🏥 Tabla GES (Garantías Explícitas en Salud)
@@ -503,8 +620,7 @@ export class PlanesIsapre {
       </div>
     `
   });
-
-  }
+}
 
   /* ======================================================
    * CÁLCULOS: EDAD / CARGAS
@@ -553,8 +669,8 @@ export class PlanesIsapre {
 
     if (isNaN(renta) || renta <= 0) return 0;
 
-    if (renta >= 600_000 && renta <= 1_500_000) return 0.07; // 7%
-    if (renta >= 1_500_001 && renta <= 2_500_000) return 0.05; // 5%
+    if (renta >= 600_000 && renta <= 1_500_000) return 0.07;
+    if (renta >= 1_500_001 && renta <= 2_500_000) return 0.05;
 
     return 0;
   }
@@ -567,28 +683,14 @@ export class PlanesIsapre {
 
     const edadTitular = Number(edadRaw);
     if (isNaN(edadTitular) || edadTitular <= 0) return 0;
-
-    // 1️⃣ Factores de riesgo
     const factorTitular = this.precioTitularPoredad(edadTitular);
     const factorCargas = this.getFactorCargas();
     const factorRiesgo = factorTitular + factorCargas;
-
-    // 2️⃣ Precio base en UF
     const precioBaseUF = plan.precioBase;
-
-    // 3️⃣ Precio ajustado por riesgo (UF)
     const precioRiesgoUF = precioBaseUF * factorRiesgo;
-
-    // 4️⃣ Factor Isapre (UF)
     const factorIsapreUF = this.getFactorIsapreUF(plan);
-
-    // 5️⃣ Total UF
     const precioFinalUF = precioRiesgoUF + factorIsapreUF;
-
-    // 6️⃣ Conversión a CLP
     const precioFinalCLP = precioFinalUF * this.valorUF;
-
-    // 7️⃣ Descuento por renta
     const descuento = this.getDescuentoPorRenta();
     const precioConDescuento = precioFinalCLP * (1 - descuento);
 
@@ -604,48 +706,34 @@ export class PlanesIsapre {
     const edadTitular = Number(edadRaw);
     if (isNaN(edadTitular) || edadTitular <= 0) return null;
 
-    // 1️⃣ Factores de riesgo (UF)
     const factorEdad = this.precioTitularPoredad(edadTitular);
     const factorCargas = this.getFactorCargas();
     const factorRiesgo = factorEdad + factorCargas;
 
-    // 2️⃣ Precio base UF
     const precioBaseUF = plan.precioBase;
-
-    // 3️⃣ Precio ajustado por riesgo (UF)
     const precioRiesgoUF = precioBaseUF * factorRiesgo;
 
-    // 4️⃣ Beneficiarios
     const beneficiarios = 1 + this.cargasConfirmadas.length;
-
-    // 5️⃣ Factor Isapre (UF)
     const factorIsapreBase = this.factoresIsapre[plan.nombrePlan] ?? 0;
     const factorIsapreUF = factorIsapreBase * beneficiarios;
 
-    // 6️⃣ Total UF
     const precioFinalUF = precioRiesgoUF + factorIsapreUF;
 
-    // 7️⃣ Conversión a CLP
     const valorUF = this.valorUF;
     const precioFinalCLP = Math.round(precioFinalUF * valorUF);
 
-    // 8️⃣ Descuento
     const descuento = this.getDescuentoPorRenta();
     const precioConDescuentoCLP = Math.round(precioFinalCLP * (1 - descuento));
 
     return {
       precioBaseUF,
-
       edadTitular,
       factorEdad,
       factorCargas,
       factorRiesgo,
-
       beneficiarios,
       factorIsapreUF,
-
       precioFinalUF,
-
       valorUF,
       precioFinalCLP,
       descuento,
@@ -659,13 +747,11 @@ export class PlanesIsapre {
   filtrarPorSistemaSalud(): void {
     const sistemaActual = this.cotizacionForm.get('sistemasaludcoti')?.value;
 
-    // Si no selecciona nada o es "No tiene", mostramos todo
     if (!sistemaActual || sistemaActual === 'No tiene') {
       this.aplicarResultados(this.planesIsapre);
       return;
     }
 
-    // Mostrar todos los planes EXCEPTO la isapre actual
     const filtrados = this.planesIsapre.filter(
       plan => plan.nombrePlan !== sistemaActual
     );
@@ -683,7 +769,6 @@ export class PlanesIsapre {
     const prestadoresPermitidos = this.prestadoresPorRegion[regionNombre];
 
     if (!prestadoresPermitidos) {
-      // Si la región no tiene mapeo, mostramos vacío (tal como lo tenías)
       this.aplicarResultados([]);
       return;
     }
@@ -700,66 +785,49 @@ export class PlanesIsapre {
     this.aplicarResultados(filtrados);
   }
 
+
+
   /* ======================================================
-   * LIFECYCLE / INIT
+   * SLIDER PRECIO (FUNCIONAL)
    * ====================================================== */
-  constructor(
-    private localstorageService: LocalstorageService,
-    private fb: FormBuilder
-  ) {}
+  minPrice = 0;
+  sliderMax = 500000;
+  maxPrice = this.sliderMax;
 
-  ngOnInit(): void {
-    // UF
-    this.localstorageService.getUF().subscribe({
-      next: (uf) => {
-        this.valorUF = uf;
-      },
-      error: () => {
-        console.error('Error al obtener UF');
-        this.valorUF = null;
-      }
-    });
+  step = 1000;
+  minGap = 10000;
 
-    // Form
-    this.initForm();
-
-    // Estos subscriptions estaban “vacíos” en tu código.
-    // Los dejo tal cual, por si dependes de la detección de cambios.
-    this.cotizacionForm.get('edad')?.valueChanges.subscribe(() => {});
-    this.cotizacionForm.get('ingresocoti')?.valueChanges.subscribe(() => {});
-    this.cotizacionForm.get('cargas')?.valueChanges.subscribe(() => {});
-
-    // Regiones
-    this.localstorageService.getRegiones().subscribe({
-      next: (data) => {
-        this.regiones = data;
-      }
-    });
-
-    // Sistema salud -> filtra
-    this.cotizacionForm.get('sistemasaludcoti')
-      ?.valueChanges.subscribe(() => {
-        this.filtrarPorSistemaSalud();
-      });
-
-    // Planes Isapre (FUENTE ÚNICA)
-    this.localstorageService.getPlanes().subscribe({
-      next: (data) => {
-        this.planesIsapre = data;
-        this.resultados = data;
-        this.resetPaginacion();
-        this.actualizarPaginacion();
-      }
-    });
+  get minUf(): number {
+    return this.valorUF ? this.minPrice / this.valorUF : 0;
   }
 
-  private initForm(): void {
-    this.cotizacionForm = this.fb.group({
-      edad: [null],
-      regioncoti: [''],
-      ingresocoti: [null],
-      sistemasaludcoti: [''],
-      cargas: this.fb.array([])
-    });
+  get maxUf(): number {
+    return this.valorUF ? this.maxPrice / this.valorUF : 0;
+  }
+
+  get minPercent(): number {
+    return (this.minPrice / this.sliderMax) * 100;
+  }
+
+  get maxRightPercent(): number {
+    return 100 - (this.maxPrice / this.sliderMax) * 100;
+  }
+
+  onMinInput(): void {
+    if (this.minPrice > this.maxPrice - this.minGap) {
+      this.minPrice = Math.max(0, this.maxPrice - this.minGap);
+    }
+    this.aplicarFiltrosPrecio(true);
+  }
+
+  onMaxInput(): void {
+    if (this.maxPrice < this.minPrice + this.minGap) {
+      this.maxPrice = Math.min(this.sliderMax, this.minPrice + this.minGap);
+    }
+    this.aplicarFiltrosPrecio(true);
+  }
+
+  formatCLP(value: number): string {
+    return '$ ' + value.toLocaleString('es-CL');
   }
 }

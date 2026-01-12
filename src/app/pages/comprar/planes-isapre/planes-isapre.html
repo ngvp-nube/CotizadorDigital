@@ -6,211 +6,217 @@
         Compara planes con precios directos y
         <strong>sin costo adicional</strong>
       </p>
+
     </div>
   </header>
 <form [formGroup]="cotizacionForm">
   <section class="search-bar">
-    <div class="search-grid container-aligned">
-      <div class="box-input">
-        <label>Región</label>
+    <div class="container-aligned quote-card">
 
-        <div class="custom-select" (clickOutside)="regionOpen = false">
-
-          <!-- valor seleccionado -->
-          <div class="custom-selected" (click)="regionOpen = !regionOpen">
-            {{ regionSeleccionada?.nombre || 'Selecciona' }}
-            <span class="arrow" [class.open]="regionOpen">⌄</span>
-          </div>
-
-          <!-- dropdown -->
-          <div class="custom-options" *ngIf="regionOpen">
-            <div
-              class="custom-option"
-              *ngFor="let region of regiones"
-              (click)="selectRegion(region)"
-            >
-              {{ region.nombre }}
-            </div>
-          </div>
-
+        <div class="quote-head">
+          <h2>Ingresa tus datos para cotizar</h2>
+          <p>Te mostraremos planes reales según tu perfil</p>
         </div>
-      </div>
+      <div class="quote-body">
+        <div class="search-grid container-aligned">
+          <div class="box-input">
+            <label>Región</label>
 
+            <div class="custom-select" (clickOutside)="regionOpen = false">
 
-      <div class="box-input">
-        <label class="label-info">
-          Renta imponible bruta
-
-          <span class="info-icon">
-            i
-            <span class="tooltip">
-              ❓ ¿Qué significa “Renta imponible” y “Renta líquida”?
-             <p><strong>🔹 Renta imponible</strong></p>
-              <p>
-                Es el sueldo bruto sobre el cual se calculan tus cotizaciones obligatorias,
-                incluyendo el <strong>7% de salud</strong>.
-              </p>
-
-              <p class="highlight">
-                👉 Las Isapres calculan el valor del plan siempre sobre este monto,
-                no sobre el sueldo líquido.
-              </p>
-
-              <p class="example">
-    <strong>Ejemplo:</strong><br>
-    Si tu renta imponible es $1.000.000, tu 7% de salud corresponde a $70.000.
-  </p>
-
-  <hr>
-
-  <p><strong>🔹 Renta líquida</strong></p>
-  <p>
-    Es el dinero que recibes finalmente en tu cuenta,
-    después de descontar salud, AFP e impuestos.
-  </p>
-
-  <p class="highlight">
-    👉 No se utiliza para calcular planes de Isapre,
-    solo refleja tu ingreso final.
-  </p>
-
-  <hr>
-
-  <p><strong>✅ ¿Por qué te pedimos la renta imponible?</strong></p>
-  <p>
-    Porque la ley exige que el 7% de salud se calcule sobre la renta imponible.
-    Así podemos mostrarte planes reales, precios correctos y opciones
-    que efectivamente puedes contratar.
-  </p>
-              <p></p>
-            </span>
-          </span>
-        </label>
-
-        <input type="number" placeholder="$ 0" formControlName="ingresocoti" />
-      </div>
-
-      <div class="box-input">
-        <label>Edad</label>
-        <input type="number" placeholder="0" formControlName="edad" />
-      </div>
-
-      <div class="box-input">
-        <label class="label-info">
-          <span class="label-text">Sistema de salud actual</span>
-          <span class="info-icon">i</span>
-        </label>
-
-        <div class="health-select" (clickOutside)="healthOpen = false">
-
-          <input type="hidden" formControlName="sistemasaludcoti" />
-
-          <div class="health-selected" (click)="healthOpen = !healthOpen">
-            {{ cotizacionForm.get('sistemasaludcoti')?.value || 'Selecciona' }}
-            <span class="arrow" [class.open]="healthOpen">⌄</span>
-          </div>
-
-          <div class="health-dropdown" *ngIf="healthOpen">
-            <div class="health-option" (click)="selectHealth('Fonasa')">
-              Fonasa
-            </div>
-            <div class="health-option" (click)="selectHealth('Banmédica')">
-              Banmédica
-            </div>
-            <div class="health-option" (click)="selectHealth('Colmena')">
-              Colmena
-            </div>
-            <div class="health-option" (click)="selectHealth('Consalud')">
-              Consalud
-            </div>
-            <div class="health-option" (click)="selectHealth('Cruz Blanca')">
-              Cruz Blanca
-            </div>
-            <div class="health-option" (click)="selectHealth('Nueva Masvida')">
-              Nueva Masvida
-            </div>
-            <div class="health-option" (click)="selectHealth('Vida Tres')">
-              Vida Tres
-            </div>
-            <div class="health-option" (click)="selectHealth('Esencial')">
-              Esencial
-            </div>
-            <div class="health-option" (click)="selectHealth('No tiene')">
-              No tiene
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- BOTÓN + POPOVER ASEGURADOS -->
-      <div class="box-input group-modal">
-        <label>Asegurados</label>
-
-        <button class="trigger" (click)="toggleModal()" type="button" >
-          {{ (cargasForm.length > 0) ? 'Modificar asegurados' : 'Agregar asegurados' }}
-        </button>
-
-        <!-- POPOVER (mini modal debajo del botón) -->
-        <div class="popover-modal" *ngIf="mostrarModal">
-
-          <!-- HEADER -->
-          <div class="popover-head">
-            <span>Agregar asegurados</span>
-            <button (click)="mostrarModal = false" type="button">×</button>
-          </div>
-
-          <!-- CONTENIDO -->
-          <div class="popover-content">
-            <!-- CARGAS -->
-            <div class="popover-row">
-              <label>Cargas</label>
-              <div class="stepper">
-                <button (click)="decrementarCargas()" type="button">−</button>
-                <span>{{ cargasForm.length }}</span>
-                <button (click)="incrementarCargas()" type="button">+</button>
+              <!-- valor seleccionado -->
+              <div class="custom-selected" (click)="regionOpen = !regionOpen">
+                {{ regionSeleccionada?.nombre || 'Selecciona' }}
+                <span class="arrow" [class.open]="regionOpen">⌄</span>
               </div>
+
+              <!-- dropdown -->
+              <div class="custom-options" *ngIf="regionOpen">
+                <div
+                  class="custom-option"
+                  *ngFor="let region of regiones"
+                  (click)="selectRegion(region)"
+                >
+                  {{ region.nombre }}
+                </div>
+              </div>
+
             </div>
-            <span>factor total : {{ getFactorTotalCargas() | number:'1.2-2' }} </span>
+          </div>
 
-            <!-- LISTA DE CARGAS -->
-            <div class="cargas-dynamic-list" *ngIf="cargasForm.length > 0" formArrayName="cargas" >
-              <div class="carga-card-item" *ngFor="let carga of cargasForm.controls; let i = index" [formGroupName]="i">
-                <p>Carga {{ i + 1 }}</p>
 
-                <div class="carga-row-inline">
-                  <div class="age-pick-full">
-                    <label>Edad</label>
-                    <input
-                      type="number"
-                      formControlName = "edadCarga"
-                    />
-                  </div>
+          <div class="box-input">
+            <label class="label-info">
+              Renta imponible bruta
+
+              <span class="info-icon">
+                i
+                <span class="tooltip">
+                  ❓ ¿Qué significa “Renta imponible” y “Renta líquida”?
+                <p><strong>🔹 Renta imponible</strong></p>
+                  <p>
+                    Es el sueldo bruto sobre el cual se calculan tus cotizaciones obligatorias,
+                    incluyendo el <strong>7% de salud</strong>.
+                  </p>
+
+                  <p class="highlight">
+                    👉 Las Isapres calculan el valor del plan siempre sobre este monto,
+                    no sobre el sueldo líquido.
+                  </p>
+
+                  <p class="example">
+          <strong>Ejemplo:</strong><br>
+            Si tu renta imponible es $1.000.000, tu 7% de salud corresponde a $70.000.
+          </p>
+
+          <hr>
+
+          <p><strong>🔹 Renta líquida</strong></p>
+          <p>
+            Es el dinero que recibes finalmente en tu cuenta,
+            después de descontar salud, AFP e impuestos.
+          </p>
+
+          <p class="highlight">
+            👉 No se utiliza para calcular planes de Isapre,
+            solo refleja tu ingreso final.
+          </p>
+
+          <hr>
+
+          <p><strong>✅ ¿Por qué te pedimos la renta imponible?</strong></p>
+          <p>
+            Porque la ley exige que el 7% de salud se calcule sobre la renta imponible.
+            Así podemos mostrarte planes reales, precios correctos y opciones
+            que efectivamente puedes contratar.
+          </p>
+          <p></p>
+                </span>
+              </span>
+            </label>
+
+            <input type="number" placeholder="$ 0" formControlName="ingresocoti" />
+          </div>
+
+          <div class="box-input">
+            <label>Edad</label>
+            <input type="number" placeholder="0" formControlName="edad" />
+          </div>
+
+          <div class="box-input">
+            <label class="label-info">
+              <span class="label-text">Sistema de salud actual</span>
+              <span class="info-icon">i</span>
+            </label>
+
+            <div class="health-select" (clickOutside)="healthOpen = false">
+
+              <input type="hidden" formControlName="sistemasaludcoti" />
+
+              <div class="health-selected" (click)="healthOpen = !healthOpen">
+                {{ cotizacionForm.get('sistemasaludcoti')?.value || 'Selecciona' }}
+                <span class="arrow" [class.open]="healthOpen">⌄</span>
+              </div>
+
+              <div class="health-dropdown" *ngIf="healthOpen">
+                <div class="health-option" (click)="selectHealth('Fonasa')">
+                  Fonasa
+                </div>
+                <div class="health-option" (click)="selectHealth('Banmédica')">
+                  Banmédica
+                </div>
+                <div class="health-option" (click)="selectHealth('Colmena')">
+                  Colmena
+                </div>
+                <div class="health-option" (click)="selectHealth('Consalud')">
+                  Consalud
+                </div>
+                <div class="health-option" (click)="selectHealth('Cruz Blanca')">
+                  Cruz Blanca
+                </div>
+                <div class="health-option" (click)="selectHealth('Nueva Masvida')">
+                  Nueva Masvida
+                </div>
+                <div class="health-option" (click)="selectHealth('Vida Tres')">
+                  Vida Tres
+                </div>
+                <div class="health-option" (click)="selectHealth('Esencial')">
+                  Esencial
+                </div>
+                <div class="health-option" (click)="selectHealth('No tiene')">
+                  No tiene
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- CTA -->
-          <button class="btn-main-action" type="button" (click)="confirmarCargas()">
-            Agregar y calcular precios
-          </button>
+          <!-- BOTÓN + POPOVER ASEGURADOS -->
+          <div class="box-input group-modal">
+            <label>Asegurados</label>
 
+            <button class="trigger" (click)="toggleModal()" type="button" >
+              {{ (cargasForm.length > 0) ? 'Modificar asegurados' : 'Agregar asegurados' }}
+            </button>
+
+            <!-- POPOVER (mini modal debajo del botón) -->
+            <div class="popover-modal" *ngIf="mostrarModal">
+
+              <!-- HEADER -->
+              <div class="popover-head">
+                <span>Agregar asegurados</span>
+                <button (click)="mostrarModal = false" type="button">×</button>
+              </div>
+
+              <!-- CONTENIDO -->
+              <div class="popover-content">
+                <!-- CARGAS -->
+                <div class="popover-row">
+                  <label>Cargas</label>
+                  <div class="stepper">
+                    <button (click)="decrementarCargas()" type="button">−</button>
+                    <span>{{ cargasForm.length }}</span>
+                    <button (click)="incrementarCargas()" type="button">+</button>
+                  </div>
+                </div>
+                <span>factor total : {{ getFactorTotalCargas() | number:'1.2-2' }} </span>
+
+                <!-- LISTA DE CARGAS -->
+                <div class="cargas-dynamic-list" *ngIf="cargasForm.length > 0" formArrayName="cargas" >
+                  <div class="carga-card-item" *ngFor="let carga of cargasForm.controls; let i = index" [formGroupName]="i">
+                    <p>Carga {{ i + 1 }}</p>
+
+                    <div class="carga-row-inline">
+                      <div class="age-pick-full">
+                        <label>Edad</label>
+                        <input
+                          type="number"
+                          formControlName = "edadCarga"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CTA -->
+              <button class="btn-main-action" type="button" (click)="confirmarCargas()">
+                Agregar y calcular precios
+              </button>
+
+            </div>
+          </div>
+
+          <!-- <button class="btn-search" >
+            Calcular precios
+          </button> -->
         </div>
       </div>
-
-      <!-- <button class="btn-search" >
-        Calcular precios
-      </button> -->
     </div>
   </section>
 </form>
 
   <section class="results-bar">
     <div class="container-aligned results-grid">
-      <div class="results-count">
-        <h2>{{ resultados.length }} Resultados</h2>
-      </div>
-
       <div class="rating-toggle">
         <button class = "reajuste-btn">
           <span class="info-link" (click)="mostrarInfo7Porciento()"> Reajustados a tu 7 %</span>
@@ -220,7 +226,14 @@
       <div class="factores">
         <button class="factores-btn">
           <span class="factores-icon">⚙️</span>
-          <span class="factores-text" (click) = "mostrarInfoFactores()">Factores</span>
+          <span class="factores-text" (click) = "mostrarInfoFactorDeRiesgo()">Factor de riesgo</span>
+        </button>
+      </div>
+
+      <div class="factores">
+        <button class="factores-btn">
+          <span class="factores-icon">⚙️</span>
+          <span class="factores-text" (click) = "mostrarInfoGes()">Factor GES</span>
         </button>
       </div>
 
@@ -264,15 +277,48 @@
   <!-- SIDEBAR -->
   <div class="sidebar-wrapper">
     <aside class="sidebar price-card">
-      <div class = "price-card-header">Precio </div>
+      <div class="price-card-header">Precio</div>
 
       <div class="price-card-body">
-        <div class="price-box">
-          <span>$137.157 - $151.594</span>
-          <span class="max-price">$380.000</span>
-          <input type="range" />
+        <div class="price-slider-wrapper">
+
+          <div class="price-labels">
+            <div class="price-label price-label--min">
+              <span class="price-value">{{ formatCLP(minPrice) }}</span>
+              <span class="price-uf">UF {{ minUf | number:'1.2-2' }}</span>
+            </div>
+
+            <div class="price-label price-label--max">
+              <span class="price-value">
+                {{ formatCLP(maxPrice) }}
+              </span>
+              <span class="price-uf">UF {{ maxUf | number:'1.2-2' }}</span>
+            </div>
+          </div>
+
+          <!-- TU BLOQUE (el que mostraste) VA AQUÍ -->
+          <div class="range-wrap">
+            <div class="range-track"></div>
+
+            <div class="range-progress"
+                [style.left.%]="minPercent"
+                [style.right.%]="maxRightPercent">
+            </div>
+
+            <input class="range" type="range"
+              [min]="0" [max]="sliderMax" [step]="step"
+              [(ngModel)]="minPrice"
+              (input)="onMinInput()"
+            />
+
+            <input class="range" type="range"
+              [min]="0" [max]="sliderMax" [step]="step"
+              [(ngModel)]="maxPrice"
+              (input)="onMaxInput()"
+            />
+          </div>
         </div>
-    </div>
+      </div>
     </aside>
 
       <!-- ===============================
