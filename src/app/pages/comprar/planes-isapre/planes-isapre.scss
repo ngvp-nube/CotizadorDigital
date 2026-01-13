@@ -239,21 +239,13 @@ html, body {
   overflow: hidden;
 }
 
-/* =========================================================
-   SIDEBAR – BASE
-========================================================= */
 
 /* ===============================
    PRICE FILTER CARD
 =============================== */
 
-.price-card{
-  background:#fff;
-  border:1px solid #E6EEF8;
-  border-radius:16px;
-  padding:16px;
-  box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
-}
+
+
 
 
 .sidebar.price-card {
@@ -418,61 +410,6 @@ html, body {
 .range:focus { outline: none; }
 
 
-/* ===============================
-   AUTOCOMPLETE CLÍNICAS
-=============================== */
-.autocomplete .input {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid #e5e7eb;
-  font-size: 14px;
-}
-
-.autocomplete .input:focus {
-  outline: none;
-  border-color: #3f4cff;
-  box-shadow: 0 0 0 3px rgba(63, 76, 255, 0.15);
-}
-
-.autocomplete-list {
-  border-radius: 12px;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.14);
-}
-
-.checkbox {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  margin-top: 10px;
-}
-
-.checkbox input {
-  accent-color: #3f4cff;
-}
-
-.checkbox .count {
-  margin-left: auto;
-  background: #eef1ff;
-  color: #3f4cff;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 999px;
-}
-
-.count {
-  background: #e3f2fd;
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-size: 12px;
-}
-
-/* ===============================
-   PRICE FILTER CARD
-=============================== */
-
 /* =========================================================
    SIDEBAR – BASE
 ========================================================= */
@@ -492,7 +429,12 @@ html, body {
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  border:1px solid #E6EEF8;
+  border-radius:16px;
+  padding:16px;
+  box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
 }
+
 
 /* Header */
 .price-card-header {
@@ -555,6 +497,23 @@ html, body {
   cursor: pointer;
 }
 
+/* ✅ Permitir que el dropdown salga fuera de la card de clínicas */
+.price-card.clinic-filter,
+.price-card.clinic-filter .price-card-body{
+  overflow: visible !important;
+}
+
+/* (por si algún padre también corta) */
+.sidebar-wrapper{
+  overflow: visible !important;
+}
+
+/* Asegura que el dropdown quede por encima */
+.price-card.clinic-filter .autocomplete-list{
+  z-index: 99999 !important;
+}
+
+
 /* =========================================================
    CLINIC FILTER CARD
 ========================================================= */
@@ -589,80 +548,6 @@ html, body {
   justify-content: center;
   cursor: pointer;
 }
-
-/* Input */
-.clinic-input {
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: 12px;
-  border: 1px solid #dbe0ff;
-  font-size: 14px;
-  outline: none;
-  transition: all 0.2s ease;
-}
-
-.clinic-input:focus {
-  border-color: #3f4cff;
-  box-shadow: 0 0 0 3px rgba(63, 76, 255, 0.15);
-}
-
-/* Autocomplete */
-.autocomplete-list {
-  margin-top: 6px;
-  border-radius: 12px;
-  background: #ffffff;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-  overflow: hidden;
-  z-index: 20;
-}
-
-.autocomplete-list li {
-  padding: 10px 14px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.autocomplete-list li:hover {
-  background: #f2f4ff;
-}
-
-/* Options */
-.clinic-options {
-  margin-top: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.clinic-check {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.clinic-check input {
-  accent-color: #3f4cff;
-  margin-right: 8px;
-}
-
-.clinic-check span {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-/* Counter */
-.count {
-  background: #eef2ff;
-  color: #3f4cff;
-  font-size: 12px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-weight: 600;
-}
-
 
 
 /* ===============================
@@ -1133,39 +1018,90 @@ html, body {
 }
 
 /* ===============================
-   AUTOCOMPLETE
+   AUTOCOMPLETE CLINICAS
 =============================== */
 .autocomplete {
   position: relative;
 }
 
-.autocomplete .input {
+.autocomplete .input{
   width: 100%;
-}
-
-.autocomplete-list {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-
-  background: #ffffff;
+  height: 44px;
+  padding: 10px 12px;
   border-radius: 12px;
-  margin-top: 6px;
-  padding: 6px 0;
-
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  z-index: 20;
-}
-
-.autocomplete-list li {
-  padding: 10px 14px;
-  cursor: pointer;
+  border: 1px solid #e5e7eb;
+  background: #fff;
   font-size: 14px;
 }
 
-.autocomplete-list li:hover {
-  background: #f3f6fb;
+
+.autocomplete-list{
+  position: absolute;
+  top: calc(100% + 8px); /* separadito del input */
+  left: 0;
+  right: 0;
+
+  z-index: 9999; /* para que quede encima del resto */
+
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 14px 30px rgba(16, 24, 40, 0.12);
+
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+
+.autocomplete-list li{
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #111827;
+}
+
+
+.autocomplete-list li:hover{
+  background: #f3f4f6;
+}
+
+.autocomplete .input:focus {
+  outline: none;
+  border-color: #3f4cff;
+  box-shadow: 0 0 0 3px rgba(63, 76, 255, 0.15);
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.checkbox input {
+  accent-color: #3f4cff;
+}
+
+.checkbox .count {
+  margin-left: auto;
+  background: #eef1ff;
+  color: #3f4cff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+
+.count {
+  background: #e3f2fd;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 12px;
 }
 
 /* ===============================
@@ -1194,58 +1130,7 @@ html, body {
   cursor: pointer;
 }
 
-/* ===============================
-   INPUT BONITO
-=============================== */
-.fancy-input {
-  padding: 12px 14px;
-  border-radius: 10px;
-  border: 1px solid #d6dbe3;
-  font-size: 14px;
-  transition: all 0.25s ease;
-}
 
-.fancy-input::placeholder {
-  color: #9aa3af;
-}
-
-.fancy-input:focus {
-  outline: none;
-  border-color: #2a7cff;
-  box-shadow: 0 0 0 3px rgba(42, 124, 255, 0.12);
-}
-
-/* ===============================
-   AUTOCOMPLETE LIST
-=============================== */
-.fancy-list {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  right: 0;
-
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 6px 0;
-
-  box-shadow:
-    0 12px 28px rgba(0, 0, 0, 0.12),
-    0 2px 6px rgba(0, 0, 0, 0.06);
-
-  z-index: 30;
-}
-
-.fancy-list li {
-  padding: 12px 16px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background 0.2s ease, padding-left 0.2s ease;
-}
-
-.fancy-list li:hover {
-  background: #f1f6ff;
-  padding-left: 22px;
-}
 
 /* ===============================
    TÍTULO + INFO

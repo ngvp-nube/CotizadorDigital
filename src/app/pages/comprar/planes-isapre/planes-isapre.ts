@@ -1,7 +1,7 @@
 /* ======================================================
  * IMPORTS
  * ====================================================== */
-import { Component } from '@angular/core';
+import { Component, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormsModule,
@@ -14,6 +14,8 @@ import Swal from 'sweetalert2';
 import { ModalDetalleComponent } from '../../modals/modal-detalle/modal-detalle';
 import { ModalSolicitarComponent } from '../../modals/modal-solicitar/modal-solicitar';
 import { LocalstorageService, Plan } from '../../../services/localstorage';
+import { ElementRef, ViewChild, HostListener } from '@angular/core';
+import { HtmlParser } from '@angular/compiler';
 
 /* ======================================================
  * INTERFACES & TYPES
@@ -93,12 +95,12 @@ export class PlanesIsapre {
       next: (uf) => {
         this.valorUF = uf;
         // cuando llega UF cambia el precio => reaplicar filtro
-        this.aplicarFiltrosPrecio(true);
+        this.aplicarFiltros(true);
       },
       error: () => {
         console.error('Error al obtener UF');
         this.valorUF = null;
-        this.aplicarFiltrosPrecio(true);
+        this.aplicarFiltros(true);
       }
     });
 
@@ -107,15 +109,15 @@ export class PlanesIsapre {
 
     // Cambios que afectan precio => reaplicar filtro
     this.cotizacionForm.get('edad')?.valueChanges.subscribe(() => {
-      this.aplicarFiltrosPrecio(true);
+      this.aplicarFiltros(true);
     });
 
     this.cotizacionForm.get('ingresocoti')?.valueChanges.subscribe(() => {
-      this.aplicarFiltrosPrecio(true);
+      this.aplicarFiltros(true);
     });
 
     this.cotizacionForm.get('cargas')?.valueChanges.subscribe(() => {
-      this.aplicarFiltrosPrecio(true);
+      this.aplicarFiltros(true);
     });
 
     // Regiones
@@ -149,6 +151,40 @@ export class PlanesIsapre {
       cargas: this.fb.array([])
     });
   }
+
+   @ViewChild('clickFuera') clinicBox!: ElementRef<HTMLElement>;
+   @ViewChild('healthBox') healthBox! : ElementRef<HTMLElement>;
+   @ViewChild('regionBox') regionBox! : ElementRef<HTMLElement>;
+
+   @HostListener('document:click', ['$event'])
+     onDocumentClick(event: MouseEvent): void {
+     const target = event.target as HTMLElement;
+
+      if (!this.clinicBox?.nativeElement.contains(target)) {
+        this.mostrarLista = false;
+      }
+
+      if (this.healthOpen && !this.healthBox?.nativeElement.contains(target)) {
+        this.healthOpen = false;
+      }
+
+      if (this.regionOpen && !this.regionBox?.nativeElement.contains(target)){
+        this.regionOpen = false;
+      }
+    }
+
+    toggleHealth(event: MouseEvent): void {
+      event.stopPropagation();
+      this.healthOpen = !this.healthOpen;
+    }
+
+    toggleRegion(event: MouseEvent): void {
+      event.stopPropagation();
+      this.regionOpen = !this.regionOpen;
+    }
+
+    
+
 
   /* ======================================================
    * SELECT SALUD (PRINCIPAL)
@@ -201,7 +237,7 @@ export class PlanesIsapre {
     this.mostrarModal = false;
 
     // Si cambian cargas, cambia el precio => reaplicar filtro
-    this.aplicarFiltrosPrecio();
+    this.aplicarFiltros();
   }
 
   getFactorCargas(): number {
@@ -236,31 +272,63 @@ export class PlanesIsapre {
    * ====================================================== */
   clinicaSearch = '';
   mostrarLista = false;
+  clinicaSeleccionada: string | null = null;
 
-  clinicas: string[] = [
-    'Arauco Salud',
-    'Bionet',
-    'Centro Clínico el Portal',
-    'Centro del Cáncer UC CHRISTUS',
-    'Clínica Alemana',
-    'Clínica Las Condes',
-    'Clínica Santa María'
-  ];
+  private getClinicasDisponibles(): string[] {
+  const set = new Set<string>();
+
+  for (const plan of (this.planesIsapre ?? [])) {
+    const prestadores = (plan as any).prestadores;
+
+    if (Array.isArray(prestadores)) {
+      prestadores.forEach((p: any) => {
+        if (typeof p === 'string' && p.trim()) set.add(p.trim());
+      });
+    } else if (typeof prestadores === 'string' && prestadores.trim()) {
+      set.add(prestadores.trim());
+    }
+  }
+
+  return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }
+
+  filtrarClinicas(): void {
+    const texto = (this.clinicaSearch || '').toLowerCase().trim();
+    const base = this.getClinicasDisponibles();
+
+    this.clinicasFiltradas = texto
+      ? base.filter(c => c.toLowerCase().includes(texto))
+      : base;
+
+    this.mostrarLista = true;
+  }
 
   clinicasFiltradas: string[] = [];
 
-  filtrarClinicas(): void {
-    const texto = this.clinicaSearch.toLowerCase();
-    this.clinicasFiltradas = this.clinicas.filter(c =>
-      c.toLowerCase().includes(texto)
-    );
-  }
 
   seleccionarClinica(clinica: string): void {
     this.clinicaSearch = clinica;
+    this.clinicaSeleccionada = clinica; // ✅
+    this.mostrarLista = false;
+
+    this.aplicarFiltros(true); // ✅ reaplica filtros (precio + clínica)
+  }
+
+  limpiarClinica(): void {
+    this.clinicaSearch = '';
+    this.clinicaSeleccionada = null;
+    this.mostrarLista = false;
+    this.aplicarFiltros(true);
+  }
+
+  cerrarListaClinicas(): void {
     this.mostrarLista = false;
   }
 
+  abrirListaClinicas(): void {
+    this.mostrarLista = true;
+    this.filtrarClinicas(); // ✅ carga todas si está vacío
+  }
   /* ======================================================
    * RESULTADOS / VISTA
    * ====================================================== */
@@ -292,23 +360,37 @@ export class PlanesIsapre {
   /** Este método ahora aplica base (resultados) y luego filtro precio */
   private aplicarResultados(data: any[]): void {
     this.resultados = data;
-    this.aplicarFiltrosPrecio(true);
+    this.aplicarFiltros(true);
   }
 
   /** Aplica el filtro de precio sobre `resultados` y recalcula paginación */
-  private aplicarFiltrosPrecio(resetPage: boolean = false): void {
+  private aplicarFiltros(resetPage: boolean = false): void {
     if (resetPage) this.resetPaginacion();
 
-    // Filtra usando el mismo cálculo que muestran las cards
-    this.resultadosFiltrados = (this.resultados ?? []).filter((plan: Plan) => {
+    const clinicaSel = this.clinicaSeleccionada?.toLowerCase().trim() ?? '';
+
+    this.resultadosFiltrados = (this.resultados ?? []).filter((plan: any) => {
+      // 1) Filtro clínica (si hay seleccionada)
+      if (clinicaSel) {
+        const prestadores = plan.prestadores;
+
+        const tieneClinica =
+          Array.isArray(prestadores)
+            ? prestadores.some((p: string) => String(p).toLowerCase().includes(clinicaSel))
+            : String(prestadores ?? '').toLowerCase().includes(clinicaSel);
+
+        if (!tieneClinica) return false;
+      }
+
+      // 2) Filtro precio
       const precio = this.calcularPrecioPlan(plan);
-      // Si aún no hay UF o edad y tu función retorna 0, no lo mates por filtro:
-      if (precio === 0) return true;
+      if (precio === 0) return true; // si aún no hay UF/edad, no bloquees todo
       return precio >= this.minPrice && precio <= this.maxPrice;
     });
 
     this.actualizarPaginacion();
   }
+
 
   actualizarPaginacion(): void {
     const base = this.resultadosFiltrados ?? [];
@@ -817,14 +899,14 @@ mostrarInfoGes(): void{
     if (this.minPrice > this.maxPrice - this.minGap) {
       this.minPrice = Math.max(0, this.maxPrice - this.minGap);
     }
-    this.aplicarFiltrosPrecio(true);
+    this.aplicarFiltros(true);
   }
 
   onMaxInput(): void {
     if (this.maxPrice < this.minPrice + this.minGap) {
       this.maxPrice = Math.min(this.sliderMax, this.minPrice + this.minGap);
     }
-    this.aplicarFiltrosPrecio(true);
+    this.aplicarFiltros(true);
   }
 
   formatCLP(value: number): string {
