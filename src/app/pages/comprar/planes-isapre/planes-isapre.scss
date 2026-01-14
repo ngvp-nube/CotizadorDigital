@@ -228,16 +228,44 @@ html, body {
 /* ===============================
    LAYOUT RESULTADOS (CLAVE)
 =============================== */
-.results-layout {
-  display: flex;
-  gap: 20px;
+/* Layout base */
+.results-layout{
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 24px;
   padding: 20px;
-  background: #f5f7fa;
+  position: relative;
+}
 
-  /* Altura controlada solo aquí */
-  height: calc(100vh - 320px);
+/* Cuando está cerrado: 1 columna (cards se estiran) */
+.results-layout.filters-collapsed{
+  grid-template-columns: 0 1fr;
+}
+
+/* ✅ se va COMPLETO hacia la izquierda */
+.results-layout.filters-collapsed .sidebar-drawer{
+  width: 0;                 /* 🔑 elimina el ancho */
+  transform: translateX(-110%); /* 🔑 lo saca de la vista */
+  opacity: 0;               /* opcional pero ayuda */
+  pointer-events: none;     /* evita clicks fantasmas */
+}
+
+/* CERRADO: apaga SOLO el contenido */
+.results-layout.filters-collapsed .drawer-body{
+  opacity: 0;
+  transform: translateX(-12px);
+  pointer-events: none;
+}
+
+.results-layout.filters-collapsed .sidebar-wrapper{
+  width: 0;
   overflow: hidden;
 }
+
+.results-layout.filters-collapsed .filters-toggle-arrow{
+  right: -18px;                  /* se mantiene visible aunque el drawer sea 0 */
+}
+
 
 
 /* ===============================
@@ -501,18 +529,27 @@ html, body {
 .price-card.clinic-filter,
 .price-card.clinic-filter .price-card-body{
   overflow: visible !important;
+  border-radius: 0 0 18px 18px;
 }
 
-/* (por si algún padre también corta) */
-.sidebar-wrapper{
-  overflow: visible !important;
+.price-card.clinic-filter{
+  overflow: visible;      /* permite que el dropdown salga */
+  border-radius: 18px;    /* asegura el redondeo */
 }
 
 /* Asegura que el dropdown quede por encima */
 .price-card.clinic-filter .autocomplete-list{
-  z-index: 99999 !important;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 9999;
 }
 
+.price-card.clinic-filter .autocomplete{
+  position: relative;
+  z-index: 60;
+}
 
 /* =========================================================
    CLINIC FILTER CARD
@@ -549,6 +586,147 @@ html, body {
   cursor: pointer;
 }
 
+/* ===============================
+   MENU FILTROS IZQUIERDA
+=============================== */
+/* ===== OVERLAY ===== */
+.filters-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+  z-index: 40;
+}
+
+/* ===== DRAWER FILTROS ===== */
+/* drawer se mueve */
+.sidebar-drawer{
+  width: 260px;
+  transform: translateX(0);
+  transition: transform .25s ease;
+}
+
+
+
+.sidebar-drawer.open{
+  transform: translateX(0);
+}
+
+/* Header drawer */
+.drawer-head{
+  height: 56px;
+  padding: 0 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.drawer-head span{
+  font-weight: 800;
+  font-size: 15px;
+  color: #111827;
+}
+
+.drawer-close{
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* Contenido scroll */
+.drawer-body{
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+
+/* ✅ Flecha: por defecto pegada al borde izquierdo */
+.filters-toggle-arrow{
+  position: sticky;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 52px;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(0,0,0,.14);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 30;  
+  pointer-events: auto;               
+}
+
+.filters-toggle-arrow.open{
+  left: calc(20px + 260px + 8px); /* padding-left(20) + drawer(260) + un pelín */
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* CERRADO: saca el drawer, pero NO lo apagues con opacity/pointer-events */
+.results-layout.filters-collapsed .sidebar-drawer{
+  transform: translateX(-100%); /* lo escondes */            
+}
+
+
+/* Overlay solo mobile (lo tienes con *ngIf) */
+.filters-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+  z-index: 40;
+}
+
+
+/* Responsive: en mobile el drawer puede ser fixed si quieres */
+@media (max-width: 992px){
+  .sidebar-drawer{
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    background: transparent;
+    z-index: 50;
+  }
+
+  /* abierto en mobile */
+  .sidebar-drawer.open{
+    transform: translateX(0);
+    width: 280px;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* cerrado en mobile */
+  .sidebar-drawer:not(.open){
+    transform: translateX(-110%);
+    width: 280px; /* mantiene ancho para animar, pero está fuera */
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  /* en mobile, la grilla siempre 1 columna */
+  .results-layout{
+    grid-template-columns: 1fr;
+  }
+}
+
+.filters-toggle-arrow:hover{
+  background: #f0f9ff;
+}
+
+
+
 
 /* ===============================
    RESULTADOS
@@ -556,6 +734,7 @@ html, body {
 .results {
   flex: 1;
   min-width: 0;
+  width: 100%;
   overflow-y: auto;
   padding-right: 10px;
 }
@@ -993,12 +1172,12 @@ html, body {
 /* ===============================
    SIDEBAR
 =============================== */
-.sidebar-wrapper {
+/* Drawer base */
+.sidebar-drawer{
+  position: relative;
   width: 260px;
-  flex-shrink: 0;
-
-  /* 👇 empuja el filtro hacia abajo */
-  
+  overflow: visible;
+  transition: transform .25s ease, width .25s ease, opacity .2s ease;
 }
 
 .sidebar {
@@ -1011,10 +1190,10 @@ html, body {
 /* ===============================
    RESULTADOS CON SCROLL
 =============================== */
-.results {
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 8px;
+/* ✅ Extra: que las cards nunca queden debajo visualmente del botón */
+.results{
+  position: relative;
+  z-index: 1;
 }
 
 /* ===============================

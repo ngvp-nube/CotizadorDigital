@@ -329,6 +329,22 @@ export class PlanesIsapre {
     this.mostrarLista = true;
     this.filtrarClinicas(); // ✅ carga todas si está vacío
   }
+
+  filtersOpen = true;
+  filtersCollapsed = false;
+  isMobile = window.innerWidth < 992;
+
+  toggleFilters(): void {
+    this.filtersOpen = !this.filtersOpen;
+  }
+
+  @HostListener('window:resize')
+  onResize(): void {
+    this.isMobile = window.innerWidth < 992;
+    // opcional: si pasas a desktop, quita overlay porque isMobile=false
+  }
+
+
   /* ======================================================
    * RESULTADOS / VISTA
    * ====================================================== */
@@ -663,13 +679,13 @@ mostrarInfoGes(): void{
     scrollbarPadding: false,
     confirmButtonText: 'Cerrar',
     confirmButtonColor: '#3f4cff',
-    padding: '1.5rem',
+    padding: '0.2 rem',
     customClass: {
     popup: 'swal-no-inner-scroll'
     },
     html: `
         <!-- GES -->
-        <h3 style="margin-bottom:8px; color:#3f4cff;">
+        <h3 style="margin-bottom:5px; color:#3f4cff;">
           🏥 Tabla GES (Garantías Explícitas en Salud)
         </h3>
 
@@ -678,19 +694,23 @@ mostrarInfoGes(): void{
           (titular y cargas).
         </p>
 
-        <table style="width:100%; border-collapse:collapse; margin:12px 0;">
+        <table style="width:100%; border-collapse:collapse; margin:8px 0;">
           <thead>
             <tr style="background:#f1f4ff;">
-              <th style="padding:8px; border:1px solid #ddd;">Beneficiarios</th>
-              <th style="padding:8px; border:1px solid #ddd;">GES (UF)</th>
+              <th style="padding:7px; border:1px solid #ddd;">Isapres</th>
+              <th style="padding:7px; border:1px solid #ddd;">GES 2023/24</th>
+              <th style="padding:7px; border:1px solid #ddd;">GES 90 DIC 2025</th>
+              <th style="padding:7px; border:1px solid #ddd;">Var</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td style="padding:8px; border:1px solid #ddd;">1</td><td style="padding:8px; border:1px solid #ddd;">0.731</td></tr>
-            <tr><td style="padding:8px; border:1px solid #ddd;">2</td><td style="padding:8px; border:1px solid #ddd;">1.462</td></tr>
-            <tr><td style="padding:8px; border:1px solid #ddd;">3</td><td style="padding:8px; border:1px solid #ddd;">2.193</td></tr>
-            <tr><td style="padding:8px; border:1px solid #ddd;">4</td><td style="padding:8px; border:1px solid #ddd;">2.924</td></tr>
-            <tr><td style="padding:8px; border:1px solid #ddd;">5</td><td style="padding:8px; border:1px solid #ddd;">3.655</td></tr>
+            <tr><td style="padding:7px; border:1px solid #ddd;">Vida Tres</td><td style="padding:8px; border:1px solid #ddd;">0.63</td><td style="padding:8px; border:1px solid #ddd;">0.712</td><td style="padding:8px; border:1px solid #ddd;">13%</td></tr>
+            <tr><td style="padding:7px; border:1px solid #ddd;">Consalud</td><td style="padding:8px; border:1px solid #ddd;">0.602</td><td style="padding:8px; border:1px solid #ddd;">0.731</td><td style="padding:8px; border:1px solid #ddd;">21%</td></tr>
+            <tr><td style="padding:7px; border:1px solid #ddd;">Banmedica</td><td style="padding:8px; border:1px solid #ddd;">0.602</td><td style="padding:8px; border:1px solid #ddd;">0.778</td><td style="padding:8px; border:1px solid #ddd;">29%</td></tr>
+            <tr><td style="padding:7px; border:1px solid #ddd;">Nueva Mas Vida</td><td style="padding:8px; border:1px solid #ddd;">0.795</td><td style="padding:8px; border:1px solid #ddd;">0.854</td><td style="padding:8px; border:1px solid #ddd;">7%</td></tr>
+            <tr><td style="padding:7px; border:1px solid #ddd;">Esencial</td><td style="padding:8px; border:1px solid #ddd;">0.800</td><td style="padding:8px; border:1px solid #ddd;">0.910</td><td style="padding:8px; border:1px solid #ddd;">14%</td></tr>
+            <tr><td style="padding:7px; border:1px solid #ddd;">Cruz Blanca</td><td style="padding:8px; border:1px solid #ddd;">0.74</td><td style="padding:8px; border:1px solid #ddd;">0.971</td><td style="padding:8px; border:1px solid #ddd;">31%</td></tr>
+            <tr><td style="padding:7px; border:1px solid #ddd;">Colmena</td><td style="padding:8px; border:1px solid #ddd;">0.77</td><td style="padding:8px; border:1px solid #ddd;">1.036</td><td style="padding:8px; border:1px solid #ddd;">35%</td></tr>
           </tbody>
         </table>
 

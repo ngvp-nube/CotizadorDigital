@@ -273,64 +273,75 @@
   </section>
 </div>
 
-<div class="container results-layout">
+<div class="container results-layout" [class.filters-collapsed]="!filtersOpen">
   <!-- SIDEBAR -->
-  <div class="sidebar-wrapper">
-    <aside class="sidebar price-card">
-      <div class="price-card-header">Precio</div>
 
-      <div class="price-card-body">
-        <div class="price-slider-wrapper">
+   <!-- Overlay: SOLO mobile -->
+  <div class="filters-overlay"
+       *ngIf="filtersOpen && isMobile"
+       (click)="toggleFilters()">
+  </div>
 
-          <div class="price-labels">
-            <div class="price-label price-label--min">
-              <span class="price-value">{{ formatCLP(minPrice) }}</span>
-              <span class="price-uf">UF {{ minUf | number:'1.2-2' }}</span>
+
+  <!-- Overlay -->
+  
+
+  <!-- Drawer lateral -->
+  <div class="sidebar-drawer" [class.open]="filtersOpen">
+
+    <div class="drawer-body">
+      <!-- 🔽 Dejas tus filtros tal cual estaban -->
+      <aside class="sidebar price-card">
+        <div class="price-card-header">Precio</div>
+
+        <div class="price-card-body">
+          <div class="price-slider-wrapper">
+
+            <div class="price-labels">
+              <div class="price-label price-label--min">
+                <span class="price-value">{{ formatCLP(minPrice) }}</span>
+                <span class="price-uf">UF {{ minUf | number:'1.2-2' }}</span>
+              </div>
+
+              <div class="price-label price-label--max">
+                <span class="price-value">
+                  {{ formatCLP(maxPrice) }}
+                </span>
+                <span class="price-uf">UF {{ maxUf | number:'1.2-2' }}</span>
+              </div>
             </div>
 
-            <div class="price-label price-label--max">
-              <span class="price-value">
-                {{ formatCLP(maxPrice) }}
-              </span>
-              <span class="price-uf">UF {{ maxUf | number:'1.2-2' }}</span>
-            </div>
-          </div>
+            <div class="range-wrap">
+              <div class="range-track"></div>
 
-          <!-- TU BLOQUE (el que mostraste) VA AQUÍ -->
-          <div class="range-wrap">
-            <div class="range-track"></div>
-
-            <div class="range-progress"
+              <div class="range-progress"
                 [style.left.%]="minPercent"
                 [style.right.%]="maxRightPercent">
+              </div>
+
+              <input class="range" type="range"
+                [min]="0" [max]="sliderMax" [step]="step"
+                [(ngModel)]="minPrice"
+                (input)="onMinInput()"
+              />
+
+              <input class="range" type="range"
+                [min]="0" [max]="sliderMax" [step]="step"
+                [(ngModel)]="maxPrice"
+                (input)="onMaxInput()"
+              />
             </div>
-
-            <input class="range" type="range"
-              [min]="0" [max]="sliderMax" [step]="step"
-              [(ngModel)]="minPrice"
-              (input)="onMinInput()"
-            />
-
-            <input class="range" type="range"
-              [min]="0" [max]="sliderMax" [step]="step"
-              [(ngModel)]="maxPrice"
-              (input)="onMaxInput()"
-            />
           </div>
         </div>
-      </div>
-    </aside>
+      </aside>
 
-      <!-- ===============================
-       AUTOCOMPLETE CLÍNICAS
-      ================================ -->
-    <aside class="sidebar price-card clinic-filter">
-      <div class="price-card-header">
-        Clínicas y Hospitales
-        <span class="info">i</span>
-      </div>
+      <aside class="sidebar price-card clinic-filter">
+        <div class="price-card-header">
+          Clínicas y Hospitales
+          <span class="info">i</span>
+        </div>
 
-      <div class="price-card-body">
+        <div class="price-card-body">
           <div class="autocomplete" #clickFuera>
             <input
               type="text"
@@ -338,10 +349,9 @@
               placeholder="Clínica..."
               [(ngModel)]="clinicaSearch"
               (input)="filtrarClinicas()"
-              (click)="mostrarLista = true"
-              (click)="$event.stopPropagation()"
               (click)="abrirListaClinicas()"
             />
+
             <button type="button" (click)="limpiarClinica()" *ngIf="clinicaSeleccionada">×</button>
 
             <ul
@@ -355,11 +365,9 @@
               >
                 {{ clinica }}
               </li>
-              
-
             </ul>
           </div>
-        
+
           <label class="checkbox">
             <input type="checkbox" checked />
             Libre elección <span class="count">51</span>
@@ -368,10 +376,24 @@
           <label class="checkbox">
             <input type="checkbox" checked />
             Preferentes <span class="count">25</span>
-          </label>  
-      </div>
-    </aside>
+          </label>
+        </div>
+      </aside>
+    </div>
   </div>
+
+    <!-- ✅ Flecha fuera del drawer -->
+  <button
+    class="filters-toggle-arrow"
+    type="button"
+    (click)="toggleFilters()"
+    [class.open]="filtersOpen"
+    aria-label="Mostrar/ocultar filtros"
+  >
+    ❯
+  </button>
+
+
   <main class="results" id="cards-start">
 
     <!-- CARDS -->
