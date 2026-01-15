@@ -29,20 +29,6 @@ export class ModalDetalleComponent implements OnChanges {
 
   tabActiva: 'vistaGeneral' | 'contrato' | 'puntaje' | 'precio' = 'vistaGeneral';
 
-  prestadoresPreferentes = [
-    {
-      prestador: 'Clínica Las Condes',
-      hospitalario: '90%',
-      ambulatorio: '70%',
-      urgencia: '70%'
-    },
-    {
-      prestador: 'Clínica Alemana',
-      hospitalario: '90%',
-      ambulatorio: '70%',
-      urgencia: '70%'
-    }
-  ];
 
   /* =========================
      CICLO DE VIDA

@@ -37,11 +37,13 @@ export type DetallePrecio = {
   precioFinalCLP: number;
   descuento: number;
   precioConDescuentoCLP: number;
+
 };
 
 export type PlanConPrecioFinal = Plan & {
   precioFinal: number;
   detallePrecio: DetallePrecio;
+  topeAnualCLP?: number; // ✅ nuevo
 };
 
 /* ======================================================
@@ -108,17 +110,14 @@ export class PlanesIsapre {
     this.initForm();
 
     // Cambios que afectan precio => reaplicar filtro
-    this.cotizacionForm.get('edad')?.valueChanges.subscribe(() => {
-      this.aplicarFiltros(true);
-    });
+    this.cotizacionForm.get('edad')?.valueChanges.subscribe(() => 
+    this.aplicarFiltros());
 
-    this.cotizacionForm.get('ingresocoti')?.valueChanges.subscribe(() => {
-      this.aplicarFiltros(true);
-    });
+    this.cotizacionForm.get('ingresocoti')?.valueChanges.subscribe(() => 
+    this.aplicarFiltros());
 
-    this.cotizacionForm.get('cargas')?.valueChanges.subscribe(() => {
-      this.aplicarFiltros(true);
-    });
+    this.cotizacionForm.get('cargas')?.valueChanges.subscribe(() => 
+    this.aplicarFiltros());
 
     // Regiones
     this.localstorageService.getRegiones().subscribe({
@@ -441,6 +440,14 @@ export class PlanesIsapre {
     const endIndex = startIndex + this.itemsPorPagina;
 
     this.resultadosPaginados = base.slice(startIndex, endIndex);
+    this.totalPaginas = Math.ceil(base.length / this.itemsPorPagina);
+
+  if (this.totalPaginas === 0) {
+    this.paginaActual = 1;
+  } else if (this.paginaActual > this.totalPaginas) {
+    this.paginaActual = this.totalPaginas;
+  }
+
   }
 
   irAPagina(pagina: number): void {
@@ -463,6 +470,8 @@ export class PlanesIsapre {
     this.irAPagina(this.paginaActual + 1);
   }
 
+  
+
   /* ======================================================
    * MODALES (DETALLE / SOLICITAR)
    * ====================================================== */
@@ -472,9 +481,11 @@ export class PlanesIsapre {
 
   abrirDetalle(plan: Plan): void {
     const detallePrecio = this.calcularDetallePrecio(plan);
+    const topeAnualCLP = this.valorAnualConUF(plan.topeAnualUf);
 
     this.planSeleccionado = {
       ...plan,
+      topeAnualCLP,
       precioFinal: detallePrecio?.precioConDescuentoCLP ?? 0,
       detallePrecio
     };
@@ -538,7 +549,8 @@ export class PlanesIsapre {
    * FACTORES / REGLAS
    * ====================================================== */
   factoresIsapre: Record<string, number> = {
-    Consalud: 0.731
+    Consalud: 0.731,
+    'Cruz Blanca' :0.971
   };
 
   prestadoresPorRegion: Record<string, string[]> = {
@@ -777,6 +789,18 @@ mostrarInfoGes(): void{
     return 0;
   }
 
+  valorAnualConUF(topeAnualUf: Number | string | null | undefined): number{
+    if (!this.valorUF) return 0;
+
+    const uf = Number(this.valorUF);
+    const tope = Number(topeAnualUf);
+
+    if (!Number.isFinite(uf) || !Number.isFinite(tope)) return 0;
+
+    return Math.round(tope * uf);
+
+  }
+
   calcularPrecioPlan(plan: Plan): number {
     if (!this.valorUF) return 0;
 
@@ -839,7 +863,7 @@ mostrarInfoGes(): void{
       valorUF,
       precioFinalCLP,
       descuento,
-      precioConDescuentoCLP
+      precioConDescuentoCLP,
     };
   }
 
@@ -932,4 +956,5 @@ mostrarInfoGes(): void{
   formatCLP(value: number): string {
     return '$ ' + value.toLocaleString('es-CL');
   }
+
 }

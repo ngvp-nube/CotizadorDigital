@@ -403,7 +403,7 @@
         <span class="tag" *ngIf="plan.preferente">Preferente</span>
 
         <div class="company">
-          <img src="/consalud.png" alt="Consalud" width ="100px" class="logo-consalud">
+          <img [src]="plan.logo" [alt]="plan.nombrePlan" width ="100px" class="logo-consalud">
           <h5>Plan {{ plan.codigoPlan }}</h5>
         </div>
         <h5>Valor base plan {{plan.precioBase}} UF</h5>
