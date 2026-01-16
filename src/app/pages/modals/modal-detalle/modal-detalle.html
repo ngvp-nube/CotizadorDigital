@@ -79,14 +79,14 @@
                 </thead>
 
                 <tbody>
-                  <tr *ngFor="let item of prestadoresPreferentes">
+                  <tr >
                     <td>
                       <i class="fas fa-check-circle check"></i> {{
-                      item.prestador }}
+                      plan.prestadores }}
                     </td>
-                    <td>{{ item.hospitalario }}</td>
-                    <td>{{ item.ambulatorio }}</td>
-                    <td>{{ item.urgencia }}</td>
+                    <td>{{ plan.hospitalaria }}%</td>
+                    <td>{{ plan.ambulatoria }}%</td>
+                    <td>{{ plan.urgencia }}%</td>
                   </tr>
                 </tbody>
               </table>
@@ -138,7 +138,7 @@
                   <i class="fas fa-home icon"></i>
                   <div>
                     <p>
-                      Este plan cubre hasta <b>{{plan.topeAnualUf}} UF</b> ($277.531.940 al año
+                      Este plan cubre hasta <b>{{plan.topeAnualUf}} UF</b> ({{ plan.topeAnualCLP | number:'1.0-0' }} al año
                       por persona).
                     </p>
                     <small

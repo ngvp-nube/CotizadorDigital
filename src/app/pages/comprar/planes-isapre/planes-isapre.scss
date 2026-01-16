@@ -228,32 +228,52 @@ html, body {
 /* ===============================
    LAYOUT RESULTADOS (CLAVE)
 =============================== */
-.results-layout {
-  display: flex;
-  gap: 20px;
+/* Layout base */
+.results-layout{
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 24px;
   padding: 20px;
-  background: #f5f7fa;
+  position: relative;
+}
 
-  /* Altura controlada solo aquí */
-  height: calc(100vh - 320px);
+/* Cuando está cerrado: 1 columna (cards se estiran) */
+.results-layout.filters-collapsed{
+  grid-template-columns: 0 1fr;
+}
+
+/* ✅ se va COMPLETO hacia la izquierda */
+.results-layout.filters-collapsed .sidebar-drawer{
+  width: 0;                 /* 🔑 elimina el ancho */
+  transform: translateX(-110%); /* 🔑 lo saca de la vista */
+  opacity: 0;               /* opcional pero ayuda */
+  pointer-events: none;     /* evita clicks fantasmas */
+}
+
+/* CERRADO: apaga SOLO el contenido */
+.results-layout.filters-collapsed .drawer-body{
+  opacity: 0;
+  transform: translateX(-12px);
+  pointer-events: none;
+}
+
+.results-layout.filters-collapsed .sidebar-wrapper{
+  width: 0;
   overflow: hidden;
 }
 
-/* =========================================================
-   SIDEBAR – BASE
-========================================================= */
+.results-layout.filters-collapsed .filters-toggle-arrow{
+  right: -18px;                  /* se mantiene visible aunque el drawer sea 0 */
+}
+
+
 
 /* ===============================
    PRICE FILTER CARD
 =============================== */
 
-.price-card{
-  background:#fff;
-  border:1px solid #E6EEF8;
-  border-radius:16px;
-  padding:16px;
-  box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
-}
+
+
 
 
 .sidebar.price-card {
@@ -418,61 +438,6 @@ html, body {
 .range:focus { outline: none; }
 
 
-/* ===============================
-   AUTOCOMPLETE CLÍNICAS
-=============================== */
-.autocomplete .input {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid #e5e7eb;
-  font-size: 14px;
-}
-
-.autocomplete .input:focus {
-  outline: none;
-  border-color: #3f4cff;
-  box-shadow: 0 0 0 3px rgba(63, 76, 255, 0.15);
-}
-
-.autocomplete-list {
-  border-radius: 12px;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.14);
-}
-
-.checkbox {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  margin-top: 10px;
-}
-
-.checkbox input {
-  accent-color: #3f4cff;
-}
-
-.checkbox .count {
-  margin-left: auto;
-  background: #eef1ff;
-  color: #3f4cff;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 999px;
-}
-
-.count {
-  background: #e3f2fd;
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-size: 12px;
-}
-
-/* ===============================
-   PRICE FILTER CARD
-=============================== */
-
 /* =========================================================
    SIDEBAR – BASE
 ========================================================= */
@@ -492,7 +457,12 @@ html, body {
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  border:1px solid #E6EEF8;
+  border-radius:16px;
+  padding:16px;
+  box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
 }
+
 
 /* Header */
 .price-card-header {
@@ -555,6 +525,32 @@ html, body {
   cursor: pointer;
 }
 
+/* ✅ Permitir que el dropdown salga fuera de la card de clínicas */
+.price-card.clinic-filter,
+.price-card.clinic-filter .price-card-body{
+  overflow: visible !important;
+  border-radius: 0 0 18px 18px;
+}
+
+.price-card.clinic-filter{
+  overflow: visible;      /* permite que el dropdown salga */
+  border-radius: 18px;    /* asegura el redondeo */
+}
+
+/* Asegura que el dropdown quede por encima */
+.price-card.clinic-filter .autocomplete-list{
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 9999;
+}
+
+.price-card.clinic-filter .autocomplete{
+  position: relative;
+  z-index: 60;
+}
+
 /* =========================================================
    CLINIC FILTER CARD
 ========================================================= */
@@ -590,78 +586,145 @@ html, body {
   cursor: pointer;
 }
 
-/* Input */
-.clinic-input {
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: 12px;
-  border: 1px solid #dbe0ff;
-  font-size: 14px;
-  outline: none;
-  transition: all 0.2s ease;
+/* ===============================
+   MENU FILTROS IZQUIERDA
+=============================== */
+/* ===== OVERLAY ===== */
+.filters-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+  z-index: 40;
 }
 
-.clinic-input:focus {
-  border-color: #3f4cff;
-  box-shadow: 0 0 0 3px rgba(63, 76, 255, 0.15);
+/* ===== DRAWER FILTROS ===== */
+/* drawer se mueve */
+.sidebar-drawer{
+  width: 260px;
+  transform: translateX(0);
+  transition: transform .25s ease;
 }
 
-/* Autocomplete */
-.autocomplete-list {
-  margin-top: 6px;
-  border-radius: 12px;
-  background: #ffffff;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-  overflow: hidden;
-  z-index: 20;
+
+
+.sidebar-drawer.open{
+  transform: translateX(0);
 }
 
-.autocomplete-list li {
-  padding: 10px 14px;
-  font-size: 14px;
-  cursor: pointer;
-}
+/* Header drawer */
+.drawer-head{
+  height: 56px;
+  padding: 0 16px;
 
-.autocomplete-list li:hover {
-  background: #f2f4ff;
-}
-
-/* Options */
-.clinic-options {
-  margin-top: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.clinic-check {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 14px;
+
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.drawer-head span{
+  font-weight: 800;
+  font-size: 15px;
+  color: #111827;
+}
+
+.drawer-close{
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
   cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
 }
 
-.clinic-check input {
-  accent-color: #3f4cff;
-  margin-right: 8px;
-}
-
-.clinic-check span {
+/* Contenido scroll */
+.drawer-body{
+  padding: 14px;
   display: flex;
-  align-items: center;
-  gap: 6px;
+  flex-direction: column;
+  gap: 14px;
 }
 
-/* Counter */
-.count {
-  background: #eef2ff;
-  color: #3f4cff;
-  font-size: 12px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-weight: 600;
+
+/* ✅ Flecha: por defecto pegada al borde izquierdo */
+.filters-toggle-arrow{
+  position: sticky;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 52px;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(0,0,0,.14);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 30;  
+  pointer-events: auto;               
 }
+
+.filters-toggle-arrow.open{
+  left: calc(20px + 260px + 8px); /* padding-left(20) + drawer(260) + un pelín */
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* CERRADO: saca el drawer, pero NO lo apagues con opacity/pointer-events */
+.results-layout.filters-collapsed .sidebar-drawer{
+  transform: translateX(-100%); /* lo escondes */            
+}
+
+
+/* Overlay solo mobile (lo tienes con *ngIf) */
+.filters-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+  z-index: 40;
+}
+
+
+/* Responsive: en mobile el drawer puede ser fixed si quieres */
+@media (max-width: 992px){
+  .sidebar-drawer{
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    background: transparent;
+    z-index: 50;
+  }
+
+  /* abierto en mobile */
+  .sidebar-drawer.open{
+    transform: translateX(0);
+    width: 280px;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* cerrado en mobile */
+  .sidebar-drawer:not(.open){
+    transform: translateX(-110%);
+    width: 280px; /* mantiene ancho para animar, pero está fuera */
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  /* en mobile, la grilla siempre 1 columna */
+  .results-layout{
+    grid-template-columns: 1fr;
+  }
+}
+
+.filters-toggle-arrow:hover{
+  background: #f0f9ff;
+}
+
 
 
 
@@ -671,6 +734,7 @@ html, body {
 .results {
   flex: 1;
   min-width: 0;
+  width: 100%;
   overflow-y: auto;
   padding-right: 10px;
 }
@@ -1108,12 +1172,12 @@ html, body {
 /* ===============================
    SIDEBAR
 =============================== */
-.sidebar-wrapper {
+/* Drawer base */
+.sidebar-drawer{
+  position: relative;
   width: 260px;
-  flex-shrink: 0;
-
-  /* 👇 empuja el filtro hacia abajo */
-  
+  overflow: visible;
+  transition: transform .25s ease, width .25s ease, opacity .2s ease;
 }
 
 .sidebar {
@@ -1126,46 +1190,97 @@ html, body {
 /* ===============================
    RESULTADOS CON SCROLL
 =============================== */
-.results {
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 8px;
+/* ✅ Extra: que las cards nunca queden debajo visualmente del botón */
+.results{
+  position: relative;
+  z-index: 1;
 }
 
 /* ===============================
-   AUTOCOMPLETE
+   AUTOCOMPLETE CLINICAS
 =============================== */
 .autocomplete {
   position: relative;
 }
 
-.autocomplete .input {
+.autocomplete .input{
   width: 100%;
-}
-
-.autocomplete-list {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-
-  background: #ffffff;
+  height: 44px;
+  padding: 10px 12px;
   border-radius: 12px;
-  margin-top: 6px;
-  padding: 6px 0;
-
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  z-index: 20;
-}
-
-.autocomplete-list li {
-  padding: 10px 14px;
-  cursor: pointer;
+  border: 1px solid #e5e7eb;
+  background: #fff;
   font-size: 14px;
 }
 
-.autocomplete-list li:hover {
-  background: #f3f6fb;
+
+.autocomplete-list{
+  position: absolute;
+  top: calc(100% + 8px); /* separadito del input */
+  left: 0;
+  right: 0;
+
+  z-index: 9999; /* para que quede encima del resto */
+
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 14px 30px rgba(16, 24, 40, 0.12);
+
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+
+.autocomplete-list li{
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #111827;
+}
+
+
+.autocomplete-list li:hover{
+  background: #f3f4f6;
+}
+
+.autocomplete .input:focus {
+  outline: none;
+  border-color: #3f4cff;
+  box-shadow: 0 0 0 3px rgba(63, 76, 255, 0.15);
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.checkbox input {
+  accent-color: #3f4cff;
+}
+
+.checkbox .count {
+  margin-left: auto;
+  background: #eef1ff;
+  color: #3f4cff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+
+.count {
+  background: #e3f2fd;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 12px;
 }
 
 /* ===============================
@@ -1194,58 +1309,7 @@ html, body {
   cursor: pointer;
 }
 
-/* ===============================
-   INPUT BONITO
-=============================== */
-.fancy-input {
-  padding: 12px 14px;
-  border-radius: 10px;
-  border: 1px solid #d6dbe3;
-  font-size: 14px;
-  transition: all 0.25s ease;
-}
 
-.fancy-input::placeholder {
-  color: #9aa3af;
-}
-
-.fancy-input:focus {
-  outline: none;
-  border-color: #2a7cff;
-  box-shadow: 0 0 0 3px rgba(42, 124, 255, 0.12);
-}
-
-/* ===============================
-   AUTOCOMPLETE LIST
-=============================== */
-.fancy-list {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  right: 0;
-
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 6px 0;
-
-  box-shadow:
-    0 12px 28px rgba(0, 0, 0, 0.12),
-    0 2px 6px rgba(0, 0, 0, 0.06);
-
-  z-index: 30;
-}
-
-.fancy-list li {
-  padding: 12px 16px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background 0.2s ease, padding-left 0.2s ease;
-}
-
-.fancy-list li:hover {
-  background: #f1f6ff;
-  padding-left: 22px;
-}
 
 /* ===============================
    TÍTULO + INFO

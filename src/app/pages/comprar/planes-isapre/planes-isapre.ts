@@ -1,7 +1,7 @@
 /* ======================================================
  * IMPORTS
  * ====================================================== */
-import { Component } from '@angular/core';
+import { Component, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormsModule,
@@ -14,6 +14,8 @@ import Swal from 'sweetalert2';
 import { ModalDetalleComponent } from '../../modals/modal-detalle/modal-detalle';
 import { ModalSolicitarComponent } from '../../modals/modal-solicitar/modal-solicitar';
 import { LocalstorageService, Plan } from '../../../services/localstorage';
+import { ElementRef, ViewChild, HostListener } from '@angular/core';
+import { HtmlParser } from '@angular/compiler';
 
 /* ======================================================
  * INTERFACES & TYPES
@@ -35,11 +37,13 @@ export type DetallePrecio = {
   precioFinalCLP: number;
   descuento: number;
   precioConDescuentoCLP: number;
+
 };
 
 export type PlanConPrecioFinal = Plan & {
   precioFinal: number;
   detallePrecio: DetallePrecio;
+  topeAnualCLP?: number; // ✅ nuevo
 };
 
 /* ======================================================
@@ -93,12 +97,12 @@ export class PlanesIsapre {
       next: (uf) => {
         this.valorUF = uf;
         // cuando llega UF cambia el precio => reaplicar filtro
-        this.aplicarFiltrosPrecio(true);
+        this.aplicarFiltros(true);
       },
       error: () => {
         console.error('Error al obtener UF');
         this.valorUF = null;
-        this.aplicarFiltrosPrecio(true);
+        this.aplicarFiltros(true);
       }
     });
 
@@ -106,17 +110,14 @@ export class PlanesIsapre {
     this.initForm();
 
     // Cambios que afectan precio => reaplicar filtro
-    this.cotizacionForm.get('edad')?.valueChanges.subscribe(() => {
-      this.aplicarFiltrosPrecio(true);
-    });
+    this.cotizacionForm.get('edad')?.valueChanges.subscribe(() => 
+    this.aplicarFiltros());
 
-    this.cotizacionForm.get('ingresocoti')?.valueChanges.subscribe(() => {
-      this.aplicarFiltrosPrecio(true);
-    });
+    this.cotizacionForm.get('ingresocoti')?.valueChanges.subscribe(() => 
+    this.aplicarFiltros());
 
-    this.cotizacionForm.get('cargas')?.valueChanges.subscribe(() => {
-      this.aplicarFiltrosPrecio(true);
-    });
+    this.cotizacionForm.get('cargas')?.valueChanges.subscribe(() => 
+    this.aplicarFiltros());
 
     // Regiones
     this.localstorageService.getRegiones().subscribe({
@@ -149,6 +150,40 @@ export class PlanesIsapre {
       cargas: this.fb.array([])
     });
   }
+
+   @ViewChild('clickFuera') clinicBox!: ElementRef<HTMLElement>;
+   @ViewChild('healthBox') healthBox! : ElementRef<HTMLElement>;
+   @ViewChild('regionBox') regionBox! : ElementRef<HTMLElement>;
+
+   @HostListener('document:click', ['$event'])
+     onDocumentClick(event: MouseEvent): void {
+     const target = event.target as HTMLElement;
+
+      if (!this.clinicBox?.nativeElement.contains(target)) {
+        this.mostrarLista = false;
+      }
+
+      if (this.healthOpen && !this.healthBox?.nativeElement.contains(target)) {
+        this.healthOpen = false;
+      }
+
+      if (this.regionOpen && !this.regionBox?.nativeElement.contains(target)){
+        this.regionOpen = false;
+      }
+    }
+
+    toggleHealth(event: MouseEvent): void {
+      event.stopPropagation();
+      this.healthOpen = !this.healthOpen;
+    }
+
+    toggleRegion(event: MouseEvent): void {
+      event.stopPropagation();
+      this.regionOpen = !this.regionOpen;
+    }
+
+    
+
 
   /* ======================================================
    * SELECT SALUD (PRINCIPAL)
@@ -201,7 +236,7 @@ export class PlanesIsapre {
     this.mostrarModal = false;
 
     // Si cambian cargas, cambia el precio => reaplicar filtro
-    this.aplicarFiltrosPrecio();
+    this.aplicarFiltros();
   }
 
   getFactorCargas(): number {
@@ -236,30 +271,78 @@ export class PlanesIsapre {
    * ====================================================== */
   clinicaSearch = '';
   mostrarLista = false;
+  clinicaSeleccionada: string | null = null;
 
-  clinicas: string[] = [
-    'Arauco Salud',
-    'Bionet',
-    'Centro Clínico el Portal',
-    'Centro del Cáncer UC CHRISTUS',
-    'Clínica Alemana',
-    'Clínica Las Condes',
-    'Clínica Santa María'
-  ];
+  private getClinicasDisponibles(): string[] {
+  const set = new Set<string>();
+
+  for (const plan of (this.planesIsapre ?? [])) {
+    const prestadores = (plan as any).prestadores;
+
+    if (Array.isArray(prestadores)) {
+      prestadores.forEach((p: any) => {
+        if (typeof p === 'string' && p.trim()) set.add(p.trim());
+      });
+    } else if (typeof prestadores === 'string' && prestadores.trim()) {
+      set.add(prestadores.trim());
+    }
+  }
+
+  return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }
+
+  filtrarClinicas(): void {
+    const texto = (this.clinicaSearch || '').toLowerCase().trim();
+    const base = this.getClinicasDisponibles();
+
+    this.clinicasFiltradas = texto
+      ? base.filter(c => c.toLowerCase().includes(texto))
+      : base;
+
+    this.mostrarLista = true;
+  }
 
   clinicasFiltradas: string[] = [];
 
-  filtrarClinicas(): void {
-    const texto = this.clinicaSearch.toLowerCase();
-    this.clinicasFiltradas = this.clinicas.filter(c =>
-      c.toLowerCase().includes(texto)
-    );
-  }
 
   seleccionarClinica(clinica: string): void {
     this.clinicaSearch = clinica;
+    this.clinicaSeleccionada = clinica; // ✅
+    this.mostrarLista = false;
+
+    this.aplicarFiltros(true); // ✅ reaplica filtros (precio + clínica)
+  }
+
+  limpiarClinica(): void {
+    this.clinicaSearch = '';
+    this.clinicaSeleccionada = null;
+    this.mostrarLista = false;
+    this.aplicarFiltros(true);
+  }
+
+  cerrarListaClinicas(): void {
     this.mostrarLista = false;
   }
+
+  abrirListaClinicas(): void {
+    this.mostrarLista = true;
+    this.filtrarClinicas(); // ✅ carga todas si está vacío
+  }
+
+  filtersOpen = true;
+  filtersCollapsed = false;
+  isMobile = window.innerWidth < 992;
+
+  toggleFilters(): void {
+    this.filtersOpen = !this.filtersOpen;
+  }
+
+  @HostListener('window:resize')
+  onResize(): void {
+    this.isMobile = window.innerWidth < 992;
+    // opcional: si pasas a desktop, quita overlay porque isMobile=false
+  }
+
 
   /* ======================================================
    * RESULTADOS / VISTA
@@ -292,23 +375,37 @@ export class PlanesIsapre {
   /** Este método ahora aplica base (resultados) y luego filtro precio */
   private aplicarResultados(data: any[]): void {
     this.resultados = data;
-    this.aplicarFiltrosPrecio(true);
+    this.aplicarFiltros(true);
   }
 
   /** Aplica el filtro de precio sobre `resultados` y recalcula paginación */
-  private aplicarFiltrosPrecio(resetPage: boolean = false): void {
+  private aplicarFiltros(resetPage: boolean = false): void {
     if (resetPage) this.resetPaginacion();
 
-    // Filtra usando el mismo cálculo que muestran las cards
-    this.resultadosFiltrados = (this.resultados ?? []).filter((plan: Plan) => {
+    const clinicaSel = this.clinicaSeleccionada?.toLowerCase().trim() ?? '';
+
+    this.resultadosFiltrados = (this.resultados ?? []).filter((plan: any) => {
+      // 1) Filtro clínica (si hay seleccionada)
+      if (clinicaSel) {
+        const prestadores = plan.prestadores;
+
+        const tieneClinica =
+          Array.isArray(prestadores)
+            ? prestadores.some((p: string) => String(p).toLowerCase().includes(clinicaSel))
+            : String(prestadores ?? '').toLowerCase().includes(clinicaSel);
+
+        if (!tieneClinica) return false;
+      }
+
+      // 2) Filtro precio
       const precio = this.calcularPrecioPlan(plan);
-      // Si aún no hay UF o edad y tu función retorna 0, no lo mates por filtro:
-      if (precio === 0) return true;
+      if (precio === 0) return true; // si aún no hay UF/edad, no bloquees todo
       return precio >= this.minPrice && precio <= this.maxPrice;
     });
 
     this.actualizarPaginacion();
   }
+
 
   actualizarPaginacion(): void {
     const base = this.resultadosFiltrados ?? [];
@@ -343,6 +440,14 @@ export class PlanesIsapre {
     const endIndex = startIndex + this.itemsPorPagina;
 
     this.resultadosPaginados = base.slice(startIndex, endIndex);
+    this.totalPaginas = Math.ceil(base.length / this.itemsPorPagina);
+
+  if (this.totalPaginas === 0) {
+    this.paginaActual = 1;
+  } else if (this.paginaActual > this.totalPaginas) {
+    this.paginaActual = this.totalPaginas;
+  }
+
   }
 
   irAPagina(pagina: number): void {
@@ -365,6 +470,8 @@ export class PlanesIsapre {
     this.irAPagina(this.paginaActual + 1);
   }
 
+  
+
   /* ======================================================
    * MODALES (DETALLE / SOLICITAR)
    * ====================================================== */
@@ -374,9 +481,11 @@ export class PlanesIsapre {
 
   abrirDetalle(plan: Plan): void {
     const detallePrecio = this.calcularDetallePrecio(plan);
+    const topeAnualCLP = this.valorAnualConUF(plan.topeAnualUf);
 
     this.planSeleccionado = {
       ...plan,
+      topeAnualCLP,
       precioFinal: detallePrecio?.precioConDescuentoCLP ?? 0,
       detallePrecio
     };
@@ -440,7 +549,8 @@ export class PlanesIsapre {
    * FACTORES / REGLAS
    * ====================================================== */
   factoresIsapre: Record<string, number> = {
-    Consalud: 0.731
+    Consalud: 0.731,
+    'Cruz Blanca' :0.971
   };
 
   prestadoresPorRegion: Record<string, string[]> = {
@@ -581,13 +691,13 @@ mostrarInfoGes(): void{
     scrollbarPadding: false,
     confirmButtonText: 'Cerrar',
     confirmButtonColor: '#3f4cff',
-    padding: '1.5rem',
+    padding: '0.2 rem',
     customClass: {
     popup: 'swal-no-inner-scroll'
     },
     html: `
         <!-- GES -->
-        <h3 style="margin-bottom:8px; color:#3f4cff;">
+        <h3 style="margin-bottom:5px; color:#3f4cff;">
           🏥 Tabla GES (Garantías Explícitas en Salud)
         </h3>
 
@@ -596,19 +706,23 @@ mostrarInfoGes(): void{
           (titular y cargas).
         </p>
 
-        <table style="width:100%; border-collapse:collapse; margin:12px 0;">
+        <table style="width:100%; border-collapse:collapse; margin:8px 0;">
           <thead>
             <tr style="background:#f1f4ff;">
-              <th style="padding:8px; border:1px solid #ddd;">Beneficiarios</th>
-              <th style="padding:8px; border:1px solid #ddd;">GES (UF)</th>
+              <th style="padding:7px; border:1px solid #ddd;">Isapres</th>
+              <th style="padding:7px; border:1px solid #ddd;">GES 2023/24</th>
+              <th style="padding:7px; border:1px solid #ddd;">GES 90 DIC 2025</th>
+              <th style="padding:7px; border:1px solid #ddd;">Var</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td style="padding:8px; border:1px solid #ddd;">1</td><td style="padding:8px; border:1px solid #ddd;">0.731</td></tr>
-            <tr><td style="padding:8px; border:1px solid #ddd;">2</td><td style="padding:8px; border:1px solid #ddd;">1.462</td></tr>
-            <tr><td style="padding:8px; border:1px solid #ddd;">3</td><td style="padding:8px; border:1px solid #ddd;">2.193</td></tr>
-            <tr><td style="padding:8px; border:1px solid #ddd;">4</td><td style="padding:8px; border:1px solid #ddd;">2.924</td></tr>
-            <tr><td style="padding:8px; border:1px solid #ddd;">5</td><td style="padding:8px; border:1px solid #ddd;">3.655</td></tr>
+            <tr><td style="padding:7px; border:1px solid #ddd;">Vida Tres</td><td style="padding:8px; border:1px solid #ddd;">0.63</td><td style="padding:8px; border:1px solid #ddd;">0.712</td><td style="padding:8px; border:1px solid #ddd;">13%</td></tr>
+            <tr><td style="padding:7px; border:1px solid #ddd;">Consalud</td><td style="padding:8px; border:1px solid #ddd;">0.602</td><td style="padding:8px; border:1px solid #ddd;">0.731</td><td style="padding:8px; border:1px solid #ddd;">21%</td></tr>
+            <tr><td style="padding:7px; border:1px solid #ddd;">Banmedica</td><td style="padding:8px; border:1px solid #ddd;">0.602</td><td style="padding:8px; border:1px solid #ddd;">0.778</td><td style="padding:8px; border:1px solid #ddd;">29%</td></tr>
+            <tr><td style="padding:7px; border:1px solid #ddd;">Nueva Mas Vida</td><td style="padding:8px; border:1px solid #ddd;">0.795</td><td style="padding:8px; border:1px solid #ddd;">0.854</td><td style="padding:8px; border:1px solid #ddd;">7%</td></tr>
+            <tr><td style="padding:7px; border:1px solid #ddd;">Esencial</td><td style="padding:8px; border:1px solid #ddd;">0.800</td><td style="padding:8px; border:1px solid #ddd;">0.910</td><td style="padding:8px; border:1px solid #ddd;">14%</td></tr>
+            <tr><td style="padding:7px; border:1px solid #ddd;">Cruz Blanca</td><td style="padding:8px; border:1px solid #ddd;">0.74</td><td style="padding:8px; border:1px solid #ddd;">0.971</td><td style="padding:8px; border:1px solid #ddd;">31%</td></tr>
+            <tr><td style="padding:7px; border:1px solid #ddd;">Colmena</td><td style="padding:8px; border:1px solid #ddd;">0.77</td><td style="padding:8px; border:1px solid #ddd;">1.036</td><td style="padding:8px; border:1px solid #ddd;">35%</td></tr>
           </tbody>
         </table>
 
@@ -675,6 +789,18 @@ mostrarInfoGes(): void{
     return 0;
   }
 
+  valorAnualConUF(topeAnualUf: Number | string | null | undefined): number{
+    if (!this.valorUF) return 0;
+
+    const uf = Number(this.valorUF);
+    const tope = Number(topeAnualUf);
+
+    if (!Number.isFinite(uf) || !Number.isFinite(tope)) return 0;
+
+    return Math.round(tope * uf);
+
+  }
+
   calcularPrecioPlan(plan: Plan): number {
     if (!this.valorUF) return 0;
 
@@ -737,7 +863,7 @@ mostrarInfoGes(): void{
       valorUF,
       precioFinalCLP,
       descuento,
-      precioConDescuentoCLP
+      precioConDescuentoCLP,
     };
   }
 
@@ -817,17 +943,18 @@ mostrarInfoGes(): void{
     if (this.minPrice > this.maxPrice - this.minGap) {
       this.minPrice = Math.max(0, this.maxPrice - this.minGap);
     }
-    this.aplicarFiltrosPrecio(true);
+    this.aplicarFiltros(true);
   }
 
   onMaxInput(): void {
     if (this.maxPrice < this.minPrice + this.minGap) {
       this.maxPrice = Math.min(this.sliderMax, this.minPrice + this.minGap);
     }
-    this.aplicarFiltrosPrecio(true);
+    this.aplicarFiltros(true);
   }
 
   formatCLP(value: number): string {
     return '$ ' + value.toLocaleString('es-CL');
   }
+
 }
