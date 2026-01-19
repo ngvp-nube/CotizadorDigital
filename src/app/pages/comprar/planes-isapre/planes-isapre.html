@@ -410,7 +410,23 @@
         
 
         <div class="features">
-          <span>🏥 Prestadores {{plan.prestadores}}</span>
+          <span>🏥 Prestadores</span>
+          <span class="prestadores-wrap" *ngIf="plan.prestadores?.length">
+            <span class="prestadores-trigger">
+              {{ plan.prestadores[0] }}
+              <span class="otros" *ngIf="plan.prestadores.length > 1">
+                + OTROS
+              </span>
+
+              <!-- Popover -->
+              <div class="prestadores-popover">
+                <div class="popover-title">Prestadores</div>
+                <ul>
+                  <li *ngFor="let p of plan.prestadores">{{ p }}</li>
+                </ul>
+              </div>
+            </span>
+          </span>
           <span>🏥 Hospitalaria {{plan.hospitalaria}}%</span>
           <span>🚑 Urgencia {{plan.urgencia}}%</span>
           <span>🩺 Ambulatoria {{plan.ambulatoria}}%</span>
