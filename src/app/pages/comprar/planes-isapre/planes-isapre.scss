@@ -39,8 +39,6 @@ html, body {
 /* ===============================
    SEARCH BAR
 =============================== */
-
-
 .search-header h2 {
   font-size: 20px;
   font-weight: 700;
@@ -51,7 +49,6 @@ html, body {
   font-size: 14px;
   color: #6b7280;
 }
-
 
 .search-grid {
   display: grid;
@@ -95,12 +92,9 @@ html, body {
   border-radius:15px;
   padding:22px;
   box-shadow:0 12px 30px rgba(16, 24, 40, 0.06);
-  
 }
 
 /* Header del bloque */
-
-
 .quote-head h2{
   font-size:20px;
   font-weight:800;
@@ -119,7 +113,7 @@ html, body {
   display:grid;
   grid-template-columns: 1.1fr 1fr .6fr 1fr .9fr;
   gap:16px;
-  align-items:end; /* alinea inputs/botón por abajo */
+  align-items:end;
 }
 
 /* Cada campo */
@@ -192,7 +186,6 @@ html, body {
   }
 }
 
-
 /* ===============================
    RESULTS BAR
 =============================== */
@@ -244,10 +237,10 @@ html, body {
 
 /* ✅ se va COMPLETO hacia la izquierda */
 .results-layout.filters-collapsed .sidebar-drawer{
-  width: 0;                 /* 🔑 elimina el ancho */
-  transform: translateX(-110%); /* 🔑 lo saca de la vista */
-  opacity: 0;               /* opcional pero ayuda */
-  pointer-events: none;     /* evita clicks fantasmas */
+  width: 0;
+  transform: translateX(-110%);
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* CERRADO: apaga SOLO el contenido */
@@ -263,19 +256,12 @@ html, body {
 }
 
 .results-layout.filters-collapsed .filters-toggle-arrow{
-  right: -18px;                  /* se mantiene visible aunque el drawer sea 0 */
+  right: -18px;
 }
-
-
 
 /* ===============================
    PRICE FILTER CARD
 =============================== */
-
-
-
-
-
 .sidebar.price-card {
   background: transparent;
   padding: 0;
@@ -397,7 +383,7 @@ html, body {
   background:#2563eb;
   border:3px solid #ffffff;
   box-shadow:0 6px 14px rgba(37,99,235,.25);
-  margin-top:-10px; /* 🔥 CENTRADO REAL */
+  margin-top:-10px;
 }
 
 /* Thumb (Firefox) */
@@ -411,7 +397,7 @@ html, body {
   box-shadow:0 6px 14px rgba(37,99,235,.25);
 }
 
-/* APAGAR TRACK NATIVO (para que NO aparezca la 2da barra) */
+/* APAGAR TRACK NATIVO */
 .range-wrap input.range[type="range"]::-webkit-slider-runnable-track{
   background: transparent !important;
   border: 0 !important;
@@ -424,24 +410,20 @@ html, body {
   box-shadow: none !important;
 }
 
-/* Por si algún estilo global pone color al input */
 .range-wrap input.range[type="range"]{
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
 }
 
-/* Quitar rellenos extra en Firefox */
 .range::-moz-focus-outer{ border:0; }
 
 .range { outline: none; }
 .range:focus { outline: none; }
 
-
 /* =========================================================
    SIDEBAR – BASE
 ========================================================= */
-
 .sidebar {
   background: transparent;
   padding: 0;
@@ -451,7 +433,6 @@ html, body {
 /* =========================================================
    PRICE CARD
 ========================================================= */
-
 .price-card {
   background: #ffffff;
   border-radius: 18px;
@@ -462,7 +443,6 @@ html, body {
   padding:16px;
   box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
 }
-
 
 /* Header */
 .price-card-header {
@@ -495,7 +475,7 @@ html, body {
   color: #6b7280;
 }
 
-/* Slider */
+/* Slider (single range, lo mantengo tal cual) */
 .price-card-body input[type="range"] {
   margin-top: 10px;
   width: 100%;
@@ -533,8 +513,8 @@ html, body {
 }
 
 .price-card.clinic-filter{
-  overflow: visible;      /* permite que el dropdown salga */
-  border-radius: 18px;    /* asegura el redondeo */
+  overflow: visible;
+  border-radius: 18px;
 }
 
 /* Asegura que el dropdown quede por encima */
@@ -554,36 +534,11 @@ html, body {
 /* =========================================================
    CLINIC FILTER CARD
 ========================================================= */
-
 .clinic-card {
   background: #ffffff;
   border-radius: 18px;
   padding: 16px;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
-}
-
-/* Title */
-.title-inline {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 15px;
-  font-weight: 600;
-  margin-bottom: 14px;
-}
-
-.title-inline .info {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #eef2ff;
-  color: #3f4cff;
-  font-size: 12px;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
 }
 
 /* ===============================
@@ -598,14 +553,11 @@ html, body {
 }
 
 /* ===== DRAWER FILTROS ===== */
-/* drawer se mueve */
 .sidebar-drawer{
   width: 260px;
   transform: translateX(0);
   transition: transform .25s ease;
 }
-
-
 
 .sidebar-drawer.open{
   transform: translateX(0);
@@ -615,11 +567,9 @@ html, body {
 .drawer-head{
   height: 56px;
   padding: 0 16px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   background: #ffffff;
   border-bottom: 1px solid #e5e7eb;
 }
@@ -649,8 +599,7 @@ html, body {
   gap: 14px;
 }
 
-
-/* ✅ Flecha: por defecto pegada al borde izquierdo */
+/* ✅ Flecha */
 .filters-toggle-arrow{
   position: sticky;
   top: 50%;
@@ -664,31 +613,20 @@ html, body {
   display: grid;
   place-items: center;
   cursor: pointer;
-  z-index: 30;  
-  pointer-events: auto;               
+  z-index: 30;
+  pointer-events: auto;
 }
 
 .filters-toggle-arrow.open{
-  left: calc(20px + 260px + 8px); /* padding-left(20) + drawer(260) + un pelín */
+  left: calc(20px + 260px + 8px);
   transform: translateY(-50%) rotate(180deg);
 }
 
-/* CERRADO: saca el drawer, pero NO lo apagues con opacity/pointer-events */
+/* CERRADO: saca el drawer */
 .results-layout.filters-collapsed .sidebar-drawer{
-  transform: translateX(-100%); /* lo escondes */            
+  transform: translateX(-100%);
 }
 
-
-/* Overlay solo mobile (lo tienes con *ngIf) */
-.filters-overlay{
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.35);
-  z-index: 40;
-}
-
-
-/* Responsive: en mobile el drawer puede ser fixed si quieres */
 @media (max-width: 992px){
   .sidebar-drawer{
     position: fixed;
@@ -699,7 +637,6 @@ html, body {
     z-index: 50;
   }
 
-  /* abierto en mobile */
   .sidebar-drawer.open{
     transform: translateX(0);
     width: 280px;
@@ -707,15 +644,13 @@ html, body {
     pointer-events: auto;
   }
 
-  /* cerrado en mobile */
   .sidebar-drawer:not(.open){
     transform: translateX(-110%);
-    width: 280px; /* mantiene ancho para animar, pero está fuera */
+    width: 280px;
     opacity: 1;
     pointer-events: none;
   }
 
-  /* en mobile, la grilla siempre 1 columna */
   .results-layout{
     grid-template-columns: 1fr;
   }
@@ -724,9 +659,6 @@ html, body {
 .filters-toggle-arrow:hover{
   background: #f0f9ff;
 }
-
-
-
 
 /* ===============================
    RESULTADOS
@@ -840,7 +772,6 @@ html, body {
   cursor: pointer;
 }
 
-
 /* ===============================
    RESPONSIVE
 =============================== */
@@ -875,39 +806,18 @@ html, body {
     text-align: left;
   }
 }
-/* RESPONSIVE */
-@media (max-width: 1000px) {
-  .footer-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 600px) {
-  .footer-container {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Mobile */
-@media (max-width: 767px) {}
-
-/* Tablet */
-@media (min-width: 768px) and (max-width: 1199px) {}
-
-/* Desktop */
-@media (min-width: 1200px) {}
 
 @media (max-width: 768px) {
-    .custom-options {
+  .custom-options {
     max-height: 200px;
   }
 
-  /* Evita que el contenedor corte el dropdown */
   .search-bar,
   .search-grid,
   .box-input {
     overflow: visible;
   }
+
   .search-grid {
     grid-template-columns: 1fr;
     gap: 12px;
@@ -923,12 +833,15 @@ html, body {
   }
 }
 
+/* ===============================
+   CUSTOM SELECT (REGION)
+   (DUPLICADO ELIMINADO: esta es la única versión)
+=============================== */
 .custom-select {
   position: relative;
   width: 100%;
 }
 
-/* INPUT */
 .custom-selected {
   height: 44px;
   padding: 0 14px;
@@ -957,7 +870,6 @@ html, body {
   box-shadow: 0 0 0 2px rgba(107, 124, 255, 0.15);
 }
 
-/* DROPDOWN */
 .custom-options {
   position: absolute;
   top: calc(100% + 6px);
@@ -975,7 +887,6 @@ html, body {
   z-index: 1000;
 }
 
-/* OPCIONES */
 .custom-option {
   padding: 12px 16px;
   font-size: 14px;
@@ -990,7 +901,6 @@ html, body {
   background-color: #f2f4ff;
 }
 
-/* FLECHA */
 .arrow {
   font-size: 12px;
   color: #6b7280;
@@ -1001,96 +911,6 @@ html, body {
   transform: rotate(180deg);
 }
 
-/* MOBILE */
-@media (max-width: 768px) {
-  .custom-options {
-    max-height: 220px;
-  }
-
-  .custom-option {
-    padding: 14px 16px;
-    font-size: 15px;
-  }
-}
-.custom-select {
-  position: relative;
-  width: 100%;
-}
-
-/* INPUT */
-.custom-selected {
-  height: 44px;
-  padding: 0 14px;
-  border-radius: 12px;
-  border: 1.5px solid #cfd6ff;
-  background: #fff;
-  cursor: pointer;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  font-size: 14px;
-  font-weight: 500;
-  color: #1f2937;
-
-  transition: border 0.2s ease, box-shadow 0.2s ease;
-}
-
-.custom-selected:hover {
-  border-color: #9aa7ff;
-}
-
-.custom-selected:focus-within {
-  border-color: #6b7cff;
-  box-shadow: 0 0 0 2px rgba(107, 124, 255, 0.15);
-}
-
-/* DROPDOWN */
-.custom-options {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  right: 0;
-
-  max-height: 260px;
-  overflow-y: auto;
-
-  background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-
-  padding: 6px 0;
-  z-index: 1000;
-}
-
-/* OPCIONES */
-.custom-option {
-  padding: 12px 16px;
-  font-size: 14px;
-  font-weight: 400;
-  color: #111827;
-  cursor: pointer;
-
-  transition: background 0.15s ease;
-}
-
-.custom-option:hover {
-  background-color: #f2f4ff;
-}
-
-/* FLECHA */
-.arrow {
-  font-size: 12px;
-  color: #6b7280;
-  transition: transform 0.2s ease;
-}
-
-.arrow.open {
-  transform: rotate(180deg);
-}
-
-/* MOBILE */
 @media (max-width: 768px) {
   .custom-options {
     max-height: 220px;
@@ -1102,10 +922,9 @@ html, body {
   }
 }
 
-
-
-
-
+/* ===============================
+   PAGINATION
+=============================== */
 .pagination {
   display: flex;
   justify-content: center;
@@ -1162,17 +981,17 @@ html, body {
   user-select: none;
 }
 
-/* Layout principal */
+/* Layout principal (se mantiene tal cual porque no es duplicado exacto) */
 .results-layout {
   display: flex;
   gap: 24px;
-  height: 100vh; /* necesario para el scroll interno */
+  height: 100vh;
 }
 
 /* ===============================
    SIDEBAR
 =============================== */
-/* Drawer base */
+/* Drawer base (se mantiene tal cual porque no es duplicado exacto) */
 .sidebar-drawer{
   position: relative;
   width: 260px;
@@ -1180,17 +999,17 @@ html, body {
   transition: transform .25s ease, width .25s ease, opacity .2s ease;
 }
 
+/* Sidebar card feel (se mantiene, no es duplicado exacto) */
 .sidebar {
   background: #ffffff;
-  padding: 16px;
-  border-radius: 12px;
-  margin-bottom: 16px;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
 }
 
 /* ===============================
    RESULTADOS CON SCROLL
 =============================== */
-/* ✅ Extra: que las cards nunca queden debajo visualmente del botón */
 .results{
   position: relative;
   z-index: 1;
@@ -1213,14 +1032,13 @@ html, body {
   font-size: 14px;
 }
 
-
 .autocomplete-list{
   position: absolute;
-  top: calc(100% + 8px); /* separadito del input */
+  top: calc(100% + 8px);
   left: 0;
   right: 0;
 
-  z-index: 9999; /* para que quede encima del resto */
+  z-index: 9999;
 
   margin: 0;
   padding: 6px 0;
@@ -1235,14 +1053,12 @@ html, body {
   overflow-y: auto;
 }
 
-
 .autocomplete-list li{
   padding: 10px 14px;
   cursor: pointer;
   font-size: 14px;
   color: #111827;
 }
-
 
 .autocomplete-list li:hover{
   background: #f3f4f6;
@@ -1284,76 +1100,8 @@ html, body {
 }
 
 /* ===============================
-   TÍTULO CON INFO
+   LABEL INFO (tooltip)
 =============================== */
-.title-inline {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.title-inline .info {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-
-  font-size: 11px;
-  font-weight: bold;
-
-  background: #e9f2ff;
-  color: #2a7cff;
-  cursor: pointer;
-}
-
-
-
-/* ===============================
-   TÍTULO + INFO
-=============================== */
-.title-inline {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.title-inline .info {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-
-  font-size: 11px;
-  font-weight: 600;
-
-  background: linear-gradient(135deg, #e8f1ff, #f5f9ff);
-  color: #2a7cff;
-
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.title-inline .info:hover {
-  transform: scale(1.1);
-  box-shadow: 0 4px 10px rgba(42, 124, 255, 0.25);
-}
-
-/* ===============================
-   SIDEBAR CARD FEEL
-=============================== */
-.sidebar {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-}
-
 .label-info {
   display: inline-flex;
   align-items: center;
@@ -1404,16 +1152,11 @@ html, body {
   position: relative;
 }
 
-/* Caja cerrada */
-
-.health-select {
-  position: relative;
-}
-
+/* Caja cerrada (se mantiene tal cual) */
 .health-selected {
-  padding: 10px;              // 👈 MISMO padding
-  border-radius: 8px;         // 👈 MISMO radio
-  border: 1px solid #ddd;     // 👈 MISMO borde
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
   background: #fff;
 
   font-size: 13px;
@@ -1424,18 +1167,6 @@ html, body {
   justify-content: space-between;
 
   cursor: pointer;
-}
-
-
-/* Flecha */
-.arrow {
-  font-size: 12px;
-  transition: transform 0.2s ease;
-  color: #6b7280;
-
-  &.open {
-    transform: rotate(180deg);
-  }
 }
 
 /* Dropdown */
@@ -1454,9 +1185,8 @@ html, body {
   z-index: 3000;
 }
 
-/* Opciones */
 .health-option {
-  padding: 10px;          // 👈 MISMO padding que input
+  padding: 10px;
   font-size: 14px;
   cursor: pointer;
 
@@ -1464,7 +1194,6 @@ html, body {
     background: #e8f2ff;
   }
 }
-
 
 .health-selected:hover {
   border-color: #1e90ff;
@@ -1475,21 +1204,18 @@ html, body {
   box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.15);
 }
 
-// MODAL DE ASEGURADOS //
-
+/* ===============================
+   MODAL ASEGURADOS
+=============================== */
 .group-modal {
-  position: relative; // 🔑 necesario para anclar el popover
+  position: relative;
 }
-
-//POPOVER //
 
 .popover-modal {
   position: absolute;
   top: calc(100% + 10px);
-
   left: 50%;
-  transform: translateX(-50%); // 👈 lo centra respecto al botón
-
+  transform: translateX(-50%);
   width: 460px;
   max-width: 95vw;
 
@@ -1505,9 +1231,7 @@ html, body {
   animation: popoverFadeIn 0.2s ease-out;
 }
 
-
-//ANIMACION//
-
+/* OJO: tu animación usa popoverIn, dejo keyframes como estaba */
 @keyframes popoverIn {
   from {
     opacity: 0;
@@ -1518,8 +1242,6 @@ html, body {
     transform: translateX(-50%) translateY(0);
   }
 }
-
-//HEADER//
 
 .popover-head {
   padding: 16px 20px;
@@ -1553,72 +1275,12 @@ html, body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
-  min-height: 32px;  
+  min-height: 32px;
 
   label {
     font-size: 14px;
     font-weight: 500;
     line-height: 1;
-  }
-}
-
-.toggle-switch {
-  position: relative;
-  width: 44px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-
-  input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-
-  .slider {
-    position: absolute;
-    inset: 0;
-    background-color: #e5e7eb;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-  }
-
-  .slider::before {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    left: 2px;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #ffffff;
-    border-radius: 50%;
-    transition: transform 0.2s ease;
-  }
-
-  input:checked + .slider {
-    background-color: #f472b6;
-  }
-
-  input:checked + .slider::before {
-    transform: translate(20px, -50%);
-  }
-}
-
-.conyuge-row-inline,
-.carga-row-inline {
-  display: grid;
-  grid-template-columns: 1fr 170px;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.input-full-width {
-  margin-bottom: 16px;
-
-  input {
-    width: 100%;
   }
 }
 
@@ -1645,15 +1307,11 @@ html, body {
   }
 }
 
-.carga-card-item {
-  border-top: 1px solid #e5e7eb;
-  padding-top: 12px;
-  margin-top: 12px;
-
-  p {
-    margin-bottom: 8px;
-    font-weight: 500;
-  }
+.carga-row-inline {
+  display: grid;
+  grid-template-columns: 1fr 170px;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .btn-main-action {
@@ -1678,21 +1336,7 @@ html, body {
 
 .age-pick-full input {
   width: 100%;
-  min-width: 0; // 🔑 evita overflow en grid
-}
-
-.sex-pick-full {
-  min-width: 0; // 🔑 permite que el grid controle el ancho
-}
-
-
-@media (max-width: 768px) {
-  .popover-modal {
-    width: 100%;
-    right: auto;
-    left: 0;
-  }
-
+  min-width: 0;
 }
 
 @media (max-width: 1024px) {
@@ -1702,10 +1346,8 @@ html, body {
 }
 
 @media (max-width: 768px) {
-
   .popover-modal {
     position: fixed;
-
     left: 0;
     right: 0;
     bottom: 0;
@@ -1719,13 +1361,12 @@ html, body {
     max-height: 90vh;
 
     border-radius: 16px 16px 0 0;
-
     animation: popoverMobileIn 0.25s ease-out;
   }
 
   .popover-content {
     overflow-y: auto;
-    max-height: calc(90vh - 120px); // deja espacio al header + CTA
+    max-height: calc(90vh - 120px);
   }
 
   .btn-main-action {
@@ -1734,27 +1375,20 @@ html, body {
     margin: 0;
     border-radius: 0;
   }
+
+  .group-modal {
+    position: static;
+  }
 }
 
 @keyframes popoverMobileIn {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
 }
 
-@media (max-width: 768px) {
-  .group-modal {
-    position: static; // evita conflictos con fixed
-  }
-}
-
-
-
-//BOTON FACTORES 
-
+/* ===============================
+   BOTONES (FACTORES / 7%)
+=============================== */
 .factores {
   display: flex;
   justify-content: flex-end;
@@ -1794,8 +1428,6 @@ html, body {
   line-height: 1;
 }
 
-//BOTON 7%
-
 .rating-toggle {
   display: flex;
   justify-content: flex-end;
@@ -1807,7 +1439,7 @@ html, body {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  
+
   padding: 8px 10px;
   font-size: 13px;
   font-weight: 600;
@@ -1832,9 +1464,9 @@ html, body {
   text-decoration: none;
 }
 
-
-//POPOVER PRESTADORES//
-
+/* ===============================
+   POPOVER PRESTADORES
+=============================== */
 .prestadores-wrap {
   display: inline-flex;
   gap: 6px;
@@ -1899,4 +1531,248 @@ html, body {
 
 .prestadores-popover li:hover {
   background: #f6f7fb;
+}
+
+/* =========================================
+   FIX MOBILE: botón "Filtros" abajo + drawer lateral
+   (pegar al FINAL del scss)
+========================================= */
+@media (max-width: 768px) {
+
+  /* 1) Evita que el layout se comporte como flex/100vh en mobile */
+  .results-layout{
+    display: block !important;
+    height: auto !important;
+    padding: 12px !important;
+  }
+
+  /* 2) Deja espacio para el botón fijo (para que no tape cards) */
+  .results{
+    padding-bottom: 90px !important;
+  }
+
+  /* 3) Drawer SIEMPRE fuera del flujo (no debe empujar nada) */
+  .sidebar-drawer{
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+
+    width: 85vw !important;
+    max-width: 340px !important;
+
+    transform: translateX(-110%) !important;
+    opacity: 1 !important;          /* no lo mates con opacity, solo lo sacas */
+    pointer-events: none !important;
+
+    z-index: 55 !important;
+  }
+
+  .sidebar-drawer.open{
+    transform: translateX(0) !important;
+    pointer-events: auto !important;
+  }
+
+  /* 4) El contenido del drawer con scroll */
+  .sidebar-drawer .drawer-body{
+    height: 100vh !important;
+    overflow-y: auto !important;
+    background: transparent; /* tus cards ya son blancas */
+  }
+
+  /* 5) Overlay por debajo del drawer pero encima del contenido */
+  .filters-overlay{
+    z-index: 50 !important;
+  }
+
+  /* 6) Botón fijo abajo */
+  .filters-toggle-arrow{
+    position: fixed !important;
+    left: 50% !important;
+    bottom: 16px !important;
+    top: auto !important;
+
+    transform: translateX(-50%) !important;
+
+    width: calc(100% - 32px) !important;
+    height: 52px !important;
+    border-radius: 12px !important;
+
+    z-index: 60 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+
+    background: #0b5bd3 !important;
+    border: none !important;
+    color: #fff !important;
+    box-shadow: 0 16px 30px rgba(0,0,0,.22) !important;
+
+    /* oculta el "❯" del HTML sin tocar el HTML */
+    font-size: 0 !important;
+  }
+
+  /* texto "Filtros" */
+  .filters-toggle-arrow::before{
+    content: "Filtros";
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  /* iconito */
+  .filters-toggle-arrow::after{
+    content: "⛭";
+    font-size: 18px;
+    opacity: .95;
+  }
+
+  /* cuando está abierto, no rotar ni mover raro */
+  .filters-toggle-arrow.open{
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+
+  /* 7) Si tu estado "filters-collapsed" le pone width:0/opacity:0 al drawer,
+        en mobile lo anulamos para que la lógica open/not open mande */
+  .results-layout.filters-collapsed .sidebar-drawer{
+    width: 85vw !important;
+    transform: translateX(-110%) !important;
+    opacity: 1 !important;
+    pointer-events: none !important;
+  }
+  .results-layout.filters-collapsed .sidebar-drawer.open{
+    transform: translateX(0) !important;
+    pointer-events: auto !important;
+  }
+}
+
+@media (max-width: 768px) {
+
+  /* 1) Drawer debe ser FIXED y con alto real */
+  .sidebar-drawer{
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    height: 100vh !important;
+    width: 280px !important;
+    z-index: 55 !important;
+
+    /* si estaba transparente, eso hace que se vea "cortado" */
+    background: #f7f9fc !important;
+
+    /* para que el scroll sea adentro y no se corte */
+    overflow: hidden !important;
+  }
+
+  /* 2) Scroll interno del contenido */
+  .sidebar-drawer .drawer-body{
+    height: 100% !important;
+    overflow-y: auto !important;
+    padding-bottom: 90px !important; /* espacio por tu botón fijo */
+  }
+
+  /* 3) Overlay siempre arriba del contenido */
+  .filters-overlay{
+    z-index: 50 !important;
+  }
+}
+
+@media (max-width: 768px) {
+
+  /* Drawer: scroll real */
+  .sidebar-drawer{
+    position: fixed !important;
+    left: 0 !important;
+    top: 64px !important;
+    height: calc(100vh - 64px) !important;
+    width: 280px !important;
+    background: #f7f9fc !important;
+    overflow: hidden !important;
+    z-index: 55 !important;
+  }
+
+  .sidebar-drawer .drawer-body{
+    height: 100% !important;
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    padding: 14px !important;
+    padding-bottom: 90px !important; /* por el botón fijo */
+  }
+
+  /* 🔑 Fuerza que las cards del sidebar participen del flujo (no flotantes) */
+  .sidebar-drawer .sidebar,
+  .sidebar-drawer .price-card,
+  .sidebar-drawer aside{
+    position: static !important;
+    float: none !important;
+    width: 100% !important;
+  }
+
+  /* Si algún style viejo le pone transform al drawer-body, se buguea el scroll */
+  .sidebar-drawer .drawer-body{
+    transform: none !important;
+  }
+
+  /* Overlay ok */
+  .filters-overlay{ z-index: 50 !important; }
+}
+
+@media (max-width: 768px) {
+
+  .pagination{
+    justify-content: center;
+    gap: 6px;
+    margin: 24px 0 20px;
+    padding: 0 8px;
+  }
+
+  .pagination button{
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    font-size: 13px;
+    border-radius: 10px;
+    flex: 0 0 auto;
+  }
+
+  /* Oculta dots en mobile */
+  .pagination .dots{
+    display: none;
+  }
+
+  /* BASE: ocultar todo */
+  .pagination button{
+    display: none;
+  }
+
+  /* Siempre visibles */
+  .pagination button:first-child,   /* Anterior */
+  .pagination button:last-child,    /* Siguiente */
+  .pagination button.active{        /* Página actual */
+    display: flex;
+  }
+
+  /* Primera página (1) */
+  .pagination button:nth-child(2){
+    display: flex;
+  }
+
+  /* Última página (antes de "Siguiente") */
+  .pagination button:nth-last-child(2){
+    display: flex;
+  }
+
+  /* Página ANTERIOR a la activa */
+  .pagination button:has(+ button.active){
+    display: flex;
+  }
+
+  /* Página SIGUIENTE a la activa */
+  .pagination button.active + button{
+    display: flex;
+  }
 }
