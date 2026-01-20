@@ -1721,3 +1721,58 @@ html, body {
   .filters-overlay{ z-index: 50 !important; }
 }
 
+@media (max-width: 768px) {
+
+  .pagination{
+    justify-content: center;
+    gap: 6px;
+    margin: 24px 0 20px;
+    padding: 0 8px;
+  }
+
+  .pagination button{
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    font-size: 13px;
+    border-radius: 10px;
+    flex: 0 0 auto;
+  }
+
+  /* Oculta dots en mobile */
+  .pagination .dots{
+    display: none;
+  }
+
+  /* BASE: ocultar todo */
+  .pagination button{
+    display: none;
+  }
+
+  /* Siempre visibles */
+  .pagination button:first-child,   /* Anterior */
+  .pagination button:last-child,    /* Siguiente */
+  .pagination button.active{        /* Página actual */
+    display: flex;
+  }
+
+  /* Primera página (1) */
+  .pagination button:nth-child(2){
+    display: flex;
+  }
+
+  /* Última página (antes de "Siguiente") */
+  .pagination button:nth-last-child(2){
+    display: flex;
+  }
+
+  /* Página ANTERIOR a la activa */
+  .pagination button:has(+ button.active){
+    display: flex;
+  }
+
+  /* Página SIGUIENTE a la activa */
+  .pagination button.active + button{
+    display: flex;
+  }
+}
