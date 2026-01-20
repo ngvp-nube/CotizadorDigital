@@ -550,7 +550,10 @@ export class PlanesIsapre {
    * ====================================================== */
   factoresIsapre: Record<string, number> = {
     Consalud: 0.731,
-    'Cruz Blanca' :0.971
+    'Cruz Blanca' :0.971,
+    Colmena : 1.036,
+    'Nueva Masvida' : 0.854,
+    Banmédica : 0.778,
   };
 
   prestadoresPorRegion: Record<string, string[]> = {
