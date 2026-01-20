@@ -337,11 +337,17 @@ export class PlanesIsapre {
     this.filtersOpen = !this.filtersOpen;
   }
 
+
   @HostListener('window:resize')
-  onResize(): void {
-    this.isMobile = window.innerWidth < 992;
-    // opcional: si pasas a desktop, quita overlay porque isMobile=false
+    onResize() {
+    this.updateIsMobile();
+    // importante: no abrir automáticamente en mobile
+    if (this.isMobile) this.filtersOpen = false;
   }
+
+updateIsMobile() {
+  this.isMobile = window.innerWidth <= 768;
+}
 
 
   /* ======================================================
