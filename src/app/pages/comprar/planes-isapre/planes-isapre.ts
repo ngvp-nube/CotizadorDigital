@@ -329,7 +329,7 @@ export class PlanesIsapre {
     this.filtrarClinicas(); // ✅ carga todas si está vacío
   }
 
-  filtersOpen = true;
+  filtersOpen = false;
   filtersCollapsed = false;
   isMobile = window.innerWidth < 992;
 
