@@ -21,14 +21,12 @@ export interface Plan {
 }
 
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class LocalstorageService {
 
   private readonly API_INDICADORES = 'https://mindicador.cl/api';
-
 
   regiones = [
     { id: 1, nombre: 'Arica y Parinacota' },
@@ -18391,4 +18389,5 @@ export class LocalstorageService {
   getRegiones(): Observable<any[]> {
     return of(this.regiones); // simula llamada HTTP
   }
+
 }

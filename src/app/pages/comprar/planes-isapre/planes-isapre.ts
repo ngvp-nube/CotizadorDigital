@@ -15,7 +15,6 @@ import { ModalDetalleComponent } from '../../modals/modal-detalle/modal-detalle'
 import { ModalSolicitarComponent } from '../../modals/modal-solicitar/modal-solicitar';
 import { LocalstorageService, Plan } from '../../../services/localstorage';
 import { ElementRef, ViewChild, HostListener } from '@angular/core';
-import { HtmlParser } from '@angular/compiler';
 
 /* ======================================================
  * INTERFACES & TYPES
@@ -45,6 +44,8 @@ export type PlanConPrecioFinal = Plan & {
   detallePrecio: DetallePrecio;
   topeAnualCLP?: number; // ✅ nuevo
 };
+
+
 
 /* ======================================================
  * COMPONENT
@@ -345,21 +346,72 @@ export class PlanesIsapre {
     if (this.isMobile) this.filtersOpen = false;
   }
 
-updateIsMobile() {
+  updateIsMobile() {
   this.isMobile = window.innerWidth <= 768;
-}
+  }
 
 
   /* ======================================================
    * RESULTADOS / VISTA
    * ====================================================== */
   mostrarPuntaje = true;
-  ordenarPor = 'price';
   vista: 'grid' | 'list' = 'grid';
+  ordenarPor: '' | 'score' | 'price_asc' | 'price_desc' = '';
+  moneda: 'clp' | 'uf' = 'clp';
+  ordenarLabel = 'Ordenar por';
+  monedaLabel = 'Moneda';
+
+  private ordenarLabels: Record<'score' | 'price_asc' | 'price_desc', string> = {
+    score: 'Mayor Puntaje',
+    price_asc: 'Precio Menor a Mayor',
+    price_desc: 'Precio Mayor a Menor'
+  };  
+
+  private monedaLabels: Record<'clp' | 'uf', string> = {
+    clp: 'Pesos',
+    uf: 'UF'
+  };    
 
   cambiarVista(vista: 'grid' | 'list'): void {
     this.vista = vista;
   }
+
+  sortOpen = false;
+  currencyOpen = false;
+
+  toggleSort(e: Event) {
+    e.stopPropagation();
+    this.sortOpen = !this.sortOpen;
+    this.currencyOpen = false;
+  }
+
+  toggleCurrency(e: Event) {
+    e.stopPropagation();
+    this.currencyOpen = !this.currencyOpen;
+    this.sortOpen = false;
+  }
+
+  setOrdenar(value: 'score' | 'price_asc' | 'price_desc') {
+    this.ordenarPor = value;
+    this.ordenarLabel = this.ordenarLabels[value];
+    this.sortOpen = false;
+    this.aplicarFiltros(true);
+  }
+
+
+  setMoneda(value: 'clp' | 'uf') {
+    this.moneda = value;
+    this.monedaLabel = this.monedaLabels[value];
+    this.currencyOpen = false;
+    // no hace falta aplicarFiltros: solo cambia visualización
+  }
+
+  @HostListener('document:click')
+  closeDropdowns() {
+    this.sortOpen = false;
+    this.currencyOpen = false;
+  }
+
 
   /* ======================================================
    * PAGINACIÓN (COMPLETA)
@@ -409,7 +461,41 @@ updateIsMobile() {
       return precio >= this.minPrice && precio <= this.maxPrice;
     });
 
+    // ✅ 3) Ordenar (AQUÍ VA)
+    this.resultadosFiltrados = this.ordenarPlanes(this.resultadosFiltrados);
+
     this.actualizarPaginacion();
+  }
+
+  private ordenarPlanes(list: any[]): any[] {
+    const arr = [...(list ?? [])];
+
+    switch (this.ordenarPor) {
+      case 'score':
+        return arr.sort((a, b) => (b.puntaje ?? 0) - (a.puntaje ?? 0));
+
+      case 'price_asc':
+        return arr.sort((a, b) => this.calcularPrecioPlan(a) - this.calcularPrecioPlan(b));
+
+      case 'price_desc':
+        return arr.sort((a, b) => this.calcularPrecioPlan(b) - this.calcularPrecioPlan(a));
+
+      default:
+        return arr;
+    }
+  }
+
+  mostrarPrecio(plan: Plan): string {
+    // si no hay UF aún, fallback CLP
+    const clp = this.calcularPrecioPlan(plan);
+
+    if (this.moneda === 'uf') {
+      if (!this.valorUF) return 'UF 0.00';
+      const uf = clp / this.valorUF;
+      return `UF ${uf.toFixed(2)}`;
+    }
+
+    return `$${Math.round(clp).toLocaleString('es-CL')}`;
   }
 
 
@@ -586,11 +672,13 @@ updateIsMobile() {
       title: 'Resultados ajustados a tu 7% de salud',
       icon: 'info',
       width: 500,
-      padding: '1.2rem',
+      padding: '0.8rem',
+      heightAuto: false,
+      scrollbarPadding: false,
       confirmButtonText: 'Cerrar',
       confirmButtonColor: '#3f4cff',
       customClass: {
-        popup: 'swal-renta-info'
+      popup: 'swal-no-inner-scroll'
       },
       html: `
         <div style="text-align:left; font-size:13px; line-height:1.6;">
@@ -653,7 +741,7 @@ updateIsMobile() {
     scrollbarPadding: false,
     confirmButtonText: 'Cerrar',
     confirmButtonColor: '#3f4cff',
-    padding: '1.5rem',
+    padding: '0.8rem',
     customClass: {
     popup: 'swal-no-inner-scroll'
     },
@@ -700,7 +788,7 @@ mostrarInfoGes(): void{
     scrollbarPadding: false,
     confirmButtonText: 'Cerrar',
     confirmButtonColor: '#3f4cff',
-    padding: '0.2 rem',
+    padding: '0.2rem',
     customClass: {
     popup: 'swal-no-inner-scroll'
     },
