@@ -38,3 +38,30 @@ $qp-gray-800: #2c3a4a;
 
 $qp-primary-light: #82b6ff;
 $qp-shadow: rgba(0, 0, 0, 0.08);
+
+/* =========================
+   SweetAlert2 por encima del header
+========================= */
+.swal2-container{
+  z-index: 99999 !important;
+}
+
+.swal2-popup{
+  z-index: 100000 !important;
+}
+
+/* =========================
+   SweetAlert: icono info más pequeño
+========================= */
+
+.swal-no-inner-scroll .swal2-icon{
+  width: 48px !important;
+  height: 48px !important;
+  margin: 10px auto 6px !important;
+}
+
+.swal-no-inner-scroll .swal2-icon .swal2-icon-content{
+  font-size: 24px !important;
+  line-height: 48px !important;
+}
+

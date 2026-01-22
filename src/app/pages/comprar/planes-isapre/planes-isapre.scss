@@ -37,7 +37,7 @@ html, body {
 }
 
 /* ===============================
-   SEARCH BAR
+   SEARCH BAR / COTIZADOR
 =============================== */
 .search-header h2 {
   font-size: 20px;
@@ -173,19 +173,6 @@ html, body {
   background:#e0f2fe;
 }
 
-/* Responsive: que no se rompa */
-@media (max-width: 1100px){
-  .quote-body .search-grid{
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 640px){
-  .quote-body .search-grid{
-    grid-template-columns: 1fr;
-  }
-}
-
 /* ===============================
    RESULTS BAR
 =============================== */
@@ -195,11 +182,250 @@ html, body {
   border-bottom: 1px solid #eaeaea;
 }
 
-.results-grid {
+.results-grid{
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
   flex-wrap: wrap;
+}
+
+.results.is-grid{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(320px, 1fr));
+  gap: 18px;
+  align-items: stretch;
+}
+
+/* Botones más compactos en GRID */
+.results.grid-view .btn-solicitar {
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 10px;
+}
+
+.results.grid-view .btn-secondary {
+  padding: 7px 14px;
+  font-size: 13px;
+  border-radius: 10px;
+}
+
+.results.grid-view .price {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.results.grid-view .price-row small,
+.results.grid-view .card-right small {
+  font-size: 12px;
+}
+
+.results.grid-view .company h5 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.results.grid-view .company {
+  gap: 10px;
+}
+
+/* ===============================
+   RESULTS GRID/LIST VIEW
+=============================== */
+
+/* LIST: se mantiene igual (una columna) */
+.results.list-view {
+  display: block;
+}
+
+/* GRID: layout de cards */
+.results.grid-view {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(340px, 1fr));
+  gap: 16px;
+  align-content: start;
+}
+
+/* si tienes textos largos (ej: prestadores) */
+.results.grid-view .company,
+.results.grid-view .features,
+.results.grid-view .features span {
+  min-width: 0;
+}
+
+
+/* que el contenido no se rompa */
+.results.grid-view .card-left,
+.results.grid-view .card-center,
+.results.grid-view .card-right {
+  min-width: 0;
+}
+
+/* Botones con ancho consistente */
+.card-right .btn-solicitar,
+.card-right .btn-secondary{
+  width: 200px;
+}
+
+.card-left{
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Empuja el bloque derecho */
+.sort-select {
+  margin-left: auto;
+}
+
+/* Ajuste fino para que queden alineados */
+.sort-select,
+.currency-select,
+.view-mode-toggle{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Mantener el grupo derecho pegado */
+.currency-select,
+.view-mode-toggle{
+  margin-left: 0;
+}
+
+/* ===============================
+   CUSTOM DROPDOWN (Ordenar / Moneda)
+=============================== */
+.custom-dd {
+  position: relative;
+  min-width: 80px;
+}
+
+/* botón */
+.custom-dd-selected {
+  height: 34px;
+  padding: 8px 12px;
+  width: 170px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* label fijo */
+.dd-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #6b7280;
+  text-transform: capitalize;
+}
+
+/* flecha */
+.dd-arrow {
+  margin-left: auto;
+  font-size: 11px;
+  color: #6b7280;
+  transition: transform .15s ease;
+}
+.dd-arrow.open {
+  transform: rotate(180deg);
+}
+
+/* dropdown */
+.custom-dd-options {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 14px 30px rgba(16,24,40,.12);
+
+  padding: 6px 0;
+  z-index: 3000;
+}
+
+/* opciones */
+.custom-dd-option {
+  padding: 10px 12px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.custom-dd-option:hover {
+  background: #f3f4f6;
+}
+
+/* seleccionado */
+.custom-dd-option.selected {
+  font-weight: 700;
+  position: relative;
+}
+.custom-dd-option.selected::after {
+  content: "✓";
+  position: absolute;
+  right: 12px;
+  color: #3f4cff;
+}
+
+/* compactar toolbar */
+.results-grid {
+  gap: 10px;
+}
+
+/* ===============================
+   VIEW MODE TOGGLE (list/grid) - pro
+=============================== */
+.view-mode-toggle{
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.view-mode-toggle button{
+  width: 38px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+
+  display: grid;
+  place-items: center;
+
+  color: #6b7280;
+  transition: background .15s ease, color .15s ease;
+}
+
+/* separador sutil entre botones */
+.view-mode-toggle button + button{
+  border-left: 1px solid #e5e7eb;
+}
+
+.view-mode-toggle button:hover{
+  background: #f3f4f6;
+  color: #111827;
+}
+
+/* estado activo */
+.view-mode-toggle button.active{
+  background: #3f4cff;
+  color: #fff;
+}
+
+/* focus accesible */
+.view-mode-toggle button:focus-visible{
+  outline: none;
+  box-shadow: inset 0 0 0 2px rgba(63, 76, 255, 0.35);
 }
 
 .results-count h2 {
@@ -210,12 +436,25 @@ html, body {
   border: 1px solid #ddd;
   background: white;
   padding: 8px 10px;
+  color: #6b7280;
   cursor: pointer;
 }
 
 .view-mode-toggle button.active {
-  background: #3f4cff;
+  background: #949598;
   color: white;
+}
+
+.view-mode-toggle svg {
+  display: block;
+}
+
+.view-mode-toggle button:active {
+  transform: scale(0.95);
+}
+
+.view-mode-toggle button.active {
+  color: #ffffff;
 }
 
 /* ===============================
@@ -257,6 +496,36 @@ html, body {
 
 .results-layout.filters-collapsed .filters-toggle-arrow{
   right: -18px;
+}
+
+/* ===============================
+   RESULTADOS
+=============================== */
+.results {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* Scroll bonito */
+.results::-webkit-scrollbar {
+  width: 8px;
+}
+
+.results::-webkit-scrollbar-thumb {
+  background: #cfd8dc;
+  border-radius: 6px;
+}
+
+/* ===============================
+   SIDEBAR – BASE
+=============================== */
+.sidebar {
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
 }
 
 /* ===============================
@@ -420,15 +689,6 @@ html, body {
 
 .range { outline: none; }
 .range:focus { outline: none; }
-
-/* =========================================================
-   SIDEBAR – BASE
-========================================================= */
-.sidebar {
-  background: transparent;
-  padding: 0;
-  box-shadow: none;
-}
 
 /* =========================================================
    PRICE CARD
@@ -627,71 +887,24 @@ html, body {
   transform: translateX(-100%);
 }
 
-@media (max-width: 992px){
-  .sidebar-drawer{
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100vh;
-    background: transparent;
-    z-index: 50;
-  }
-
-  .sidebar-drawer.open{
-    transform: translateX(0);
-    width: 280px;
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .sidebar-drawer:not(.open){
-    transform: translateX(-110%);
-    width: 280px;
-    opacity: 1;
-    pointer-events: none;
-  }
-
-  .results-layout{
-    grid-template-columns: 1fr;
-  }
-}
-
 .filters-toggle-arrow:hover{
   background: #f0f9ff;
 }
 
 /* ===============================
-   RESULTADOS
-=============================== */
-.results {
-  flex: 1;
-  min-width: 0;
-  width: 100%;
-  overflow-y: auto;
-  padding-right: 10px;
-}
-
-/* Scroll bonito */
-.results::-webkit-scrollbar {
-  width: 8px;
-}
-
-.results::-webkit-scrollbar-thumb {
-  background: #cfd8dc;
-  border-radius: 6px;
-}
-
-/* ===============================
-   CARD PLAN
+   CARD PLAN (LIST VIEW)
 =============================== */
 .card {
   background: #ffffff;
   border-radius: 14px;
   padding: 16px;
-  display: grid;
+  display: flex;
   grid-template-columns: 2fr 1fr 1fr;
   gap: 16px;
   margin-bottom: 16px;
+  align-items: flex-start;
+  gap: 18px;
+
 }
 
 .tag {
@@ -736,16 +949,72 @@ html, body {
   font-weight: bold;
 }
 
+.score-bottom{
+  width: 170px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.score-bottom .score-label {
+  display: block;
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 4px;
+}
+
+/* Estilos del numerito (ajusta si ya tienes) */
+.score-bottom .score-value{
+  background: #3bb54a;
+  color: #fff;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  line-height: 1.2;
+}
+
+score-label {
+  margin-right: 6px;
+}
+
+.score-badge {
+  background: #4caf50;
+  color: #fff;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin: 0 4px;
+}
+
 /* ===============================
    CARD RIGHT
 =============================== */
-.card-right {
+/* ✅ derecha pegada a la derecha siempre */
+.card-right{
+  margin-left: auto;
+  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   text-align: right;
+  gap: 10px;
+
+  flex: 0 0 180px;
 }
 
-.price {
+.card-right .price {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
   font-size: 22px;
-  font-weight: bold;
+  font-weight: 700;
+}
+
+.card-right small {
+  font-size: 13px;
+  color: #555;
 }
 
 /* ===============================
@@ -772,65 +1041,9 @@ html, body {
   cursor: pointer;
 }
 
-/* ===============================
-   RESPONSIVE
-=============================== */
-@media (max-width: 992px) {
-  .search-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .results-layout {
-    flex-direction: column;
-    height: auto;
-    overflow: visible;
-  }
-
-  .sidebar {
-    width: 100%;
-    position: static;
-  }
-
-  .results {
-    overflow: visible;
-  }
-}
-
-@media (max-width: 768px) {
-  .card {
-    grid-template-columns: 1fr;
-  }
-
-  .card-center,
-  .card-right {
-    text-align: left;
-  }
-}
-
-@media (max-width: 768px) {
-  .custom-options {
-    max-height: 200px;
-  }
-
-  .search-bar,
-  .search-grid,
-  .box-input {
-    overflow: visible;
-  }
-
-  .search-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .box-input {
-    width: 100%;
-  }
-
-  .btn-search {
-    width: 100%;
-    margin-top: 8px;
-  }
+.btn-solicitar,
+.btn-secondary {
+  width: 140px;
 }
 
 /* ===============================
@@ -911,17 +1124,6 @@ html, body {
   transform: rotate(180deg);
 }
 
-@media (max-width: 768px) {
-  .custom-options {
-    max-height: 220px;
-  }
-
-  .custom-option {
-    padding: 14px 16px;
-    font-size: 15px;
-  }
-}
-
 /* ===============================
    PAGINATION
 =============================== */
@@ -929,8 +1131,8 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 6px;
-  margin: 48px 0 32px;
+  gap: 8px;
+  margin: 30px 0;
 
   button {
     min-width: 40px;
@@ -979,6 +1181,7 @@ html, body {
   color: #9ca3af;
   font-size: 14px;
   user-select: none;
+  flex: 0 0 auto;
 }
 
 /* Layout principal (se mantiene tal cual porque no es duplicado exacto) */
@@ -1148,6 +1351,9 @@ html, body {
   }
 }
 
+/* ===============================
+   HEALTH SELECT
+=============================== */
 .health-select {
   position: relative;
 }
@@ -1339,48 +1545,6 @@ html, body {
   min-width: 0;
 }
 
-@media (max-width: 1024px) {
-  .popover-modal {
-    width: 400px;
-  }
-}
-
-@media (max-width: 768px) {
-  .popover-modal {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: auto;
-
-    transform: none;
-
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-    max-height: 90vh;
-
-    border-radius: 16px 16px 0 0;
-    animation: popoverMobileIn 0.25s ease-out;
-  }
-
-  .popover-content {
-    overflow-y: auto;
-    max-height: calc(90vh - 120px);
-  }
-
-  .btn-main-action {
-    position: sticky;
-    bottom: 0;
-    margin: 0;
-    border-radius: 0;
-  }
-
-  .group-modal {
-    position: static;
-  }
-}
-
 @keyframes popoverMobileIn {
   from { transform: translateY(100%); }
   to { transform: translateY(0); }
@@ -1533,6 +1697,428 @@ html, body {
   background: #f6f7fb;
 }
 
+/* tu clase custom */
+.swal-no-inner-scroll{
+  max-height: calc(100vh - 140px) !important;
+  overflow: auto !important;
+}
+
+/* tu clase custom del 7% */
+.swal-renta-info{
+  max-height: calc(100vh - 140px) !important;
+  overflow: auto !important;
+}
+
+/* ===============================
+   GRID VIEW (ESTRUCTURA MODERNA)
+=============================== */
+/* ✅ SOLO GRID */
+.results.grid-view .card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+  padding: 18px;
+}
+
+.results.grid-view .card-left,
+.results.grid-view .card-right {
+  display: none;
+}
+
+/* layout de grilla */
+.results.grid-view {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  align-content: start;
+}
+
+/* Header: izquierda y derecha */
+.results.grid-view .grid-head{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding-right: 0;
+  position: relative;
+}
+
+/* IZQUIERDA: ahora en COLUMNA (logo arriba, textos abajo) */
+.results.grid-view .grid-head-left{
+  display: flex;
+  flex-direction: column;   /* <-- clave */
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+}
+
+
+.results.grid-view .grid-logo {
+  width: 110px;
+  height: auto;
+  object-fit: contain;
+}
+
+
+/* PLAN + código en 1 línea */
+.results.grid-view .plan-code{
+  font-weight: 800;
+  font-size: 14px;
+  text-transform: uppercase;
+  white-space: nowrap;      /* 1 línea */
+  overflow: hidden;
+  text-overflow: ellipsis;  /* si un día es muy largo, no rompe */
+  line-height: 1.15;
+}
+
+/* Valor base debajo del plan */
+.results.grid-view .base-line{
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  line-height: 1.2;
+}
+
+/* DERECHA: score pegado a la derecha */
+.results.grid-view .grid-score{
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 0 0 auto;
+  align-self: flex-start;
+  justify-self: end;
+  padding-right: 2px;
+  position: absolute;
+  right: 1px;                /* borde derecho de la card */
+  top: 50%;                    /* se alinea al centro del header */
+  margin: 0 !important;
+  gap: 6px;  
+  font-size: 12px;   
+}
+
+.results.grid-view .score-pill {
+  background: #23a455;
+  color: #fff;
+  font-weight: 800;
+  padding: 6px 10px;
+  border-radius: 8px;
+  line-height: 1;
+}
+
+.results.grid-view .score-text {
+  color: #111827;
+  font-size: 14px;
+}
+
+/* cuerpo en 2 columnas */
+.results.grid-view .grid-body {
+  padding-top: 12px;
+  margin-top: 12px;
+  border-top: 1px solid #eef2f7;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;  /* centra el bloque de columnas */
+}
+
+.results.grid-view .grid-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 18px;
+  width: 100%;
+  max-width: 520px;         /* controla qué tan “centrado” se ve */
+  margin: 0 auto;
+}
+
+.results.grid-view .grid-cols .item{
+  min-width: 0;
+}
+
+.results.grid-view .lbl {
+  display: block;
+  color: #6b7280;
+  font-size: 13px;
+  margin-bottom: 2px;
+  text-align: left;  
+}
+
+.results.grid-view .val {
+  display: block;
+  color: #111827;
+  font-weight: 700;
+  font-size: 14px;
+  text-align: left;
+}
+
+.results.grid-view .otros {
+  font-weight: 700;
+  color: #6b7280;
+  margin-left: 6px;
+}
+
+/* Footer: centrar todo */
+.results.grid-view .grid-footer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;     /* <-- centra */
+  text-align: center;
+  gap: 12px;
+  border-top: 1px solid #eef2f7;
+  padding-top: 13px;
+  width: 100%;
+}
+
+.results.grid-view .grid-price {
+  text-align: center;
+  font-weight: 600;
+  font-size: 25px;
+  color: #111827;
+  line-height: 1;
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.results.grid-view .grid-price .m {
+  font-size: 16px;
+  font-weight: 700;
+  color: #6b7280;
+  margin-left: 4px;
+}
+
+.results.grid-view .grid-compare {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #374151;
+  font-weight: 600;
+}
+
+/* botones full width como referencia */
+.results.grid-view .btn-solicitar,
+.results.grid-view .btn-secondary {
+  width: 100%;
+  border-radius: 10px;
+  padding: 12px 14px;
+  max-width: 260px;
+  display: block;
+  margin: 0 auto; 
+}
+
+/* ===============================
+   GRID VIEW - SCORE al borde derecho, alineado con el PLAN
+=============================== */
+
+.results.grid-view .grid-top{
+  position: relative;
+}
+
+/* reserva espacio para que el texto no choque con el score */
+.results.grid-view .grid-title{
+  padding-right: 130px;
+}
+
+
+/* ===============================
+   MEDIA QUERIES (TODAS AL FINAL)
+=============================== */
+
+/* Responsive: que no se rompa */
+@media (max-width: 1100px){
+  .quote-body .search-grid{
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px){
+  .quote-body .search-grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* breakpoints */
+@media (max-width: 1200px) {
+  .results.grid-view {
+    grid-template-columns: repeat(2, minmax(340px, 1fr));
+  }
+}
+@media (max-width: 768px) {
+  .results.grid-view {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* tablets */
+@media (max-width: 1024px) {
+  .results.grid-view {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* mobile */
+@media (max-width: 768px) {
+  .results.grid-view {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px){
+  .custom-dd{
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+/* ===============================
+   RESPONSIVE
+=============================== */
+@media (max-width: 992px) {
+  .search-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .results-layout {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+
+  .sidebar {
+    width: 100%;
+    position: static;
+  }
+
+  .results {
+    overflow: visible;
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    grid-template-columns: 1fr;
+  }
+
+  .card-center,
+  .card-right {
+    text-align: left;
+  }
+}
+
+@media (max-width: 768px) {
+  .custom-options {
+    max-height: 200px;
+  }
+
+  .search-bar,
+  .search-grid,
+  .box-input {
+    overflow: visible;
+  }
+
+  .search-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .box-input {
+    width: 100%;
+  }
+
+  .btn-search {
+    width: 100%;
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .custom-options {
+    max-height: 220px;
+  }
+
+  .custom-option {
+    padding: 14px 16px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 992px){
+  .sidebar-drawer{
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    background: transparent;
+    z-index: 50;
+  }
+
+  .sidebar-drawer.open{
+    transform: translateX(0);
+    width: 280px;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .sidebar-drawer:not(.open){
+    transform: translateX(-110%);
+    width: 280px;
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  .results-layout{
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1024px) {
+  .popover-modal {
+    width: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .popover-modal {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+
+    transform: none;
+
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 90vh;
+
+    border-radius: 16px 16px 0 0;
+    animation: popoverMobileIn 0.25s ease-out;
+  }
+
+  .popover-content {
+    overflow-y: auto;
+    max-height: calc(90vh - 120px);
+  }
+
+  .btn-main-action {
+    position: sticky;
+    bottom: 0;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .group-modal {
+    position: static;
+  }
+}
+
 /* =========================================
    FIX MOBILE: botón "Filtros" abajo + drawer lateral
    (pegar al FINAL del scss)
@@ -1562,7 +2148,7 @@ html, body {
     max-width: 340px !important;
 
     transform: translateX(-110%) !important;
-    opacity: 1 !important;          /* no lo mates con opacity, solo lo sacas */
+    opacity: 1 !important;
     pointer-events: none !important;
 
     z-index: 55 !important;
@@ -1577,7 +2163,7 @@ html, body {
   .sidebar-drawer .drawer-body{
     height: 100vh !important;
     overflow-y: auto !important;
-    background: transparent; /* tus cards ya son blancas */
+    background: transparent;
   }
 
   /* 5) Overlay por debajo del drawer pero encima del contenido */
@@ -1610,7 +2196,6 @@ html, body {
     color: #fff !important;
     box-shadow: 0 16px 30px rgba(0,0,0,.22) !important;
 
-    /* oculta el "❯" del HTML sin tocar el HTML */
     font-size: 0 !important;
   }
 
@@ -1659,10 +2244,8 @@ html, body {
     width: 280px !important;
     z-index: 55 !important;
 
-    /* si estaba transparente, eso hace que se vea "cortado" */
     background: #f7f9fc !important;
 
-    /* para que el scroll sea adentro y no se corte */
     overflow: hidden !important;
   }
 
@@ -1670,7 +2253,7 @@ html, body {
   .sidebar-drawer .drawer-body{
     height: 100% !important;
     overflow-y: auto !important;
-    padding-bottom: 90px !important; /* espacio por tu botón fijo */
+    padding-bottom: 90px !important;
   }
 
   /* 3) Overlay siempre arriba del contenido */
@@ -1700,7 +2283,7 @@ html, body {
     flex-direction: column !important;
     gap: 14px !important;
     padding: 14px !important;
-    padding-bottom: 90px !important; /* por el botón fijo */
+    padding-bottom: 90px !important;
   }
 
   /* 🔑 Fuerza que las cards del sidebar participen del flujo (no flotantes) */
@@ -1750,9 +2333,9 @@ html, body {
   }
 
   /* Siempre visibles */
-  .pagination button:first-child,   /* Anterior */
-  .pagination button:last-child,    /* Siguiente */
-  .pagination button.active{        /* Página actual */
+  .pagination button:first-child,
+  .pagination button:last-child,
+  .pagination button.active{
     display: flex;
   }
 
@@ -1774,5 +2357,145 @@ html, body {
   /* Página SIGUIENTE a la activa */
   .pagination button.active + button{
     display: flex;
+  }
+}
+
+/* responsive */
+@media (max-width: 1200px) {
+  .results.grid-view { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 768px) {
+  .results.grid-view { grid-template-columns: 1fr; }
+  .results.grid-view .grid-head { grid-template-columns: 90px 1fr auto; }
+  .results.grid-view .grid-price { font-size: 28px; }
+}
+
+
+/* =========================================
+   RESPONSIVE - MOBILE (GRID VIEW CARDS)
+   (PEGA AL FINAL DEL SCSS)
+========================================= */
+
+@media (max-width: 768px){
+
+  /* 1) Grid a 1 columna */
+  .results.grid-view{
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* 2) Card más cómoda en mobile */
+  .results.grid-view .card{
+    padding: 16px !important;
+    border-radius: 14px;
+  }
+
+  /* 3) Header: que no se rompa */
+  .results.grid-view .grid-head{
+    position: relative;
+    width: 100%;
+  }
+
+  /* 4) Logo: un poco más chico para que respire */
+  .results.grid-view .grid-logo{
+    width: 95px !important;
+    max-width: 95px !important;
+  }
+
+  /* 5) Título: reserva espacio para el score (para que no choque) */
+  .results.grid-view .grid-title{
+    padding-right: 110px !important;
+  }
+
+  /* 6) Score: pegado al borde derecho y a la misma altura del PLAN */
+  .results.grid-view .grid-score{
+    right: 6px !important;              /* más pegado al borde */
+    top: 50% !important;                /* mantiene tu altura correcta */
+    transform: translateY(-12px) !important;
+  }
+
+  /* 7) Cuerpo (Prestadores/Hospitalaria/etc): centrado y con ancho controlado */
+  /* BODY centrado */
+  .results.grid-view .grid-body{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* 2 columnas también en mobile */
+  .results.grid-view .grid-cols{
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;   /* 👈 FORZADO */
+    gap: 12px 14px;
+  }
+
+  /* 8) Footer: precio y botones centrados */
+  .results.grid-view .grid-footer{
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .results.grid-view .grid-price{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .results.grid-view .btn-solicitar,
+  .results.grid-view .btn-secondary{
+    max-width: 320px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+  }
+
+    /* Labels y valores un poco más compactos */
+  .results.grid-view .lbl{
+    font-size: 12px;
+  }
+
+    .results.grid-view .grid-body .grid-cols{
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px 14px !important;
+    width: 100% !important;
+  }
+
+    /* por si algún item está ocupando toda la fila */
+  .results.grid-view .grid-body .grid-cols .item{
+    grid-column: auto !important;
+    min-width: 0;
+  }
+}
+
+/* =========================================
+   RESPONSIVE - EXTRA SMALL (teléfonos chicos)
+========================================= */
+
+@media (max-width: 420px){
+
+  /* 1) Un poco menos de espacio para el score */
+  .results.grid-view .grid-title{
+    padding-right: 96px !important;
+  }
+
+  .results.grid-view .grid-score{
+    right: -10px !important;
+    transform: translateY(1px) !important;
+  }
+
+  /* 2) Features en 1 columna para que no apriete */
+  .results.grid-view .grid-cols{
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 3) Precio más contenible */
+  .results.grid-view .grid-price{
+    font-size: 26px; /* si tu .grid-price está gigante en móviles chicos */
   }
 }
